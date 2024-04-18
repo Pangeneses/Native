@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CAbortController.cpp" />
+    <ClCompile Include="AbortController.ixx" />
+    <ClCompile Include="CAbortController.ixx" />
+    <ClCompile Include="CAbortSignal.cpp" />
+    <ClCompile Include="AbortSignal.ixx" />
+    <ClCompile Include="AbstractRange.ixx" />
+    <ClCompile Include="CAbortSignal.ixx" />
+    <ClCompile Include="CAttr.cpp" />
+    <ClCompile Include="Attr.ixx" />
+    <ClCompile Include="CAttr.ixx" />
+    <ClCompile Include="CCDATASection.cpp" />
+    <ClCompile Include="CCDATASection.ixx" />
+    <ClCompile Include="CCharacterData.ixx" />
+    <ClCompile Include="CComment.ixx" />
+    <ClCompile Include="CCustomEvent.cpp" />
+    <ClCompile Include="CCustomEvent.ixx" />
+    <ClCompile Include="CDATASection.ixx" />
+    <ClCompile Include="CCharacterData.cpp" />
+    <ClCompile Include="CDocumentFragment.ixx" />
+    <ClCompile Include="CDocumentType.ixx" />
+    <ClCompile Include="CDOMException.cpp" />
+    <ClCompile Include="CDOMException.ixx" />
+    <ClCompile Include="CDOMParser.cpp" />
+    <ClCompile Include="CDOMParser.ixx" />
+    <ClCompile Include="CDOMSerializer.cpp" />
+    <ClCompile Include="CDOMSerializer.ixx" />
+    <ClCompile Include="CElement.ixx" />
+    <ClCompile Include="CEvent.ixx" />
+    <ClCompile Include="CharacterData.ixx" />
+    <ClCompile Include="CHTMLElement.ixx" />
+    <ClCompile Include="CHTMLFormElement.ixx" />
+    <ClCompile Include="CHTMLSlotElement.ixx" />
+    <ClCompile Include="CHV4DDOCUMENT.ixx" />
+    <ClCompile Include="CHV4DRESOURCE.ixx" />
+    <ClCompile Include="CComment.cpp" />
+    <ClCompile Include="CHV4DDOM.ixx" />
+    <ClCompile Include="CMutationObserver.ixx" />
+    <ClCompile Include="Comment.ixx" />
+    <ClCompile Include="CProcessingInstruction.ixx" />
+    <ClCompile Include="CRange.ixx" />
+    <ClCompile Include="CShadowRoot.ixx" />
+    <ClCompile Include="CStaticRange.ixx" />
+    <ClCompile Include="CText.ixx" />
+    <ClCompile Include="CustomEvent.ixx" />
+    <ClCompile Include="CDocument.cpp" />
+    <ClCompile Include="CXPathEvaluator.ixx" />
+    <ClCompile Include="CXPathEvaluatorBase.ixx" />
+    <ClCompile Include="CXPathExpression.ixx" />
+    <ClCompile Include="CXPathResult.ixx" />
+    <ClCompile Include="CXSLTProcessor.ixx" />
+    <ClCompile Include="Document.ixx" />
+    <ClCompile Include="CDocumentFragment.cpp" />
+    <ClCompile Include="DocumentFragment.ixx" />
+    <ClCompile Include="DocumentOrShadowRoot.ixx" />
+    <ClCompile Include="CDocumentType.cpp" />
+    <ClCompile Include="DocumentType.ixx" />
+    <ClCompile Include="DOMImplementation.ixx" />
+    <ClCompile Include="DOMParser.ixx" />
+    <ClCompile Include="DOMSerializer.ixx" />
+    <ClCompile Include="DOMTokenList.ixx" />
+    <ClCompile Include="CElement.cpp" />
+    <ClCompile Include="Element.ixx" />
+    <ClCompile Include="ElementInternals.ixx" />
+    <ClCompile Include="CEvent.cpp" />
+    <ClCompile Include="Event.ixx" />
+    <ClCompile Include="EventTarget.ixx" />
+    <ClCompile Include="HTMLCollection.ixx" />
+    <ClCompile Include="ChildNode.ixx" />
+    <ClCompile Include="CHTMLElement.cpp" />
+    <ClCompile Include="HTMLElement.ixx" />
+    <ClCompile Include="HTMLFormControlsCollection.ixx" />
+    <ClCompile Include="CHTMLFormElement.cpp" />
+    <ClCompile Include="HTMLFormElement.ixx" />
+    <ClCompile Include="CHTMLSlotElement.cpp" />
+    <ClCompile Include="HTMLSlotElement.ixx" />
+    <ClCompile Include="CHV4DFORWARD.ixx" />
+    <ClCompile Include="CMutationObserver.cpp" />
+    <ClCompile Include="CDocument.ixx" />
+    <ClCompile Include="MutationObserver.ixx" />
+    <ClCompile Include="MutationRecord.ixx" />
+    <ClCompile Include="Node.ixx" />
+    <ClCompile Include="NodeFilter.ixx" />
+    <ClCompile Include="NodeIterator.ixx" />
+    <ClCompile Include="NodeList.ixx" />
+    <ClCompile Include="NonDocumentTypeChildNode.ixx" />
+    <ClCompile Include="ParentNode.ixx" />
+    <ClCompile Include="CProcessingInstruction.cpp" />
+    <ClCompile Include="CRange.cpp" />
+    <ClCompile Include="Range.ixx" />
+    <ClCompile Include="NamedNodeMap.ixx" />
+    <ClCompile Include="NonElementParentNode.ixx" />
+    <ClCompile Include="ProcessingInstruction.ixx" />
+    <ClCompile Include="CShadowRoot.cpp" />
+    <ClCompile Include="ShadowRoot.ixx" />
+    <ClCompile Include="Slottable.ixx" />
+    <ClCompile Include="CStaticRange.cpp" />
+    <ClCompile Include="StaticRange.ixx" />
+    <ClCompile Include="CText.cpp" />
+    <ClCompile Include="Text.ixx" />
+    <ClCompile Include="TreeWalker.ixx" />
+    <ClCompile Include="Window.ixx" />
+    <ClCompile Include="CXPathEvaluator.cpp" />
+    <ClCompile Include="XPathEvaluator.ixx" />
+    <ClCompile Include="CXPathEvaluatorBase.cpp" />
+    <ClCompile Include="XPathEvaluatorBase.ixx" />
+    <ClCompile Include="CXPathExpression.cpp" />
+    <ClCompile Include="XPathExpression.ixx" />
+    <ClCompile Include="CXPathResult.cpp" />
+    <ClCompile Include="XPathResult.ixx" />
+    <ClCompile Include="CXSLTProcessor.cpp" />
+    <ClCompile Include="XSLTProcessor.ixx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CHV4DENCODING\CHV4DENCODING.vcxproj">
+      <Project>{41b0407f-0200-4baf-b00a-4fc7223cbe3d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{d8daf909-abf3-4195-a97d-c3b3cb17710e}</ProjectGuid>
+    <RootNamespace>CHV4DDOM</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalOptions>/wd4100 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

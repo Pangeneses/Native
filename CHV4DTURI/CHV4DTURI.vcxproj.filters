@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="i. CHV4DTURI">
+      <UniqueIdentifier>{f499fd3a-3e74-4bfd-a696-ba1b9f25701a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{6385ad40-6dda-4dac-8b55-f063c795d284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{c3abaa5a-30ea-4c7f-9704-5d5cfd15cfe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI">
+      <UniqueIdentifier>{1788befb-bf42-43bb-b2de-e20c7028f24c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIABOUT">
+      <UniqueIdentifier>{e7a9a68b-907f-4ead-98c6-22c1866215a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIACCT">
+      <UniqueIdentifier>{7e4e4757-8a6b-481a-a1aa-888f9663ebca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIBITCOIN">
+      <UniqueIdentifier>{06f54c06-5d70-4dd6-9e2c-954f5229c5d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIBLOB">
+      <UniqueIdentifier>{99db4b0f-5e00-4b50-a1f1-e0d63a60e2e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURICAP">
+      <UniqueIdentifier>{9d261153-8c4e-44f2-8373-dabe305c25e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURICHROME">
+      <UniqueIdentifier>{dc148277-b9d9-43b7-84fc-80485349630a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIDNS">
+      <UniqueIdentifier>{09764201-de26-4ce5-938a-a9a401dee93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIDNTP">
+      <UniqueIdentifier>{9e7a59ed-4fa4-4cd9-96ae-400bf9d9f400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIDOI">
+      <UniqueIdentifier>{4887c97b-ee9d-4b1d-a8ca-ebc50720f0f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIFAX">
+      <UniqueIdentifier>{0859993a-1eab-460c-a6de-6e9bec814ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIFEED">
+      <UniqueIdentifier>{ad822d46-dd46-4fb1-bcf2-b45ec9ef4942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIFISH">
+      <UniqueIdentifier>{d7940653-3004-4829-8ee8-695b07a8f27d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIFM">
+      <UniqueIdentifier>{aa76d030-b2b1-4e58-ab69-d41a86bc798f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIFTP">
+      <UniqueIdentifier>{60c5cf01-7662-401c-a7b1-bc0b5cc515a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIGEO">
+      <UniqueIdentifier>{bbe5d85e-6b27-4788-947e-38162a600016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIGIT">
+      <UniqueIdentifier>{d34a21e8-4032-4bc6-bc88-3377f9b82b23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIHTTP">
+      <UniqueIdentifier>{3e81c99a-6af7-4f44-a0ad-ae1092df4e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIHTTPS">
+      <UniqueIdentifier>{d6e04b7b-baad-43ed-a59a-0ab3d7be58ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIICON">
+      <UniqueIdentifier>{984e0b1a-a6b8-47ec-b9cd-a516789482ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIIMAP">
+      <UniqueIdentifier>{f4cfd951-e754-422b-bd9a-dcd6dd9c3381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIINFO">
+      <UniqueIdentifier>{dd07c527-9551-4ce6-b5ad-40073e34639d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIIPP">
+      <UniqueIdentifier>{de6eac2e-78ff-47cb-8145-e2f25b069ce6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIIPPS">
+      <UniqueIdentifier>{cbb9a44a-0930-4497-8e24-7b26b41be29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIIRC">
+      <UniqueIdentifier>{879c8891-9ab5-45a7-940b-bf317445b965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIIRC6">
+      <UniqueIdentifier>{43f7657d-b684-4eb6-a494-1772b0131afd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIIRCS">
+      <UniqueIdentifier>{4be4e4a9-ad7b-4d0b-9f6a-8c8410ffd6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIJMS">
+      <UniqueIdentifier>{2b7a57dc-215e-4423-9d12-72969cc8296b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMAGNET">
+      <UniqueIdentifier>{f8080586-e4b8-45aa-a8e7-0f698202b71c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMAILSRV">
+      <UniqueIdentifier>{267c52e2-c6f7-4616-a1df-e5e63ecb02cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMAILTO">
+      <UniqueIdentifier>{9839d350-d129-43a2-891f-63b252347396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMAPS">
+      <UniqueIdentifier>{061c6d08-4c5b-426c-950e-2dc94a6549e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMARKET">
+      <UniqueIdentifier>{65367a57-0156-4834-94d3-fd038d5ec39b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMESSAGE">
+      <UniqueIdentifier>{eaa9b990-af02-4fd2-bc30-f69bd14af8a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMID">
+      <UniqueIdentifier>{19c724b1-4fe4-48af-b335-c98fa7b3478b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMMS">
+      <UniqueIdentifier>{b3635cdd-cbad-4e37-a598-18e771f88c9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMSHELP">
+      <UniqueIdentifier>{a9ae55e3-9370-4f9c-a9f2-13ed950bf3f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMSNIM">
+      <UniqueIdentifier>{486f6e29-ba4e-4dae-81ff-a88780d3ddb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMSRP">
+      <UniqueIdentifier>{0b78f393-4147-4685-9784-7c218acfb6f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMSRPS">
+      <UniqueIdentifier>{2ba960a8-1cae-4d32-b320-acb4e62a94c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMSSETTING">
+      <UniqueIdentifier>{ae554ae7-d387-4ef9-9d1d-03661444eb39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMTQP">
+      <UniqueIdentifier>{aca43303-0111-4e77-a59a-7162abd5472f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMUPDATE">
+      <UniqueIdentifier>{09ac6a32-a77a-47bc-9e28-bd91f215a0b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIMVN">
+      <UniqueIdentifier>{f2f190de-d47c-40dd-a797-efe7254cbd96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURINEWS">
+      <UniqueIdentifier>{e81c3d09-4c7a-4a45-b183-8bdeb8d52ca9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURINFS">
+      <UniqueIdentifier>{4254b6a8-e5a9-46d6-9591-ef1f039c14ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURINIH">
+      <UniqueIdentifier>{16fe998c-32cb-4339-b9d5-99f25a9e66d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURINNTP">
+      <UniqueIdentifier>{85dc3c7c-f75a-4840-abec-34c466dea181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURINOTES">
+      <UniqueIdentifier>{16186ef8-1a77-4c39-a979-d96716eb79ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIPAYTO">
+      <UniqueIdentifier>{c96b9dc4-e304-42f7-8e94-ff37cfd299be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIPOP">
+      <UniqueIdentifier>{d8d568fb-7d02-4225-ab55-dfa68f8cea05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIPSYC">
+      <UniqueIdentifier>{f377c74d-86af-45d6-b6e3-407ed3749139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIQUERY">
+      <UniqueIdentifier>{3999a2ba-80dd-4a76-b1aa-fec949cbdf3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIRELOAD">
+      <UniqueIdentifier>{57df6b08-266b-46b0-872a-36a8a20b7cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIRMI">
+      <UniqueIdentifier>{bd12d7e8-b039-48fb-ab1b-72da4ac7a2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIRSYNC">
+      <UniqueIdentifier>{e0b3a0c8-bfe5-4f91-8f3f-f051ea9a436f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISERVICE">
+      <UniqueIdentifier>{d2f43d1a-06f0-400f-8358-39a1f48b4aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISESSION">
+      <UniqueIdentifier>{b3f9c055-dfd6-4493-a6db-48551d98e3f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISFTP">
+      <UniqueIdentifier>{239ef668-5d1e-49c2-be78-cc43bd92c7ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISHTTP">
+      <UniqueIdentifier>{a6d0455a-0630-4b28-a316-4822f9c54fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISIP">
+      <UniqueIdentifier>{0c6a4601-a3ac-4474-aae2-9c12df8cfa5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISIPS">
+      <UniqueIdentifier>{58dc15c9-0a52-47e3-acd2-10261f17d896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISKYPE">
+      <UniqueIdentifier>{f09c1896-2308-49af-9c95-c77d9f93a56e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISMB">
+      <UniqueIdentifier>{c846735c-0259-4d44-8c6a-b56ffcdbc9ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISMS">
+      <UniqueIdentifier>{cebd9054-f14a-408b-8e66-8f4be94a9a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISNEWS">
+      <UniqueIdentifier>{20e95b2a-6d82-48fb-baa2-54aab0bfd6b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISNMP">
+      <UniqueIdentifier>{dba98991-0acb-4a8a-9299-b7aad8eaf3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISOAPS">
+      <UniqueIdentifier>{01f38c90-7ec5-4607-9c44-04eed4811b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISOLDAT">
+      <UniqueIdentifier>{fa7d0936-4af0-4901-86e2-f072e0815c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISOURCE">
+      <UniqueIdentifier>{12b10a74-8ae6-4a04-a060-6ed4fd5580d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISPEAK">
+      <UniqueIdentifier>{d00a9ce8-8be3-42ed-b3a2-39f9fe8bebec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISSH">
+      <UniqueIdentifier>{3291392f-cdfa-487d-aa26-6aad08b5fb19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISTREAM">
+      <UniqueIdentifier>{11191984-3768-4924-acb1-3c7e8c98a6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISTUNS">
+      <UniqueIdentifier>{51818819-0f79-4d69-9150-b8fc3ab3190d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURISVN">
+      <UniqueIdentifier>{e312dc4e-3369-4890-83b3-11732d48e1f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITAG">
+      <UniqueIdentifier>{5761aa89-84ca-43bb-9eea-f171a2da6bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITEL">
+      <UniqueIdentifier>{054fd788-1c13-4454-8622-5849e492688b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITELNET">
+      <UniqueIdentifier>{3be8a61e-e7a1-46d8-a45a-d01eac9b8fd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITFTP">
+      <UniqueIdentifier>{4b7067ff-e260-41ec-8970-781d4e7d4903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITHISMSG">
+      <UniqueIdentifier>{3d788243-ac31-48d5-8b5c-3b512bebd615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITIP">
+      <UniqueIdentifier>{dbb2c0a4-348f-4480-b84c-9ec5d19a9747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITURNS">
+      <UniqueIdentifier>{3398ff95-f705-4f41-a454-e246277cff5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURITV">
+      <UniqueIdentifier>{687d8717-ec80-4ea5-b0fb-3cfab38cc1d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIUDP">
+      <UniqueIdentifier>{0d2c7c25-a76d-4cba-80ba-b2904f2f3542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIURN">
+      <UniqueIdentifier>{8a8be13e-89fa-4078-858a-32ae0a0af6bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIVEMMI">
+      <UniqueIdentifier>{32b803e7-25d5-481a-9060-af6a5e868ca6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIVENTRILO">
+      <UniqueIdentifier>{ad24b28b-9eba-42c0-99bf-021313172dce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIVNC">
+      <UniqueIdentifier>{64c9ed64-30b5-4ee0-8cd4-8503c9ad4d62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIWAIS">
+      <UniqueIdentifier>{941d53ba-62a2-4edb-a6f2-7fe7d94cadff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIWSS">
+      <UniqueIdentifier>{52178a23-5b07-47b8-a142-d0b7ac7603f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIWTAI">
+      <UniqueIdentifier>{d004ca0d-d2e0-4534-bbee-69bac6343631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIWYCIWYG">
+      <UniqueIdentifier>{a3483f21-b82a-4ee2-bd46-56d987559350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIXCON">
+      <UniqueIdentifier>{c6ff6986-0430-4618-82c7-bd7b184769f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIXFIRE">
+      <UniqueIdentifier>{86e39e04-51eb-46b2-baa9-eb8d98afea11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIXMLRPC">
+      <UniqueIdentifier>{61c80eca-ec1c-46c9-9b9e-38b50074e2e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIXMPP">
+      <UniqueIdentifier>{ebe66b78-7b85-41ec-818c-735213e58020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIXRI">
+      <UniqueIdentifier>{16d70a91-2143-4463-98ed-6d0cbfda1657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIZ39">
+      <UniqueIdentifier>{12db4649-8cf1-49db-9d56-caef65c403f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIZ39R">
+      <UniqueIdentifier>{cad8f4ab-26d1-4f0f-8594-1e4ab5ee52d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\CURIZ39S">
+      <UniqueIdentifier>{575048f0-f3e2-4ff2-9d8e-f7ca409fa35a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\01. CURIFILE">
+      <UniqueIdentifier>{6dd10eaf-0186-4acd-9ffa-121b8d3e11f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\02. CURIFILE_U">
+      <UniqueIdentifier>{1c7ca740-caa5-4cfb-88a1-98e9f4dde97d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\03. CURIDIR">
+      <UniqueIdentifier>{02d11ffb-7e41-458d-8374-f3a8f95eec07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\04. CURIDIR_U">
+      <UniqueIdentifier>{57f3584d-dfed-4c86-ad3f-f681f15e4ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\05. CURIZIP">
+      <UniqueIdentifier>{ebd7d820-47cc-44e9-a975-44b7c655cb0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TURI\06. CURIJAR">
+      <UniqueIdentifier>{cb40604a-20ad-4cbd-9f85-277d106e02d7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CURIFILE.cpp">
+      <Filter>iv. TURI\01. CURIFILE</Filter>
+    </ClCompile>
+    <ClCompile Include="CURIFILE.ixx">
+      <Filter>iv. TURI\01. CURIFILE</Filter>
+    </ClCompile>
+    <ClCompile Include="CURIDIR.cpp">
+      <Filter>iv. TURI\03. CURIDIR</Filter>
+    </ClCompile>
+    <ClCompile Include="CURIDIR.ixx">
+      <Filter>iv. TURI\03. CURIDIR</Filter>
+    </ClCompile>
+    <ClCompile Include="CURIZIP.cpp">
+      <Filter>iv. TURI\05. CURIZIP</Filter>
+    </ClCompile>
+    <ClCompile Include="CURIZIP.ixx">
+      <Filter>iv. TURI\05. CURIZIP</Filter>
+    </ClCompile>
+    <ClCompile Include="CTURI.ixx">
+      <Filter>i. CHV4DTURI</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

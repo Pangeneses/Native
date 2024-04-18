@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="i. CHV4DENCODE">
+      <UniqueIdentifier>{e552589a-c9e7-46a4-9403-ed298fc8b80c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{d777e9c5-f234-4cd4-848a-e9bbb19c9d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{525ab7e5-7111-4107-8c5c-9a4c7a9ee36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Encode">
+      <UniqueIdentifier>{7fe0c4df-34fa-4afa-84c3-0f57165afa42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Encode\3. Codepoint Encoder">
+      <UniqueIdentifier>{a90cfb19-2e0d-4471-b9e2-814512b0ebce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Encode\4. Codepoint Decoder">
+      <UniqueIdentifier>{5a5be91a-3f6e-4cd5-821d-f363801e4f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Encode\5. StreamView">
+      <UniqueIdentifier>{3b5549a6-374e-41c5-8164-70784ba7d0aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Encode\6. FileView">
+      <UniqueIdentifier>{f7f24794-e891-427f-b674-d61aafd33680}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FileView.cpp">
+      <Filter>iv. Encode\6. FileView</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DENCODE.ixx">
+      <Filter>i. CHV4DENCODE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFORWARD.ixx">
+      <Filter>ii. CHV4DFORWARD</Filter>
+    </ClCompile>
+    <ClCompile Include="FileView.ixx">
+      <Filter>iv. Encode\6. FileView</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DRESOURCE.ixx">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="Decoder.cpp">
+      <Filter>iv. Encode\4. Codepoint Decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="Decoder.ixx">
+      <Filter>iv. Encode\4. Codepoint Decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="Encoder.ixx">
+      <Filter>iv. Encode\3. Codepoint Encoder</Filter>
+    </ClCompile>
+    <ClCompile Include="Encoder.cpp">
+      <Filter>iv. Encode\3. Codepoint Encoder</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamView.ixx">
+      <Filter>iv. Encode\5. StreamView</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamView.cpp">
+      <Filter>iv. Encode\5. StreamView</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

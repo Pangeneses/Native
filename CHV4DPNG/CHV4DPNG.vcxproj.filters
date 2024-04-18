@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="i. CHV4DPNG">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="iv. PNG">
+      <UniqueIdentifier>{1fa54989-9cc2-432e-8a61-2aa98218d736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. PNG\01. CHV4DPNGNEW">
+      <UniqueIdentifier>{b1e36647-8b8f-4a8d-8db2-f1b0e8f60b27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. PNG\02. CHV4DPNGDECODE">
+      <UniqueIdentifier>{dac4343d-f0df-4ed9-97b4-bcaf8c04d11f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. PNG\03. CHV4DPNGENCODE">
+      <UniqueIdentifier>{e98219c5-50c0-4374-b0a2-211ba8708e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. PNG\04. CHV4DPNGEDIT">
+      <UniqueIdentifier>{55dcd483-90aa-4a66-9315-f56a3fa2ee88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. PNG\00. CHV4DPNGDOC">
+      <UniqueIdentifier>{54d0fac9-4ed6-42e2-ab76-12a95ae73428}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CHV4DPNG.ixx">
+      <Filter>i. CHV4DPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFORWARD.ixx">
+      <Filter>ii. CHV4DFORWARD</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DRESOURCE.ixx">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.ixx">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="sample.cpp">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DPNGENCODE.ixx">
+      <Filter>iv. PNG\03. CHV4DPNGENCODE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DPNGDECODE.ixx">
+      <Filter>iv. PNG\02. CHV4DPNGDECODE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DPNGDOC.ixx">
+      <Filter>iv. PNG\00. CHV4DPNGDOC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DPNGDOC.cpp">
+      <Filter>iv. PNG\00. CHV4DPNGDOC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DPNGDECODE.cpp">
+      <Filter>iv. PNG\02. CHV4DPNGDECODE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DPNGENCODE.cpp">
+      <Filter>iv. PNG\03. CHV4DPNGENCODE</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

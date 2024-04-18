@@ -1,0 +1,115 @@
+module;
+
+
+export module CHV4DXML:CHV4DFORWARD;
+
+export namespace CHV4DXML
+{
+	class Event;
+	class CustomEvent;
+	class EventTarget;
+	class AbortController;
+	class AbortSignal;
+	class Document;
+	class XMLDocument;
+	class Text;
+	class Comment;
+	class StaticRange;
+	class MutationObserver;
+	class Node;
+	class Range;
+	class HTMLElement;
+	class HTMLUnknownElement;
+	class HTMLFormElement;
+	class HTMLSlotElement;
+	class XPathEvaluator;
+	class XPathNSResolver;
+	class XPathEvaluatorBase;
+	class XPathExpression;
+	class XPathResult;
+	class XSLTProcessor;
+	class DOMParser;
+
+	class NonElementParentNode;
+	class DocumentOrShadowRoot;
+	class ParentNode;
+	class NonDocumentChildType;
+	class ChildNode;
+	class Slottable;
+	class NodeList;
+	class HTMLCollection;
+	class MutationRecord;
+	class DOMImplementation;
+	class DocumentType;
+	class DocumentFragment;
+	class ShadowRoot;
+	class Element;
+	class NamedNodeMap;
+	class Attr;
+	class CharacterData;
+	class CDATASection;
+	class ProcessingInstruction;
+	class AbstractRange;
+	class NodeIterator;
+	class TreeWalker;
+	class NodeFilter;
+	class NodeFilter;
+	class DOMTokenList;
+	class ElementInternals;
+	class ValidityState;
+	class HTMLFormControlsCollection;
+
+	typedef Event* IEvent;
+	typedef CustomEvent* ICustomEvent;
+	typedef EventTarget* IEventTarget;
+	typedef AbortController* IAbortController;
+	typedef AbortSignal* IAbortSignal;
+	typedef Document* IDocument;
+	typedef XMLDocument* IXMLDocument;
+	typedef Text* IText;
+	typedef Comment* IComment;
+	typedef StaticRange* IStaticRange;
+	typedef MutationObserver* IMutationObserver;
+	typedef Node* INode;
+	typedef Range* IRange;
+	typedef HTMLElement* IHTMLElement;
+	typedef HTMLUnknownElement* IHTMLUnknownElement;
+	typedef HTMLFormElement* IHTMLFormElement;
+	typedef HTMLSlotElement* IHTMLSlotElement;
+	typedef XPathEvaluator* IXPathEvaluator;
+	typedef XPathNSResolver* IXPathNSResolver;
+	typedef XPathEvaluatorBase* IXPathEvaluatorBase;
+	typedef XPathExpression* IXPathExpression;
+	typedef XPathResult* IXPathResult;
+	typedef XSLTProcessor* IXSLTProcessor;
+	typedef DOMParser* IDOMParser;
+
+	typedef NonElementParentNode* INonElementParentNode;
+	typedef DocumentOrShadowRoot* IDocumentOrShadowRoot;
+	typedef ParentNode* IParentNode;
+	typedef NonDocumentChildType* INonDocumentChildType;
+	typedef ChildNode* IChildNode;
+	typedef Slottable* ISlottable;
+	typedef NodeList* INodeList;
+	typedef HTMLCollection* IHTMLCollection;
+	typedef MutationRecord* IMutationRecord;
+	typedef DOMImplementation* IDOMImplementation;
+	typedef DocumentType* IDocumentType;
+	typedef DocumentFragment* IDocumentFragment;
+	typedef ShadowRoot* IShadowRoot;
+	typedef Element* IElement;
+	typedef NamedNodeMap* INamedNodeMap;
+	typedef Attr* IAttr;
+	typedef CharacterData* ICharacterData;
+	typedef CDATASection* ICDATASection;
+	typedef ProcessingInstruction* IProcessingInstruction;
+	typedef AbstractRange* IAbstractRange;
+	typedef NodeIterator* INodeIterator;
+	typedef TreeWalker* ITreeWalker;
+	typedef NodeFilter* INodeFilter;
+	typedef DOMTokenList* IDOMTokenList;
+	typedef ElementInternals* IElementInternals;
+	typedef ValidityState* IValidityState;
+	typedef HTMLFormControlsCollection* IHTMLFormControlsCollection;
+
+}

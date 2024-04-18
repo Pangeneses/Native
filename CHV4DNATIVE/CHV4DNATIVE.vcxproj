@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BHV4DDYNBUF.cpp" />
+    <ClCompile Include="BHV4DDYNBUF.ixx" />
+    <ClCompile Include="BHV4DEMISSIVE.cpp" />
+    <ClCompile Include="BHV4DEMISSIVE.ixx" />
+    <ClCompile Include="BHV4DINSTANCED.cpp" />
+    <ClCompile Include="BHV4DINSTANCED.ixx" />
+    <ClCompile Include="BHV4DKNOWN.cpp" />
+    <ClCompile Include="BHV4DKNOWN.ixx" />
+    <ClCompile Include="BHV4DMATERIAL.cpp" />
+    <ClCompile Include="BHV4DMATERIAL.ixx" />
+    <ClCompile Include="BHV4DOBSERVABLE.cpp" />
+    <ClCompile Include="BHV4DOBSERVABLE.ixx" />
+    <ClCompile Include="BHV4DOBSERVER.cpp" />
+    <ClCompile Include="BHV4DOBSERVER.ixx" />
+    <ClCompile Include="BHV4DRAYS.cpp" />
+    <ClCompile Include="BHV4DRAYS.ixx" />
+    <ClCompile Include="BHV4DSKYBOX.cpp" />
+    <ClCompile Include="BHV4DSKYBOX.ixx" />
+    <ClCompile Include="BHV4DSOFTBODIES.cpp" />
+    <ClCompile Include="BHV4DSOFTBODIES.ixx" />
+    <ClCompile Include="BHV4DSTATICBUF.cpp" />
+    <ClCompile Include="BHV4DSTATICBUF.ixx" />
+    <ClCompile Include="BHV4DTERRAIN.cpp" />
+    <ClCompile Include="BHV4DTERRAIN.ixx" />
+    <ClCompile Include="CHV4DCATALOG.cpp" />
+    <ClCompile Include="CHV4DCATALOG.ixx" />
+    <ClCompile Include="CHV4DCONTAINER.cpp" />
+    <ClCompile Include="CHV4DCONTAINER.ixx" />
+    <ClCompile Include="CHV4DFUSION.cpp" />
+    <ClCompile Include="CHV4DFUSION.ixx" />
+    <ClCompile Include="CHV4DGENERATOR.cpp" />
+    <ClCompile Include="CHV4DGENERATOR.ixx" />
+    <ClCompile Include="CHV4DGEOMETRY.cpp" />
+    <ClCompile Include="CHV4DGROUP.cpp" />
+    <ClCompile Include="CHV4DGROUP.ixx" />
+    <ClCompile Include="CHV4DCIRCLE.ixx" />
+    <ClCompile Include="CHV4DCOLORMAP.cpp" />
+    <ClCompile Include="CHV4DCOLORMAP.ixx" />
+    <ClCompile Include="CHV4DHANDLE.cpp" />
+    <ClCompile Include="CHV4DHANDLE.ixx" />
+    <ClCompile Include="CHV4DINTERCHANGE.cpp" />
+    <ClCompile Include="CHV4DINTERCHANGE.ixx" />
+    <ClCompile Include="CHV4DKERNEL.cpp" />
+    <ClCompile Include="CHV4DKERNEL.ixx" />
+    <ClCompile Include="CHV4DKINEMATIC.cpp" />
+    <ClCompile Include="CHV4DKINEMATIC.ixx" />
+    <ClCompile Include="CHV4DCAD.ixx" />
+    <ClCompile Include="CHV4DMEASUREMENT.cpp" />
+    <ClCompile Include="CHV4DMEASUREMENT.ixx" />
+    <ClCompile Include="CHV4DMODIFIER.cpp" />
+    <ClCompile Include="CHV4DMODIFIER.ixx" />
+    <ClCompile Include="CHV4DPHYSICS.cpp" />
+    <ClCompile Include="CHV4DPHYSICS.ixx" />
+    <ClCompile Include="CHV4DSURFACING.cpp" />
+    <ClCompile Include="CHV4DSURFACING.ixx" />
+    <ClCompile Include="CHV4DTRAYCING.cpp" />
+    <ClCompile Include="CHV4DTRAYCING.ixx" />
+    <ClCompile Include="CHV4DCFD.cpp" />
+    <ClCompile Include="CHV4DCFD.ixx" />
+    <ClCompile Include="CHV4DMASTER.cpp" />
+    <ClCompile Include="CHV4DMASTER.ixx" />
+    <ClCompile Include="CHV4DFEA.cpp" />
+    <ClCompile Include="CHV4DFEA.ixx" />
+    <ClCompile Include="CHV4DFORWARD.ixx" />
+    <ClCompile Include="CHV4DLIGHTMAP.cpp" />
+    <ClCompile Include="CHV4DLIGHTMAP.ixx" />
+    <ClCompile Include="CHV4DMATERIAL.cpp" />
+    <ClCompile Include="CHV4DMATERIAL.ixx" />
+    <ClCompile Include="CHV4DNORMALMAP.cpp" />
+    <ClCompile Include="CHV4DNORMALMAP.ixx" />
+    <ClCompile Include="CHV4DNORMMAP.cpp" />
+    <ClCompile Include="CHV4DNORMMAP.ixx" />
+    <ClCompile Include="CHV4DCONSTRAINT.cpp" />
+    <ClCompile Include="CHV4DCONSTRAINT.ixx" />
+    <ClCompile Include="CHV4DRESOURCE.ixx" />
+    <ClCompile Include="CHV4DDIVMAP.cpp" />
+    <ClCompile Include="CHV4DDIVMAP.ixx" />
+    <ClCompile Include="CHV4DVISSTATE.cpp" />
+    <ClCompile Include="CHV4DVISSTATE.ixx" />
+    <ClCompile Include="CHV4DVOLUMETRIC.cpp" />
+    <ClCompile Include="CHV4DVOLUMETRIC.ixx" />
+    <ClCompile Include="CHV4DWORLDTREE.cpp" />
+    <ClCompile Include="CHV4DWORLDTREE.ixx" />
+    <ClCompile Include="CHV4DTEXTMAP.cpp" />
+    <ClCompile Include="CHV4DTEXTMAP.ixx" />
+    <ClCompile Include="CHV4DPOINTMAP.cpp" />
+    <ClCompile Include="CHV4DPOINTMAP.ixx" />
+    <ClCompile Include="CHV4DBULKMAP.cpp" />
+    <ClCompile Include="CHV4DBULKMAP.ixx" />
+    <ClCompile Include="CHV4DGEOMETRY.ixx" />
+    <ClCompile Include="CHV4DCIRCLE.cpp" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CHV4DOBJ\CHV4DOBJ.vcxproj">
+      <Project>{34e2a848-9a39-4a62-aa9d-bd4381da4d83}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\CHV4DTBASIC\CHV4DTBASIC.vcxproj">
+      <Project>{4a015cdf-fc61-4537-90a7-eef923d07ab1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\CHV4DTENSOR\CHV4DTENSOR.vcxproj">
+      <Project>{bb01a3b0-79f6-4a9c-bc53-6e09a249dabc}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{f87ec4c6-9713-4a7b-92d8-5f576717e1cb}</ProjectGuid>
+    <RootNamespace>CHV4DCAD</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CHV4DNATIVE</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

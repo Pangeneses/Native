@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="i. CHV4DQIF">
+      <UniqueIdentifier>{2e512554-9d4b-47ca-a000-0c9b6cb53e54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{4d9f5273-f4b6-44b1-828b-92c3703c038b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{dc56bef6-66b8-4c61-b54c-bbe021b6ff0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. QIF">
+      <UniqueIdentifier>{c6fa9602-ffba-4af0-805b-a9175701960c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

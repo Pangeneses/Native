@@ -1,0 +1,62 @@
+module;
+
+#include <string>
+
+#include <algorithm>
+#include <iterator>
+#include <vector>
+
+#include <stdexcept>
+
+export module CTURI:CURIDIR;
+
+export namespace CTURI
+{
+	typedef struct SURIDIR {
+		std::string server		{ '\0' };
+		std::string user		{ '\0' };
+		std::string password	{ '\0' };
+		std::string drive		{ '\0' };
+		std::string path		{ '\0' };
+	} tagSURIDIR;
+
+	class CURIDIR
+	{
+	public:
+		CURIDIR();
+
+		CURIDIR(std::string const& uri);
+
+		CURIDIR(CURIDIR const& uri);
+
+	private:
+		void IsValidURI();
+
+		SURIDIR resource{};
+
+	public:
+		void operator = (std::string const& uri);
+
+		void operator = (CURIDIR const& uri);
+
+		bool operator == (std::string const& uri) const;
+
+		bool operator == (CURIDIR const& uri) const;
+
+		std::string operator()() const;
+
+		CTURI::SURIDIR GetResource() const;
+
+	private:
+		std::string tagURI{ '\0' };
+
+	private:
+		std::vector<char> HV4DURIASCII = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+			'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+			'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+			'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', '/', '?', '#',
+			'[', ']', '@', '!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=', '-', '.', '_', '~', '%' };
+
+	};
+
+}

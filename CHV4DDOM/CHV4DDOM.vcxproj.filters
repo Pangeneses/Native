@@ -1,0 +1,595 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="DocumentOrShadowRoot.ixx">
+      <Filter>iv. DOM\1. Interface\9. DocumentOrShadowRoot</Filter>
+    </ClCompile>
+    <ClCompile Include="NonDocumentTypeChildNode.ixx">
+      <Filter>iv. DOM\1. Interface\11. NonDocumentChildType</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildNode.ixx">
+      <Filter>iv. DOM\1. Interface\12. ChildNode</Filter>
+    </ClCompile>
+    <ClCompile Include="Slottable.ixx">
+      <Filter>iv. DOM\1. Interface\13. Slottable</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeList.ixx">
+      <Filter>iv. DOM\1. Interface\14. NodeList</Filter>
+    </ClCompile>
+    <ClCompile Include="HTMLCollection.ixx">
+      <Filter>iv. DOM\1. Interface\15. HTMLCollection</Filter>
+    </ClCompile>
+    <ClCompile Include="MutationRecord.ixx">
+      <Filter>iv. DOM\1. Interface\17. Mutation Record</Filter>
+    </ClCompile>
+    <ClCompile Include="DOMImplementation.ixx">
+      <Filter>iv. DOM\1. Interface\20. DOMImplementation</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractRange.ixx">
+      <Filter>iv. DOM\1. Interface\32. AbstractRange</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeIterator.ixx">
+      <Filter>iv. DOM\1. Interface\35. NodeIterator</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeWalker.ixx">
+      <Filter>iv. DOM\1. Interface\36. TreeWalker</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeFilter.ixx">
+      <Filter>iv. DOM\1. Interface\37. NodeFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="DOMTokenList.ixx">
+      <Filter>iv. DOM\1. Interface\38. DOMTokenList</Filter>
+    </ClCompile>
+    <ClCompile Include="NonElementParentNode.ixx">
+      <Filter>iv. DOM\1. Interface\8. NonElementParentNode</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementInternals.ixx">
+      <Filter>iv. DOM\1. Interface\39. ElementInternals</Filter>
+    </ClCompile>
+    <ClCompile Include="HTMLFormControlsCollection.ixx">
+      <Filter>iv. DOM\1. Interface\43. HTMLFormControlsCollection</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.ixx">
+      <Filter>iv. DOM\1. Interface\2. Window</Filter>
+    </ClCompile>
+    <ClCompile Include="CEvent.cpp">
+      <Filter>iv. DOM\2. Implementation\2. CEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CAbortController.cpp">
+      <Filter>iv. DOM\2. Implementation\4. CAbortController</Filter>
+    </ClCompile>
+    <ClCompile Include="CAbortSignal.cpp">
+      <Filter>iv. DOM\2. Implementation\5. CAbortSignal</Filter>
+    </ClCompile>
+    <ClCompile Include="CMutationObserver.cpp">
+      <Filter>iv. DOM\2. Implementation\6. CMutationObserver</Filter>
+    </ClCompile>
+    <ClCompile Include="CDocument.cpp">
+      <Filter>iv. DOM\2. Implementation\7. CDocument</Filter>
+    </ClCompile>
+    <ClCompile Include="CDocumentType.cpp">
+      <Filter>iv. DOM\2. Implementation\8. CDocumentType</Filter>
+    </ClCompile>
+    <ClCompile Include="CDocumentFragment.cpp">
+      <Filter>iv. DOM\2. Implementation\9. CDocumentFragment</Filter>
+    </ClCompile>
+    <ClCompile Include="CShadowRoot.cpp">
+      <Filter>iv. DOM\2. Implementation\10. CShadowRoot</Filter>
+    </ClCompile>
+    <ClCompile Include="CElement.cpp">
+      <Filter>iv. DOM\2. Implementation\11. CElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttr.cpp">
+      <Filter>iv. DOM\2. Implementation\12. CAttr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterData.cpp">
+      <Filter>iv. DOM\2. Implementation\13. CCharacterData</Filter>
+    </ClCompile>
+    <ClCompile Include="CText.cpp">
+      <Filter>iv. DOM\2. Implementation\14. CText</Filter>
+    </ClCompile>
+    <ClCompile Include="CCDATASection.cpp">
+      <Filter>iv. DOM\2. Implementation\15. CCDATASection</Filter>
+    </ClCompile>
+    <ClCompile Include="CProcessingInstruction.cpp">
+      <Filter>iv. DOM\2. Implementation\16. CProcessingInstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="CComment.cpp">
+      <Filter>iv. DOM\2. Implementation\17. CComment</Filter>
+    </ClCompile>
+    <ClCompile Include="CStaticRange.cpp">
+      <Filter>iv. DOM\2. Implementation\18. CStaticRange</Filter>
+    </ClCompile>
+    <ClCompile Include="CRange.cpp">
+      <Filter>iv. DOM\2. Implementation\19. CRange</Filter>
+    </ClCompile>
+    <ClCompile Include="CHTMLElement.cpp">
+      <Filter>iv. DOM\2. Implementation\21. CHTMLElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CHTMLFormElement.cpp">
+      <Filter>iv. DOM\2. Implementation\22. CHTMLFormElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CHTMLSlotElement.cpp">
+      <Filter>iv. DOM\2. Implementation\23. CHTMLSlotElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathEvaluator.cpp">
+      <Filter>iv. DOM\2. Implementation\25. CXPathEvaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathEvaluatorBase.cpp">
+      <Filter>iv. DOM\2. Implementation\24. CXPathEvaluatorBase</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathExpression.cpp">
+      <Filter>iv. DOM\2. Implementation\26. CXPathExpression</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathResult.cpp">
+      <Filter>iv. DOM\2. Implementation\27. CXPathResult</Filter>
+    </ClCompile>
+    <ClCompile Include="CXSLTProcessor.cpp">
+      <Filter>iv. DOM\2. Implementation\28. CXSLTProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.ixx">
+      <Filter>iv. DOM\1. Interface\4. Event</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomEvent.ixx">
+      <Filter>iv. DOM\1. Interface\3. CustomEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTarget.ixx">
+      <Filter>iv. DOM\1. Interface\5. EventTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="AbortController.ixx">
+      <Filter>iv. DOM\1. Interface\6. AbortController</Filter>
+    </ClCompile>
+    <ClCompile Include="AbortSignal.ixx">
+      <Filter>iv. DOM\1. Interface\7. AbortSignal</Filter>
+    </ClCompile>
+    <ClCompile Include="ParentNode.ixx">
+      <Filter>iv. DOM\1. Interface\10. ParentNode</Filter>
+    </ClCompile>
+    <ClCompile Include="MutationObserver.ixx">
+      <Filter>iv. DOM\1. Interface\16. MutationObserver</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.ixx">
+      <Filter>iv. DOM\1. Interface\18. Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Document.ixx">
+      <Filter>iv. DOM\1. Interface\19. Document</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentType.ixx">
+      <Filter>iv. DOM\1. Interface\21. DocumentType</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentFragment.ixx">
+      <Filter>iv. DOM\1. Interface\22. DocumentFragment</Filter>
+    </ClCompile>
+    <ClCompile Include="Element.ixx">
+      <Filter>iv. DOM\1. Interface\24. Element</Filter>
+    </ClCompile>
+    <ClCompile Include="NamedNodeMap.ixx">
+      <Filter>iv. DOM\1. Interface\25. NamedNodeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Attr.ixx">
+      <Filter>iv. DOM\1. Interface\26. Attr</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterData.ixx">
+      <Filter>iv. DOM\1. Interface\27. CharacterData</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.ixx">
+      <Filter>iv. DOM\1. Interface\28. Text</Filter>
+    </ClCompile>
+    <ClCompile Include="CDATASection.ixx">
+      <Filter>iv. DOM\1. Interface\29. CDATASection</Filter>
+    </ClCompile>
+    <ClCompile Include="Comment.ixx">
+      <Filter>iv. DOM\1. Interface\31. Comment</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticRange.ixx">
+      <Filter>iv. DOM\1. Interface\33. StaticRange</Filter>
+    </ClCompile>
+    <ClCompile Include="Range.ixx">
+      <Filter>iv. DOM\1. Interface\34. Range</Filter>
+    </ClCompile>
+    <ClCompile Include="HTMLElement.ixx">
+      <Filter>iv. DOM\1. Interface\40. HTMLElement</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessingInstruction.ixx">
+      <Filter>iv. DOM\1. Interface\30. ProcessingInstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowRoot.ixx">
+      <Filter>iv. DOM\1. Interface\23. ShadowRoot</Filter>
+    </ClCompile>
+    <ClCompile Include="HTMLFormElement.ixx">
+      <Filter>iv. DOM\1. Interface\41. HTMLFormElement</Filter>
+    </ClCompile>
+    <ClCompile Include="HTMLSlotElement.ixx">
+      <Filter>iv. DOM\1. Interface\42. HTMLSlotElement</Filter>
+    </ClCompile>
+    <ClCompile Include="XPathEvaluator.ixx">
+      <Filter>iv. DOM\1. Interface\45. XPathEvaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="XPathEvaluatorBase.ixx">
+      <Filter>iv. DOM\1. Interface\44. XPathEvaluatorBase</Filter>
+    </ClCompile>
+    <ClCompile Include="XPathExpression.ixx">
+      <Filter>iv. DOM\1. Interface\46. XPathExpression</Filter>
+    </ClCompile>
+    <ClCompile Include="XPathResult.ixx">
+      <Filter>iv. DOM\1. Interface\47. XPathResult</Filter>
+    </ClCompile>
+    <ClCompile Include="XSLTProcessor.ixx">
+      <Filter>iv. DOM\1. Interface\48. XSLTProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="CEvent.ixx">
+      <Filter>iv. DOM\2. Implementation\2. CEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CCustomEvent.ixx">
+      <Filter>iv. DOM\2. Implementation\3. CCustomEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CAbortController.ixx">
+      <Filter>iv. DOM\2. Implementation\4. CAbortController</Filter>
+    </ClCompile>
+    <ClCompile Include="CAbortSignal.ixx">
+      <Filter>iv. DOM\2. Implementation\5. CAbortSignal</Filter>
+    </ClCompile>
+    <ClCompile Include="CMutationObserver.ixx">
+      <Filter>iv. DOM\2. Implementation\6. CMutationObserver</Filter>
+    </ClCompile>
+    <ClCompile Include="CDocument.ixx">
+      <Filter>iv. DOM\2. Implementation\7. CDocument</Filter>
+    </ClCompile>
+    <ClCompile Include="CDocumentType.ixx">
+      <Filter>iv. DOM\2. Implementation\8. CDocumentType</Filter>
+    </ClCompile>
+    <ClCompile Include="CDocumentFragment.ixx">
+      <Filter>iv. DOM\2. Implementation\9. CDocumentFragment</Filter>
+    </ClCompile>
+    <ClCompile Include="CShadowRoot.ixx">
+      <Filter>iv. DOM\2. Implementation\10. CShadowRoot</Filter>
+    </ClCompile>
+    <ClCompile Include="CElement.ixx">
+      <Filter>iv. DOM\2. Implementation\11. CElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttr.ixx">
+      <Filter>iv. DOM\2. Implementation\12. CAttr</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacterData.ixx">
+      <Filter>iv. DOM\2. Implementation\13. CCharacterData</Filter>
+    </ClCompile>
+    <ClCompile Include="CText.ixx">
+      <Filter>iv. DOM\2. Implementation\14. CText</Filter>
+    </ClCompile>
+    <ClCompile Include="CCDATASection.ixx">
+      <Filter>iv. DOM\2. Implementation\15. CCDATASection</Filter>
+    </ClCompile>
+    <ClCompile Include="CProcessingInstruction.ixx">
+      <Filter>iv. DOM\2. Implementation\16. CProcessingInstruction</Filter>
+    </ClCompile>
+    <ClCompile Include="CComment.ixx">
+      <Filter>iv. DOM\2. Implementation\17. CComment</Filter>
+    </ClCompile>
+    <ClCompile Include="CStaticRange.ixx">
+      <Filter>iv. DOM\2. Implementation\18. CStaticRange</Filter>
+    </ClCompile>
+    <ClCompile Include="CRange.ixx">
+      <Filter>iv. DOM\2. Implementation\19. CRange</Filter>
+    </ClCompile>
+    <ClCompile Include="CHTMLElement.ixx">
+      <Filter>iv. DOM\2. Implementation\21. CHTMLElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CHTMLFormElement.ixx">
+      <Filter>iv. DOM\2. Implementation\22. CHTMLFormElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CHTMLSlotElement.ixx">
+      <Filter>iv. DOM\2. Implementation\23. CHTMLSlotElement</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathEvaluator.ixx">
+      <Filter>iv. DOM\2. Implementation\25. CXPathEvaluator</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathEvaluatorBase.ixx">
+      <Filter>iv. DOM\2. Implementation\24. CXPathEvaluatorBase</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathExpression.ixx">
+      <Filter>iv. DOM\2. Implementation\26. CXPathExpression</Filter>
+    </ClCompile>
+    <ClCompile Include="CXPathResult.ixx">
+      <Filter>iv. DOM\2. Implementation\27. CXPathResult</Filter>
+    </ClCompile>
+    <ClCompile Include="CXSLTProcessor.ixx">
+      <Filter>iv. DOM\2. Implementation\28. CXSLTProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="CCustomEvent.cpp">
+      <Filter>iv. DOM\2. Implementation\3. CCustomEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CDOMException.ixx">
+      <Filter>iv. DOM\2. Implementation\29. CDOMException</Filter>
+    </ClCompile>
+    <ClCompile Include="CDOMException.cpp">
+      <Filter>iv. DOM\2. Implementation\29. CDOMException</Filter>
+    </ClCompile>
+    <ClCompile Include="DOMParser.ixx">
+      <Filter>iv. DOM\1. Interface\0. DOMParser</Filter>
+    </ClCompile>
+    <ClCompile Include="CDOMParser.ixx">
+      <Filter>iv. DOM\2. Implementation\0. CDOMParser</Filter>
+    </ClCompile>
+    <ClCompile Include="CDOMParser.cpp">
+      <Filter>iv. DOM\2. Implementation\0. CDOMParser</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFORWARD.ixx">
+      <Filter>ii. CHV4DFORWARD</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DRESOURCE.ixx">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DDOCUMENT.ixx">
+      <Filter>iv. DOM\3. CHV4DDOCUMENT</Filter>
+    </ClCompile>
+    <ClCompile Include="DOMSerializer.ixx">
+      <Filter>iv. DOM\1. Interface\1. DOMSerializer</Filter>
+    </ClCompile>
+    <ClCompile Include="CDOMSerializer.ixx">
+      <Filter>iv. DOM\2. Implementation\1. CDOMSerializer</Filter>
+    </ClCompile>
+    <ClCompile Include="CDOMSerializer.cpp">
+      <Filter>iv. DOM\2. Implementation\1. CDOMSerializer</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DDOM.ixx">
+      <Filter>i. CHV4DDOM</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="i. CHV4DDOM">
+      <UniqueIdentifier>{46767fec-856c-48b3-bca2-4f952d44c082}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{b6f99137-7bca-47fb-a323-d84179539183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{170da2b7-6af4-4338-aa4b-7ab2555775cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM">
+      <UniqueIdentifier>{88cb3554-ac8c-4b4f-bc13-5eb8eee03b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\3. CHV4DDOCUMENT">
+      <UniqueIdentifier>{51fa6b37-507a-4bb8-86f9-d033b84d150a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation">
+      <UniqueIdentifier>{71ab75dc-c2a3-46b9-acf2-d8ebeebd0e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\7. CDocument">
+      <UniqueIdentifier>{3b804ec2-d2a6-4967-8b2d-971f9bd551d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\8. CDocumentType">
+      <UniqueIdentifier>{83071648-1502-46e9-9b40-86fb2dccf0d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\9. CDocumentFragment">
+      <UniqueIdentifier>{d33dd951-a322-4bb4-bdf1-d005e3b42e23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\10. CShadowRoot">
+      <UniqueIdentifier>{465b023e-6fed-4dd3-ba47-f76463018851}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\11. CElement">
+      <UniqueIdentifier>{69df204d-ac42-46ee-80ca-f2ab84c6130d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\12. CAttr">
+      <UniqueIdentifier>{d0c22aec-f0d3-40d0-933d-6513c89d74ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\13. CCharacterData">
+      <UniqueIdentifier>{aebbc027-c40d-4625-8d41-6419be6818e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\14. CText">
+      <UniqueIdentifier>{9185dc0d-809d-4915-9d75-9709db2bdc56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\15. CCDATASection">
+      <UniqueIdentifier>{49dae507-0bc6-4c43-9116-0068cf67776e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\16. CProcessingInstruction">
+      <UniqueIdentifier>{c8a994f9-1e11-4c51-8dcd-f36ee1420b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\17. CComment">
+      <UniqueIdentifier>{f8f6c1ed-a0be-4a77-8e1c-357b46a8ed94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\18. CStaticRange">
+      <UniqueIdentifier>{2fee8bc1-bf7b-4fe2-bf2d-50d2c0e2d7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\19. CRange">
+      <UniqueIdentifier>{b310ae4e-895a-441d-a15d-deba910660cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\21. CHTMLElement">
+      <UniqueIdentifier>{ad3842fc-a585-4b14-828d-2773637228ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\22. CHTMLFormElement">
+      <UniqueIdentifier>{18624544-9b9a-497f-a398-b0901e49023d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\23. CHTMLSlotElement">
+      <UniqueIdentifier>{b4ddd752-3d3e-42c5-89c2-2bf4446abc1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\26. CXPathExpression">
+      <UniqueIdentifier>{9377bfac-a347-4fca-b820-646793723d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\27. CXPathResult">
+      <UniqueIdentifier>{32ef9560-291c-410f-b178-7b33d8247f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\28. CXSLTProcessor">
+      <UniqueIdentifier>{42ee27d6-a7d0-424b-8ae7-c36534fae5e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\25. CXPathEvaluator">
+      <UniqueIdentifier>{7831a72f-88cf-44bf-bf15-0fbe9307765e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\24. CXPathEvaluatorBase">
+      <UniqueIdentifier>{7dc8cb93-e9d1-48c4-92e8-7a064ceaf1be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\29. CDOMException">
+      <UniqueIdentifier>{958a3595-7711-4dbf-aec7-1ebc90d52579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\2. CEvent">
+      <UniqueIdentifier>{d4f82b75-3319-4162-ab2e-4479d7e4185e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\3. CCustomEvent">
+      <UniqueIdentifier>{66293b2f-c989-46e9-a753-66085592ba48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\4. CAbortController">
+      <UniqueIdentifier>{94733f39-04a4-4278-be3a-34f38444c904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\5. CAbortSignal">
+      <UniqueIdentifier>{18f67821-1e47-410c-a19b-8880d8c6defc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\6. CMutationObserver">
+      <UniqueIdentifier>{d46f67d6-af27-4023-a483-310c49fa2a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\0. CDOMParser">
+      <UniqueIdentifier>{91afe383-dfeb-4bcd-8375-036ee52c3ef6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\2. Implementation\1. CDOMSerializer">
+      <UniqueIdentifier>{254027f7-b1ba-4323-a160-46818899790f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface">
+      <UniqueIdentifier>{a1152885-a642-4631-b3a3-d5bc239a7fef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\0. DOMParser">
+      <UniqueIdentifier>{d4f1e7ef-0d40-40cb-9f0e-0325c01621f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\1. DOMSerializer">
+      <UniqueIdentifier>{360f628c-c03c-403e-bbba-c0c5e93d107b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\2. Window">
+      <UniqueIdentifier>{d6c5bffe-a634-4877-a2c4-b1f9b0d5799d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\3. CustomEvent">
+      <UniqueIdentifier>{cda8639c-6297-4807-85dd-5b91247e2899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\4. Event">
+      <UniqueIdentifier>{f6c115fb-32c9-4ad0-b27a-9b3db6fca228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\5. EventTarget">
+      <UniqueIdentifier>{66178a8f-802c-4eb4-96da-79fa10fc2300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\6. AbortController">
+      <UniqueIdentifier>{c341d116-9d5f-481f-9f66-f02ef0bcc2c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\7. AbortSignal">
+      <UniqueIdentifier>{bc7edc85-4f5d-4b0d-9c23-2fd3a73c184c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\8. NonElementParentNode">
+      <UniqueIdentifier>{83b630d0-5f0f-4bb9-8308-1c17f949d1d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\9. DocumentOrShadowRoot">
+      <UniqueIdentifier>{2b5e9a8b-c989-4ff2-95ae-6008be13bb99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\10. ParentNode">
+      <UniqueIdentifier>{09a1e2b8-28e1-46e7-8adb-778112dc204c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\11. NonDocumentChildType">
+      <UniqueIdentifier>{520a0be5-6367-4208-ae23-4d451153f54f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\12. ChildNode">
+      <UniqueIdentifier>{2f48abde-7a99-403e-bfc5-a322bddb5ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\13. Slottable">
+      <UniqueIdentifier>{d77ca2c9-2f5c-47e7-9fd4-7721a500e9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\14. NodeList">
+      <UniqueIdentifier>{d962ce5f-3c4d-4720-a606-0dc954fe2783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\15. HTMLCollection">
+      <UniqueIdentifier>{6a9a1cbb-80f2-4cb2-a091-afa7ee84e522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\16. MutationObserver">
+      <UniqueIdentifier>{4e614ce2-3b93-437a-9185-241b50e6cf86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\17. Mutation Record">
+      <UniqueIdentifier>{1499f849-fafa-4dc7-9631-e2045fcba7bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\18. Node">
+      <UniqueIdentifier>{0b1c7d89-99d7-4527-a661-901877a75285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\19. Document">
+      <UniqueIdentifier>{f5db2f74-a9eb-4bc8-9418-be222cbf83b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\20. DOMImplementation">
+      <UniqueIdentifier>{cb3cdca7-e68a-4a23-97fe-4e4ac2270c2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\21. DocumentType">
+      <UniqueIdentifier>{51afa34c-732c-4f65-aee9-b3e73be0007a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\22. DocumentFragment">
+      <UniqueIdentifier>{02dd8712-a9e2-4a0f-bb33-7eed3f59d909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\23. ShadowRoot">
+      <UniqueIdentifier>{b814d177-d500-4db7-8ea6-7bd4bab4dfae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\24. Element">
+      <UniqueIdentifier>{7a358a15-c47d-42a0-bbe2-3292b255e6ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\25. NamedNodeMap">
+      <UniqueIdentifier>{ac21f28f-9d10-46cb-99f5-c1883b5ab85b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\26. Attr">
+      <UniqueIdentifier>{005754bd-7320-4504-a5e7-a57dfb6e5ab4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\27. CharacterData">
+      <UniqueIdentifier>{e287fe8b-9d9a-423d-a308-c478d9c87ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\28. Text">
+      <UniqueIdentifier>{40710d32-4f54-4271-9ad2-af1bc5e41b20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\29. CDATASection">
+      <UniqueIdentifier>{bcf7eadc-3d6f-4339-b9b4-f5e4da723ccb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\30. ProcessingInstruction">
+      <UniqueIdentifier>{f486804f-af76-4a59-ae4a-f41eeb6af37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\31. Comment">
+      <UniqueIdentifier>{e35e2a2c-8e91-4426-bc5e-0097ba404bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\32. AbstractRange">
+      <UniqueIdentifier>{0129a84e-3d41-440b-9a5e-f74a904fae0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\33. StaticRange">
+      <UniqueIdentifier>{1ae1977c-9c1b-41c6-a486-c8f01cd06880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\34. Range">
+      <UniqueIdentifier>{da71202a-cd74-4968-8bb2-68e847464e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\35. NodeIterator">
+      <UniqueIdentifier>{0678adcd-1b9a-4fb1-9dcf-cc0b9efb3245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\36. TreeWalker">
+      <UniqueIdentifier>{5f3a2291-60b8-470b-968b-b14fe0f07879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\37. NodeFilter">
+      <UniqueIdentifier>{c3ee4753-8b65-4061-bf54-a46990f944ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\38. DOMTokenList">
+      <UniqueIdentifier>{fce1cd53-e730-41ba-bcce-ed6e62c69949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\39. ElementInternals">
+      <UniqueIdentifier>{ae514ee3-b000-49ed-81d6-cf5d5c470652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\40. HTMLElement">
+      <UniqueIdentifier>{56fc1744-cfc9-4df2-a0a2-b04e2f5ccac3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\41. HTMLFormElement">
+      <UniqueIdentifier>{9e329fd0-b52d-40a1-8814-1c0dbf492fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\42. HTMLSlotElement">
+      <UniqueIdentifier>{0d749025-aab2-4c66-9db2-058600be1a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\43. HTMLFormControlsCollection">
+      <UniqueIdentifier>{9da78f12-90f7-4383-8657-4bcd92e6a711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\44. XPathEvaluatorBase">
+      <UniqueIdentifier>{6b469802-e063-4b1f-bbc9-d1e2aa74bd3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\45. XPathEvaluator">
+      <UniqueIdentifier>{bef485f0-efd6-42ea-9872-5b135d79739d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\46. XPathExpression">
+      <UniqueIdentifier>{d6c13a68-7466-433a-b222-d824e6b8dcd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\47. XPathResult">
+      <UniqueIdentifier>{e60e7655-7f2a-47ce-9bfe-ddf59aec9c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. DOM\1. Interface\48. XSLTProcessor">
+      <UniqueIdentifier>{71efed3c-9188-45f1-b164-99e8862dbe32}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

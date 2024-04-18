@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CHV4DTENSOR.ixx">
+      <Filter>i. CHV4DTENSOR</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFORWARD.ixx">
+      <Filter>ii. CHV4DFORWARD</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DRESOURCE.ixx">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DGEV.ixx">
+      <Filter>iv. Tensor\02. CHV4DGEV</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMATH.ixx">
+      <Filter>iv. Tensor\03. CHV4DMATH</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DBASE.ixx">
+      <Filter>iv. Tensor\01. CHV4DBASE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DDECK.ixx">
+      <Filter>iv. Tensor\04. CHV4DDECK</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="i. CHV4DTENSOR">
+      <UniqueIdentifier>{b03939f0-dc89-4aaf-852f-95e058b5c81e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{9523801d-c730-48bc-abf5-637017ce8ed1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{2233fe0d-7807-42c3-a62d-584164305080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Tensor">
+      <UniqueIdentifier>{46d22a78-9540-4ea2-aaf0-a59d6a2c99a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Tensor\01. CHV4DBASE">
+      <UniqueIdentifier>{7623b348-03ea-4b3c-9135-b1ffe28024ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Tensor\02. CHV4DGEV">
+      <UniqueIdentifier>{5c035a8c-8b9f-49ab-bba8-d291b480567f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Tensor\03. CHV4DMATH">
+      <UniqueIdentifier>{145a664e-b682-4cdb-9efc-1a83a9511c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. Tensor\04. CHV4DDECK">
+      <UniqueIdentifier>{13abf98f-4eff-4ae8-8f12-5ad6d26eb939}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

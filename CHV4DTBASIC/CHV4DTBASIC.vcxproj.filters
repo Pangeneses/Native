@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="CHV4DALPHANUMERIC.cpp">
+      <Filter>iv. TBasic\1. CHV4DALPHANUMERIC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DALPHANUMERIC.ixx">
+      <Filter>iv. TBasic\1. CHV4DALPHANUMERIC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DNUMERIC.cpp">
+      <Filter>iv. TBasic\2. CHV4DNUMERIC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DNUMERIC.ixx">
+      <Filter>iv. TBasic\2. CHV4DNUMERIC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHVID.cpp">
+      <Filter>iv. TBasic\3. CHV4DHVID</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHVID.ixx">
+      <Filter>iv. TBasic\3. CHV4DHVID</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMMM.cpp">
+      <Filter>iv. TBasic\4. CHV4DMMM</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMMM.ixx">
+      <Filter>iv. TBasic\4. CHV4DMMM</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DCHRONO.cpp">
+      <Filter>iv. TBasic\5. CHV4DCHRONO</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DCHRONO.ixx">
+      <Filter>iv. TBasic\5. CHV4DCHRONO</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMMDDYYYY.cpp">
+      <Filter>iv. TBasic\6. CHV4DMMDDYYYY</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMMDDYYYY.ixx">
+      <Filter>iv. TBasic\6. CHV4DMMDDYYYY</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHHMMSS.cpp">
+      <Filter>iv. TBasic\7. CHV4DHHMMSS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHHMMSS.ixx">
+      <Filter>iv. TBasic\7. CHV4DHHMMSS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMAXPATH.cpp">
+      <Filter>iv. TBasic\8. CHV4DMAXPATH</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMAXPATH.ixx">
+      <Filter>iv. TBasic\8. CHV4DMAXPATH</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHASH.cpp">
+      <Filter>iv. TBasic\9. CHV4DHASH</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHASH.ixx">
+      <Filter>iv. TBasic\9. CHV4DHASH</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHEX.cpp">
+      <Filter>iv. TBasic\10. CHV4DHEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DHEX.ixx">
+      <Filter>iv. TBasic\10. CHV4DHEX</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DTEXTBLOBA.cpp">
+      <Filter>iv. TBasic\11. CHV4DTEXTBLOBA</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DTEXTBLOBA.ixx">
+      <Filter>iv. TBasic\11. CHV4DTEXTBLOBA</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DTEXTBLOBW.cpp">
+      <Filter>iv. TBasic\12. CHV4DTEXTBLOBW</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DTEXTBLOBW.ixx">
+      <Filter>iv. TBasic\12. CHV4DTEXTBLOBW</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DTBASIC.ixx">
+      <Filter>i. CHV4DTBASIC</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="i. CHV4DTBASIC">
+      <UniqueIdentifier>{832b827f-a6b2-4181-a51f-d6f29e6abe86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{85617f37-4223-43d9-9b0e-45f4dcba8767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{8f994334-3d61-4152-b2fa-c7a9cf3329d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic">
+      <UniqueIdentifier>{81d9ee4d-a2c5-494d-991e-ab3b202b5376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\1. CHV4DALPHANUMERIC">
+      <UniqueIdentifier>{fdd5d90c-a2ba-4685-a4ed-812a76fefe06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\2. CHV4DNUMERIC">
+      <UniqueIdentifier>{7267a29d-73eb-4b32-8dfe-a8d52edf6f58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\3. CHV4DHVID">
+      <UniqueIdentifier>{bc91968b-4a50-4482-82ab-8d6f82389053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\4. CHV4DMMM">
+      <UniqueIdentifier>{dcc300b8-958d-4351-ab44-982cd744d95b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\5. CHV4DCHRONO">
+      <UniqueIdentifier>{dc241e39-74b6-4b43-a99d-d82b2f75c7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\6. CHV4DMMDDYYYY">
+      <UniqueIdentifier>{2a6692df-a0a3-4841-92a5-d8982534d7fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\7. CHV4DHHMMSS">
+      <UniqueIdentifier>{3fc9f56c-eca8-4d9f-8d08-481f7e1fa212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\8. CHV4DMAXPATH">
+      <UniqueIdentifier>{97756f80-6b11-4d57-a591-62a770d0ed05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\9. CHV4DHASH">
+      <UniqueIdentifier>{0189ee5d-3199-4f8d-a568-ddc4f68d92b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\10. CHV4DHEX">
+      <UniqueIdentifier>{9e1a268f-e1c8-4c0c-8ba3-c4a2e7ad4d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\11. CHV4DTEXTBLOBA">
+      <UniqueIdentifier>{b965c9fc-3af0-4a3f-b836-e3a2e4010833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. TBasic\12. CHV4DTEXTBLOBW">
+      <UniqueIdentifier>{7d6533e7-359a-48af-95a9-3bee5234576e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
