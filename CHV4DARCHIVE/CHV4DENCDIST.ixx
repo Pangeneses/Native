@@ -19,7 +19,7 @@ export namespace CHV4DARCHIVE
 		CHV4DENCDIST() = default;
 
 	public:
-		ZIP_ERROR ResetStreamInput(CHV4DARCHIVE::CHV4DBITSTREAM& stream_out);
+		ARCHIVE_ERROR ResetStreamInput(CHV4DARCHIVE::CHV4DBITSTREAM& stream_out);
 
 
 	};

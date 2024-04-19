@@ -80,6 +80,30 @@ export namespace Calc
 		return out;
 	}
 
+	uint64_t Floor(float x)
+	{
+		return static_cast<uint64_t>(x);
+
+	}
+
+	uint64_t Floor(double x)
+	{
+		return static_cast<uint64_t>(x);
+
+	}
+
+	uint64_t Ceiling(float x)
+	{
+		return static_cast<uint64_t>(x) + 1;
+
+	}
+
+	uint64_t Ceiling(double x)
+	{
+		return static_cast<uint64_t>(x) + 1;
+
+	}
+
 	float Trunc(float x, float sigFigs = 1.0f)
 	{
 		uint64_t iValue = static_cast<uint64_t>(x * sigFigs);

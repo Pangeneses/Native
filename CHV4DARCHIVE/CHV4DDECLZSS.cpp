@@ -17,14 +17,14 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
-	ZIP_ERROR CHV4DENCLZSS::DecompressStreamLZSS(
+	ARCHIVE_ERROR CHV4DENCLZSS::DecompressStreamLZSS(
 		std::vector<uint8_t> const& in,
 		std::vector<uint8_t>& out,
 		size_t const& window)
 	{
-		ZIP_ERROR error = CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
-		if (!(8 <= window) && !(window <= 15)) return ZIP_ERROR_OUT_OF_RANGE;
+		if (!(8 <= window) && !(window <= 15)) return ARCHIVE_ERROR_OUT_OF_RANGE;
 
 		WindowSz = static_cast<uint16_t>(std::pow(2, window));
 
@@ -138,18 +138,18 @@ namespace CHV4DARCHIVE
 
 		out = Output;
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DENCLZSS::DecompressOnDiskLZSS(
+	ARCHIVE_ERROR CHV4DENCLZSS::DecompressOnDiskLZSS(
 		std::string const& in,
 		std::string& out,
 		size_t const& window)
 	{
-		ZIP_ERROR error = CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
-		if (!(8 <= window) && !(window <= 15)) return ZIP_ERROR_OUT_OF_RANGE;
+		if (!(8 <= window) && !(window <= 15)) return ARCHIVE_ERROR_OUT_OF_RANGE;
 
 		WindowSz = static_cast<uint16_t>(std::pow(2, window));
 
@@ -294,7 +294,7 @@ namespace CHV4DARCHIVE
 
 		Output.clear();
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 

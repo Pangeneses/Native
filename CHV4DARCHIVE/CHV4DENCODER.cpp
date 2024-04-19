@@ -14,61 +14,52 @@ module CHV4DARCHIVE:CHV4DENCODER;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DBITSTREAM;
 import :CHV4DENCLZSS;
 import :CHV4DENCLL;
 import :CHV4DENCDIST;
 import :CHV4DENCCL;
 
+import :CHV4DBITSTREAM;
+
 namespace CHV4DARCHIVE
 {
-	ZIP_ERROR CHV4DENCODER::SetWindowSz(int16_t sz)
+	ARCHIVE_ERROR CHV4DENCODER::DeflateStream(
+		std::shared_ptr<CHV4DARCHIVE::CHV4DSTREAM> stream = nullptr,
+		std::function<ARCHIVE_ERROR()> sink = nullptr)
 	{
-		if (sz < 256 || sz > 32768) return ZIP_ERROR::ZIP_ERROR_OUT_OF_RANGE;
+		ARCHIVE_ERROR error = ARCHIVE_ERROR::ARCHIVE_ERROR_SUCCEEDED;
 
-		if (sz % 2 != 0) return ZIP_ERROR::ZIP_ERROR_OUT_OF_RANGE;
+		if (!stream) throw std::invalid_argument{ "Missing Stream." };
 
-		WindowSz = sz;
+		if (!sink) throw std::invalid_argument{ "Missing sink." };
 
-		return ZIP_ERROR::ZIP_ERROR_SUCCEEDED;
+		Stream.reset(stream.get());
 
-	}
-
-	ZIP_ERROR CHV4DENCODER::DeflateStream(
-		std::function<ZIP_ERROR(std::shared_ptr<std::vector<unsigned char>>, size_t)> bsink = nullptr,
-		std::shared_ptr<std::vector<unsigned char>> dstream)
-	{
-		ZIP_ERROR error = ZIP_ERROR::ZIP_ERROR_SUCCEEDED;
-
-		if (!bsink) throw std::invalid_argument{ "Missing sink." };
-
-		while (error != ZIP_ERROR::ZIP_ERROR_EMPTY_STREAM)
+		while (error != ARCHIVE_ERROR::ARCHIVE_ERROR_EMPTY_STREAM)
 		{
-			Block = nullptr;
+			error = sink();
 
-			error = bsink(Block, WindowSz);
-
-			if (Block->size() < WindowSz)
+			if (Stream->SharedBlock()->size() < Stream->szWindow())
 			{
-				WindowSz = 256;
+				Stream->szWindow(256);
 
 			}
-			else if (Block->size() < 32768)
+			else if (Stream->SharedBlock()->size() < 32768)
 			{
-				WindowSz = 0;
+				Stream->szWindow(0);
 
 			}
 
-			Method = CompressionMethodTest();
+			Stream->DeflateCompression(CompressionMethodTest());
 
-			if (Method == 0)
+			if (Stream->DeflateCompression() == DEFLATE_COMPRESSION_NO)
 			{
-				LZSS.AppendBlockToStream(Block, BitStream, 65535, DEFLATE_COMPRESSION_NO);
+				LZSS.AppendBlockToStream(Stream);
 
 			}
-			else if (Method == 1)
+			else if (Stream->DeflateCompression() == DEFLATE_COMPRESSION_FIXED)
 			{
-				LZSS.AppendBlockToStream(Block, BitStream, WindowSz, DEFLATE_COMPRESSION_FIXED);
+				LZSS.AppendBlockToStream(Stream);
 
 				LL;
 
@@ -77,9 +68,9 @@ namespace CHV4DARCHIVE
 				CL;
 
 			}
-			else if (Method == 2)
+			else if (Stream->DeflateCompression() == DEFLATE_COMPRESSION_DYNAMIC)
 			{
-				LZSS.AppendBlockToStream(Block, BitStream, WindowSz, DEFLATE_COMPRESSION_DYNAMIC);
+				LZSS.AppendBlockToStream(Stream);
 
 				LL;
 
@@ -88,7 +79,7 @@ namespace CHV4DARCHIVE
 				CL;
 
 			}
-			else if (Method == 3)
+			else
 			{
 				throw std::invalid_argument{ "Reserved." };
 
@@ -104,13 +95,13 @@ namespace CHV4DARCHIVE
 	{
 		DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO;
 
-		if (Block->size() < 256)
+		if (Stream->SharedBlock()->size() < 256)
 		{
 			return method;
 
 		}
 
-		if (Block->size() >= 65535)
+		if (Stream->SharedBlock()->size() >= 65535)
 		{
 
 

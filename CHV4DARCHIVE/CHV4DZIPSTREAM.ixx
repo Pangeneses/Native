@@ -17,11 +17,11 @@ export namespace CHV4DARCHIVE
 		CHV4DZIPSTREAM() = default;
 
 	public:
-		ZIP_ERROR LoadAndInflateStream(std::vector<uint8_t> const& buffer);
+		ARCHIVE_ERROR LoadAndInflateStream(std::vector<uint8_t> const& buffer);
 
-		ZIP_ERROR ReturnInflatedStream(std::vector<uint8_t>& buffer);
+		ARCHIVE_ERROR ReturnInflatedStream(std::vector<uint8_t>& buffer);
 
-		ZIP_ERROR DeflateAndReturnStream(std::vector<uint8_t>& buffer);
+		ARCHIVE_ERROR DeflateAndReturnStream(std::vector<uint8_t>& buffer);
 
 	private:
 		typedef struct StreamHeader {

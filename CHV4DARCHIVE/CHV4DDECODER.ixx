@@ -23,15 +23,15 @@ export namespace CHV4DARCHIVE
 		CHV4DDEFLATE() = default;
 
 	public:
-		ZIP_ERROR SetWindowSz(int16_t sz);
+		ARCHIVE_ERROR SetWindowSz(int16_t sz);
 
-		ZIP_ERROR DeflateStreamMemory(
-			std::function<ZIP_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink,
+		ARCHIVE_ERROR DeflateStreamMemory(
+			std::function<ARCHIVE_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink,
 			std::vector<unsigned char>& dstream);
 
-		ZIP_ERROR InflateStreamMemory(
+		ARCHIVE_ERROR InflateStreamMemory(
 			std::vector<unsigned char>& dstream,
-			std::function<ZIP_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink);
+			std::function<ARCHIVE_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink);
 
 	private:
 		size_t WindowSz{ 32768 };
@@ -41,12 +41,6 @@ export namespace CHV4DARCHIVE
 		CHV4DARCHIVE::CHV4DBITSTREAM BitStream;
 
 		CHV4DARCHIVE::CHV4DENCLZSS LZSS;
-
-		CHV4DARCHIVE::CHV4DENCLL LL;
-
-		CHV4DARCHIVE::CHV4DENCDIST DIST;
-
-		CHV4DARCHIVE::CHV4DENCCL CL;
 
 	};
 

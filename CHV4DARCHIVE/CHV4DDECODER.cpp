@@ -22,25 +22,25 @@ import :CHV4DENCCL;
 
 namespace CHV4DARCHIVE
 {
-	ZIP_ERROR CHV4DDEFLATE::SetWindowSz(int16_t sz)
+	ARCHIVE_ERROR CHV4DDEFLATE::SetWindowSz(int16_t sz)
 	{
-		if (sz < 256 || sz > 32768) return ZIP_ERROR::ZIP_ERROR_OUT_OF_RANGE;
+		if (sz < 256 || sz > 32768) return ARCHIVE_ERROR::ARCHIVE_ERROR_OUT_OF_RANGE;
 
 		WindowSz = sz;
 
-		return ZIP_ERROR::ZIP_ERROR_SUCCEEDED;
+		return ARCHIVE_ERROR::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DDEFLATE::DeflateStreamMemory(
-		std::function<ZIP_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink = nullptr,
+	ARCHIVE_ERROR CHV4DDEFLATE::DeflateStreamMemory(
+		std::function<ARCHIVE_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink = nullptr,
 		std::vector<unsigned char>& dstream)
 	{
-		ZIP_ERROR ret = ZIP_ERROR::ZIP_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR ret = ARCHIVE_ERROR::ARCHIVE_ERROR_SUCCEEDED;
 
 		if (!bsink) throw std::invalid_argument{ "Missing sink." };
 
-		while (ret != ZIP_ERROR::ZIP_ERROR_EMPTY_STREAM)
+		while (ret != ARCHIVE_ERROR::ARCHIVE_ERROR_EMPTY_STREAM)
 		{
 			Block = nullptr;
 
@@ -61,14 +61,14 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ZIP_ERROR CHV4DDEFLATE::InflateStreamMemory(
+	ARCHIVE_ERROR CHV4DDEFLATE::InflateStreamMemory(
 		std::vector<unsigned char>& dstream,
-		std::function<ZIP_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink)
+		std::function<ARCHIVE_ERROR(std::shared_ptr<std::vector<unsigned char>>)> bsink)
 	{
 
 
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 

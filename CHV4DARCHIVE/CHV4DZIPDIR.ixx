@@ -20,9 +20,9 @@ export namespace CHV4DARCHIVE
 		CHV4DZIPDIR() = default;
 
 	public:
-		ZIP_ERROR LoadAppendixFromHeader(CHV4DARCHIVE::CHV4DZIPEOF const& header);
+		ARCHIVE_ERROR LoadAppendixFromHeader(CHV4DARCHIVE::CHV4DZIPEOF const& header);
 
-		ZIP_ERROR LoadAppendixFromHeader(std::vector<CHV4DARCHIVE::CHV4DZIPSTREAM>& streams);
+		ARCHIVE_ERROR LoadAppendixFromHeader(std::vector<CHV4DARCHIVE::CHV4DZIPSTREAM>& streams);
 
 	private:
 		typedef struct Entry {

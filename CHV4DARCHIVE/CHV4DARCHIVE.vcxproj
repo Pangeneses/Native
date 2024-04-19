@@ -23,6 +23,8 @@
     <ClCompile Include="CHV4DDECODER.ixx" />
     <ClCompile Include="CHV4DENCODER.cpp" />
     <ClCompile Include="CHV4DENCODER.ixx" />
+    <ClCompile Include="CHV4DSTREAM.cpp" />
+    <ClCompile Include="CHV4DSTREAM.ixx" />
     <ClCompile Include="CHV4DZIPDIR.cpp" />
     <ClCompile Include="CHV4DZIPDIR.ixx" />
     <ClCompile Include="CHV4DDECCL.cpp" />
@@ -62,6 +64,9 @@
   <ItemGroup>
     <ProjectReference Include="..\CHV4DTBASIC\CHV4DTBASIC.vcxproj">
       <Project>{4a015cdf-fc61-4537-90a7-eef923d07ab1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\CHV4DTENSOR\CHV4DTENSOR.vcxproj">
+      <Project>{bb01a3b0-79f6-4a9c-bc53-6e09a249dabc}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

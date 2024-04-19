@@ -12,6 +12,8 @@ module CHV4DARCHIVE:CHV4DBITSTREAM;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
+import CHV4DTENSOR;
+
 namespace CHV4DARCHIVE
 {
 	CHV4DBITSTREAM::CHV4DBITSTREAM()
@@ -417,11 +419,11 @@ namespace CHV4DARCHIVE
 
 	}
 
-	void CHV4DBITSTREAM::InsertBits(size_t const& pos, std::vector<unsigned char> const& data, size_t const& num)
+	void CHV4DBITSTREAM::InsertBits(size_t const& pos, std::vector<unsigned char>::const_iterator citt, size_t const& nbits)
 	{
 		if (pos < 0 || pos >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
-		size_t ProcessedBitPosition = (BitStreamSize() + num) % 8;
+		size_t ProcessedBitPosition = (BitStreamSize() + nbits) % 8;
 
 		size_t FrontBits = pos % 8;
 
@@ -453,7 +455,7 @@ namespace CHV4DARCHIVE
 
 		Consume = BIT_CONSUMPTION_RIGHT_LEFT;
 
-		std::list<unsigned char> Insert{ data.begin(), data.end() };
+		std::list<unsigned char> Insert{ citt, std::next(citt, Calc::Ceiling((float)nbits/8))};
 
 		std::list<unsigned char>::iterator itt;
 

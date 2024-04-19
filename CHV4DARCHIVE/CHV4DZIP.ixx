@@ -21,21 +21,21 @@ export namespace CHV4DARCHIVE
 		CHV4DARCHIVE() = default;
 
 	public:
-		ZIP_ERROR OpenArchive(std::string const& archive, size_t const& sz = 32768);
+		ARCHIVE_ERROR OpenArchive(std::string const& archive, size_t const& sz = 32768);
 
-		ZIP_ERROR CreateArchive(std::string const& archive, std::vector<std::string> const& files);
+		ARCHIVE_ERROR CreateArchive(std::string const& archive, std::vector<std::string> const& files);
 
-		ZIP_ERROR ExtractArchive(std::vector<std::string>& files);
+		ARCHIVE_ERROR ExtractArchive(std::vector<std::string>& files);
 
-		ZIP_ERROR AddFilesToCurrentArchive(std::vector<std::string> const& files);
+		ARCHIVE_ERROR AddFilesToCurrentArchive(std::vector<std::string> const& files);
 
-		ZIP_ERROR AddStreamToCurrentArchive(std::vector<uint8_t> const& buffer);
+		ARCHIVE_ERROR AddStreamToCurrentArchive(std::vector<uint8_t> const& buffer);
 
-		ZIP_ERROR ReleaseFilesFromArchive(std::vector<std::string> const& files);
+		ARCHIVE_ERROR ReleaseFilesFromArchive(std::vector<std::string> const& files);
 
-		ZIP_ERROR ReleaseStreamFromArchive(std::string const& file, std::vector<uint8_t> const& buffer);
+		ARCHIVE_ERROR ReleaseStreamFromArchive(std::string const& file, std::vector<uint8_t> const& buffer);
 
-		ZIP_ERROR RenameFileInArchive(std::string const& from, std::string const& to);
+		ARCHIVE_ERROR RenameFileInArchive(std::string const& from, std::string const& to);
 
 	private:
 		//CHV4DARCHIVE::Archive File;

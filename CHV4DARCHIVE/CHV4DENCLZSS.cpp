@@ -21,32 +21,22 @@ import :CHV4DBITSTREAM;
 
 namespace CHV4DARCHIVE
 {
-	ZIP_ERROR CHV4DENCLZSS::AppendBlockToStream(
-		std::shared_ptr<std::vector<unsigned char>> block,
-		std::shared_ptr<CHV4DARCHIVE::CHV4DBITSTREAM> out,
-		int16_t windowSz,
-		DEFLATE_COMPRESSION method)
+	ARCHIVE_ERROR CHV4DENCLZSS::AppendBlockToStream(std::shared_ptr<CHV4DARCHIVE::CHV4DSTREAM> stream)
 
 	{
-		ZIP_ERROR error = CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
-		Method = method;
+		Stream.reset(stream.get());
 
-		WindowSz = windowSz;
+		Stream->ResetStream();
 
-		Block.reset(block.get());
-
-		Out.reset(out.get());
-
-		CItt = Block->begin();
-
-		if (method == CHV4DARCHIVE::DEFLATE_COMPRESSION_NO)
+		if (Stream->DeflateCompression() == CHV4DARCHIVE::DEFLATE_COMPRESSION_NO)
 		{
 			AppendNoCompression();
 
 		}
 
-		while (Block->size() >= 256)
+		while (CItt != std::next(Block->end(), -1))
 		{
 			Literal.clear();
 
@@ -56,35 +46,49 @@ namespace CHV4DARCHIVE
 
 			error = IndexWindowSearch();
 
-			if (error != CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED) return error;
+			if (error != CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED) return error;
 
 			if (Index.size() > 0)
 			{
 				error = IndexedWindowSearch();
 
-				if (error != CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED) return error;
+				if (error != CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED) return error;
 
 			}
 
 			error = PushLiteral();
 
-			if (error != CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED) return error;
+			if (error != CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED) return error;
 
 			error = SlideWindow();
 
-			if (error != CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED) return error;
+			if (error != CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED) return error;
 
 		}
 
-		if (CItt != Block->end()) AppendNoCompression();
+		if (CItt != Block->end())
+		{
+			std::vector<unsigned char>::const_iterator JItt = Block->end();
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+			Out->InsertBits(Out->BitStreamSize() - 1, CItt, 8 * std::distance(CItt, JItt));
+
+			Window.insert(Window.end(), Block->begin(), Block->end());
+
+			if (Window.size() > 32768)
+			{
+				Window.erase(Window.begin(), std::next(Window.begin(), (Window.size() - 32768)));
+
+			}
+
+		}
+
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DENCLZSS::AppendNoCompression()
+	ARCHIVE_ERROR CHV4DENCLZSS::AppendNoCompression()
 	{
-		ZIP_ERROR error = CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 		Out->InsertBits(0, *Block.get(), 8);
 
@@ -100,31 +104,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ZIP_ERROR CHV4DENCLZSS::ResetWindow()
-	{
-		Window.clear();
-
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
-
-	}
-
-	ZIP_ERROR CHV4DENCLZSS::SlideWindow()
-	{
-		Window.insert(Window.end(), Literal.begin(), Literal.end());
-
-		if (Window.size() > 32768)
-		{
-			Window.erase(Window.begin(), std::next(Window.begin(), Window.size() - 32768));
-
-		}
-
-		CItt = std::next(CItt, Literal.size());
-
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
-
-	}
-
-	ZIP_ERROR CHV4DENCLZSS::IndexWindowSearch()
+	ARCHIVE_ERROR CHV4DENCLZSS::IndexWindowSearch()
 	{
 		Index.clear();
 
@@ -138,11 +118,11 @@ namespace CHV4DARCHIVE
 
 		if (*itt == *Literal.begin() && *CItt == *std::next(Literal.begin(), 1)) Index.push_back(itt);
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DENCLZSS::IndexedWindowSearch()
+	ARCHIVE_ERROR CHV4DENCLZSS::IndexedWindowSearch()
 	{
 		std::list<std::list<unsigned char>::iterator>::iterator itt;
 
@@ -182,68 +162,46 @@ namespace CHV4DARCHIVE
 		Index.clear();
 
 		Index.push_back(FirstLongest);
-		
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DENCLZSS::PushLiteral()
+	ARCHIVE_ERROR CHV4DENCLZSS::SlideWindow()
 	{
-		if (!Found)
+		Window.insert(Window.end(), Literal.begin(), Literal.end());
+
+		if (Window.size() > 32768)
 		{
-			if (BitFlagPos == 8)
-			{
-				Output.back() = Output.back() & 0b11111110;
-
-				Output.push_back(*Literal.begin());
-
-				Output.push_back(*std::next(Literal.begin()));
-
-				Output.resize(Output.size() + 1);
-
-			}
-			else
-			{
-				Output.back() = (Output.back() & PackBytes[BitFlagPos]) & (*Literal.begin() >> BitFlagPos);
-
-				Output.push_back(*Literal.begin() << (8 - BitFlagPos));
-
-				Output.back() = Output.back() & (*std::next(Literal.begin()) >> (8 - (8 - BitFlagPos)));
-
-				Output.resize(Output.size() + 1);
-
-				Output.back() = Output.back() & (*std::next(Literal.begin()) << (8 - (8 - BitFlagPos)));
-
-			}
+			Window.erase(Window.begin(), std::next(Window.begin(), Window.size() - 32768));
 
 		}
-		else
-		{
-			uint32_t Distance = static_cast<uint32_t>(std::distance(*Index.begin(), Window.end()));
 
-			Output.resize(Output.size() + 3);
+		CItt = std::next(CItt, Literal.size());
 
-			uint32_t InPlace;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
-			*(uint8_t*)&InPlace = PackToken[BitFlagPos];
+	}
 
-			InPlace = InPlace & Distance << ((8 - BitFlagPos) + 8 + (16 - PointerSz));
+	ARCHIVE_ERROR CHV4DENCLZSS::CodePair(size_t& dist, size_t& len)
+	{
 
-			uint32_t Length = static_cast<uint32_t>(Literal.size());
 
-			InPlace = InPlace & Length << ((8 - BitFlagPos) + 8);
 
-			BitFlagPos += static_cast<uint8_t>((8 - BitFlagPos) + (16 - PointerSz) + 8);
 
-			*(uint32_t*)&Output.at(Output.size() - 5) = *(uint32_t*)&Output.at(Output.size() - 5) & InPlace;
 
-			if (BitFlagPos <= 24) Output.pop_back();
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
-			BitFlagPos = BitFlagPos + (8 - BitFlagPos);
+	}
 
-		}
-		
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+	ARCHIVE_ERROR CHV4DENCLZSS::PushLiteral()
+	{
+
+
+
+
+
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 

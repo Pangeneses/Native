@@ -17,9 +17,9 @@ export namespace CHV4DARCHIVE
 		CHV4DZIPEOF() = default;
 
 	public:
-		ZIP_ERROR OpenArchive(CHV4DARCHIVE::Archive& archive);
+		ARCHIVE_ERROR OpenArchive(CHV4DARCHIVE::Archive& archive);
 
-		ZIP_ERROR AppendNewHeaderToArchive(CHV4DARCHIVE::Archive& archive);
+		ARCHIVE_ERROR AppendNewHeaderToArchive(CHV4DARCHIVE::Archive& archive);
 
 	private:
 		typedef struct Header {

@@ -10,6 +10,8 @@ export module CHV4DARCHIVE:CHV4DBITSTREAM;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
+import CHV4DTENSOR;
+
 export namespace CHV4DARCHIVE
 {
 	class CHV4DBITSTREAM
@@ -56,7 +58,7 @@ export namespace CHV4DARCHIVE
 
 		void BitErase(size_t const& beg, size_t const& end);
 
-		void InsertBits(size_t const& pos, std::vector<unsigned char> const& data, size_t const& num);
+		void InsertBits(size_t const& pos, std::vector<unsigned char>::const_iterator citt, size_t const& nbytes);
 
 	public:
 		void BeginningOfStream();

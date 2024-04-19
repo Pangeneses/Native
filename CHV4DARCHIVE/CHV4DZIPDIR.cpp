@@ -14,7 +14,7 @@ import :CHV4DZIPSTREAM;
 
 namespace CHV4DARCHIVE
 {
-	ZIP_ERROR CHV4DZIPDIR::LoadAppendixFromHeader(CHV4DARCHIVE::CHV4DZIPEOF const& header)
+	ARCHIVE_ERROR CHV4DZIPDIR::LoadAppendixFromHeader(CHV4DARCHIVE::CHV4DZIPEOF const& header)
 	{
 		/*
 		char at[5]{ '\0' };
@@ -54,16 +54,16 @@ namespace CHV4DARCHIVE
 		std::reverse(CentralDirectoryBOF.begin(), CentralDirectoryBOF.end());
 		*/
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DZIPDIR::LoadAppendixFromHeader(std::vector<CHV4DARCHIVE::CHV4DZIPSTREAM>& streams)
+	ARCHIVE_ERROR CHV4DZIPDIR::LoadAppendixFromHeader(std::vector<CHV4DARCHIVE::CHV4DZIPSTREAM>& streams)
 	{
 
 
 
-		return CHV4DARCHIVE::ZIP_ERROR_SUCCEEDED;
+		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 

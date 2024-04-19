@@ -11,21 +11,21 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
-	ZIP_ERROR CHV4DZIPEOF::OpenArchive(CHV4DARCHIVE::Archive& archive)
+	ARCHIVE_ERROR CHV4DZIPEOF::OpenArchive(CHV4DARCHIVE::Archive& archive)
 	{
 
 
 
-		return ZIP_ERROR_SUCCEEDED;
+		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ZIP_ERROR CHV4DZIPEOF::AppendNewHeaderToArchive(CHV4DARCHIVE::Archive& archive)
+	ARCHIVE_ERROR CHV4DZIPEOF::AppendNewHeaderToArchive(CHV4DARCHIVE::Archive& archive)
 	{
 
 
 
-		return ZIP_ERROR_SUCCEEDED;
+		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 

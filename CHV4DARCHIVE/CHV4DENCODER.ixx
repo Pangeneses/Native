@@ -14,7 +14,8 @@ export module CHV4DARCHIVE:CHV4DENCODER;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DBITSTREAM;
+import :CHV4DSTREAM;
+
 import :CHV4DENCLZSS;
 import :CHV4DENCLL;
 import :CHV4DENCDIST;
@@ -28,23 +29,15 @@ export namespace CHV4DARCHIVE
 		CHV4DENCODER() = default;
 
 	public:
-		ZIP_ERROR SetWindowSz(int16_t sz);
-
-		ZIP_ERROR DeflateStream(
-			std::function<ZIP_ERROR(std::shared_ptr<std::vector<unsigned char>>, size_t)> bsink,
-			std::shared_ptr<std::vector<unsigned char>> dstream);
+		ARCHIVE_ERROR DeflateStream(
+			std::shared_ptr<CHV4DARCHIVE::CHV4DSTREAM> stream = nullptr,
+			std::function<ARCHIVE_ERROR()> bsink = nullptr);
 
 	private:
 		DEFLATE_COMPRESSION CompressionMethodTest();
 
 	private:
-		DEFLATE_COMPRESSION Method = DEFLATE_COMPRESSION_NO;
-
-		size_t WindowSz{ 32768 };
-
-		std::shared_ptr<std::vector<unsigned char>> Block;
-
-		std::shared_ptr<CHV4DARCHIVE::CHV4DBITSTREAM> BitStream;
+		std::shared_ptr<CHV4DARCHIVE::CHV4DSTREAM> Stream;
 
 		CHV4DARCHIVE::CHV4DENCLZSS LZSS;
 
