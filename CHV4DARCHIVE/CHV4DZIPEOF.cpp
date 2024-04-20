@@ -11,7 +11,7 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
-	ARCHIVE_ERROR CHV4DZIPEOF::OpenArchive(CHV4DARCHIVE::Archive& archive)
+	ARCHIVE_ERROR CHV4DZIPEOF::OpenArchive(Archive& archive)
 	{
 
 
@@ -20,7 +20,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DZIPEOF::AppendNewHeaderToArchive(CHV4DARCHIVE::Archive& archive)
+	ARCHIVE_ERROR CHV4DZIPEOF::AppendNewHeaderToArchive(Archive& archive)
 	{
 
 

@@ -57,21 +57,6 @@
     <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER">
       <UniqueIdentifier>{46fad8a3-e467-4bf0-9eb0-d7170aa930ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\01. CHV4DENCLZSS">
-      <UniqueIdentifier>{37f6469c-996e-485b-8384-d80e9e850983}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\02. CHV4DENCLL">
-      <UniqueIdentifier>{b281c5fd-e7db-4cbf-873c-032caa94b0a6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\03. CHV4DENCDIST">
-      <UniqueIdentifier>{1212c004-313e-4f40-ac24-a5cbef0526ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\04. CHV4DENCCL">
-      <UniqueIdentifier>{7547a647-9641-4835-98dd-7818e3cbbccf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\00. CHV4DENCODER">
-      <UniqueIdentifier>{d31b796e-2ce5-4a4c-b761-38fd2892dc9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER">
       <UniqueIdentifier>{cccb76ac-2cc1-4f36-b887-b2945a9e77db}</UniqueIdentifier>
     </Filter>
@@ -90,17 +75,11 @@
     <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\00. CHV4DDECODER">
       <UniqueIdentifier>{b43edab2-0f4a-49e5-bdf9-3e8ad1c3d804}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\A. STREAM">
-      <UniqueIdentifier>{f2063d8d-c1c6-4ceb-ae55-3f8bd64c850c}</UniqueIdentifier>
+    <Filter Include="vii. UTILITY\02. ZipTest">
+      <UniqueIdentifier>{69182e5e-9ca9-45f0-993e-1402d038f423}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CHV4DENCLZSS.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\01. CHV4DENCLZSS</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCLZSS.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\01. CHV4DENCLZSS</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DARCHIVE.ixx">
       <Filter>i. CHV4DARCHIVE</Filter>
     </ClCompile>
@@ -110,29 +89,11 @@
     <ClCompile Include="CHV4DRESOURCE.ixx">
       <Filter>iii. CHV4DRESOURCE</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DENCLL.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\02. CHV4DENCLL</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCLL.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\02. CHV4DENCLL</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DDECLZSS.ixx">
       <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\01. CHV4DDECLZSS</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDECLZSS.cpp">
       <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\01. CHV4DDECLZSS</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCDIST.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\03. CHV4DENCDIST</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCDIST.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\03. CHV4DENCDIST</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCCL.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\04. CHV4DENCCL</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCCL.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\04. CHV4DENCCL</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDECLL.cpp">
       <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\02. CHV4DDECLL</Filter>
@@ -200,23 +161,17 @@
     <ClCompile Include="CHV4DFSTREAM.ixx">
       <Filter>vii. UTILITY\00. FileStream</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DENCODER.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\00. CHV4DENCODER</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DENCODER.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER\00. CHV4DENCODER</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DDECODER.cpp">
       <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\00. CHV4DDECODER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDECODER.ixx">
       <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\00. CHV4DDECODER</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DSTREAM.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\A. STREAM</Filter>
+    <ClCompile Include="CHV4DDEFLATE.ixx">
+      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DSTREAM.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\A. STREAM</Filter>
+    <ClCompile Include="CHV4DDEFLATE.cpp">
+      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

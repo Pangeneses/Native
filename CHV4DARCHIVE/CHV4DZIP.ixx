@@ -38,13 +38,13 @@ export namespace CHV4DARCHIVE
 		ARCHIVE_ERROR RenameFileInArchive(std::string const& from, std::string const& to);
 
 	private:
-		//CHV4DARCHIVE::Archive File;
+		//Archive File;
 
-		//CHV4DARCHIVE::CHV4DZIPEOF Header;
+		//CHV4DZIPEOF Header;
 
-		//CHV4DARCHIVE::CHV4DZIPDIR Appendix;
+		//CHV4DZIPDIR Appendix;
 
-		//std::vector<CHV4DARCHIVE::CHV4DZIPSTREAM> Streams;
+		//std::vector<CHV4DZIPSTREAM> Streams;
 
 	};
 

@@ -21,10 +21,8 @@
   <ItemGroup>
     <ClCompile Include="CHV4DDECODER.cpp" />
     <ClCompile Include="CHV4DDECODER.ixx" />
-    <ClCompile Include="CHV4DENCODER.cpp" />
-    <ClCompile Include="CHV4DENCODER.ixx" />
-    <ClCompile Include="CHV4DSTREAM.cpp" />
-    <ClCompile Include="CHV4DSTREAM.ixx" />
+    <ClCompile Include="CHV4DDEFLATE.cpp" />
+    <ClCompile Include="CHV4DDEFLATE.ixx" />
     <ClCompile Include="CHV4DZIPDIR.cpp" />
     <ClCompile Include="CHV4DZIPDIR.ixx" />
     <ClCompile Include="CHV4DDECCL.cpp" />
@@ -35,10 +33,6 @@
     <ClCompile Include="CHV4DDECLL.ixx" />
     <ClCompile Include="CHV4DZIPDESC.cpp" />
     <ClCompile Include="CHV4DZIPDESC.ixx" />
-    <ClCompile Include="CHV4DENCCL.cpp" />
-    <ClCompile Include="CHV4DENCCL.ixx" />
-    <ClCompile Include="CHV4DENCDIST.cpp" />
-    <ClCompile Include="CHV4DENCDIST.ixx" />
     <ClCompile Include="CHV4DZIP.cpp" />
     <ClCompile Include="CHV4DZIP.ixx" />
     <ClCompile Include="CHV4DZLIB.cpp" />
@@ -46,14 +40,10 @@
     <ClCompile Include="CHV4DFORWARD.ixx" />
     <ClCompile Include="CHV4DZIPEOF.cpp" />
     <ClCompile Include="CHV4DZIPEOF.ixx" />
-    <ClCompile Include="CHV4DENCLL.cpp" />
-    <ClCompile Include="CHV4DENCLL.ixx" />
     <ClCompile Include="CHV4DBITSTREAM.cpp" />
     <ClCompile Include="CHV4DBITSTREAM.ixx" />
     <ClCompile Include="CHV4DDECLZSS.cpp" />
     <ClCompile Include="CHV4DDECLZSS.ixx" />
-    <ClCompile Include="CHV4DENCLZSS.cpp" />
-    <ClCompile Include="CHV4DENCLZSS.ixx" />
     <ClCompile Include="CHV4DFSTREAM.cpp" />
     <ClCompile Include="CHV4DFSTREAM.ixx" />
     <ClCompile Include="CHV4DRESOURCE.ixx" />

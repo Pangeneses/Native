@@ -22,7 +22,7 @@ namespace CHV4DARCHIVE
 		std::vector<uint8_t>& out,
 		size_t const& window)
 	{
-		ARCHIVE_ERROR error = CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
 		if (!(8 <= window) && !(window <= 15)) return ARCHIVE_ERROR_OUT_OF_RANGE;
 
@@ -138,7 +138,7 @@ namespace CHV4DARCHIVE
 
 		out = Output;
 
-		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
+		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
@@ -147,7 +147,7 @@ namespace CHV4DARCHIVE
 		std::string& out,
 		size_t const& window)
 	{
-		ARCHIVE_ERROR error = CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
 		if (!(8 <= window) && !(window <= 15)) return ARCHIVE_ERROR_OUT_OF_RANGE;
 
@@ -294,7 +294,7 @@ namespace CHV4DARCHIVE
 
 		Output.clear();
 
-		return CHV4DARCHIVE::ARCHIVE_ERROR_SUCCEEDED;
+		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 

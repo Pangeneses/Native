@@ -61,6 +61,8 @@ export namespace CHV4DARCHIVE
 		void InsertBits(size_t const& pos, std::vector<unsigned char>::const_iterator citt, size_t const& nbytes);
 
 	public:
+		void ClearStream();
+
 		void BeginningOfStream();
 
 		size_t FindNextOf(std::vector<BIT> const& find);

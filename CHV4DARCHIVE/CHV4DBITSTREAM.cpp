@@ -487,6 +487,20 @@ namespace CHV4DARCHIVE
 
 	}
 
+	void CHV4DBITSTREAM::ClearStream()
+	{
+		Consume = BIT_CONSUMPTION_LEFT_RIGHT;
+
+		Data.clear();
+
+		BitPosition = 0;
+
+		Sentinel = { Data.begin(), 0 };
+
+		ReverseSentinel = { Data.rbegin(), 0 };
+
+	}
+
 	void CHV4DBITSTREAM::BeginningOfStream()
 	{
 		Sentinel.first = Data.begin();

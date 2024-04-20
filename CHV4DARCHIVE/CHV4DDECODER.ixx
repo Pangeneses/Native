@@ -38,9 +38,9 @@ export namespace CHV4DARCHIVE
 
 		std::shared_ptr<std::vector<unsigned char>> Block;
 
-		CHV4DARCHIVE::CHV4DBITSTREAM BitStream;
+		CHV4DBITSTREAM BitStream;
 
-		CHV4DARCHIVE::CHV4DENCLZSS LZSS;
+		CHV4DENCLZSS LZSS;
 
 	};
 
