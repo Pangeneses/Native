@@ -2,8 +2,7 @@ module;
 
 #include <string>
 
-#include <vector>
-#include <list>
+#include <deque>
 
 #include <stdexcept>
 
@@ -26,7 +25,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	CHV4DBITSTREAM::CHV4DBITSTREAM(std::list<unsigned char>::iterator begin, std::list<unsigned char>::iterator end)
+	CHV4DBITSTREAM::CHV4DBITSTREAM(std::deque<unsigned char>::iterator begin, std::deque<unsigned char>::iterator end)
 	{
 		Data.clear();
 
@@ -279,11 +278,11 @@ namespace CHV4DARCHIVE
 
 		BIT_CONSUMPTION StoreConsumption = Consume;
 
-		std::list<unsigned char> Move{ std::move(Data) };
+		std::deque<unsigned char> Move{ std::move(Data) };
 
 		Data.clear();
 
-		std::list<unsigned char>::iterator itt;
+		std::deque<unsigned char>::iterator itt;
 
 		for (itt = Move.begin(); itt != Move.end();)
 		{
@@ -401,7 +400,7 @@ namespace CHV4DARCHIVE
 
 		Back.Data.pop_front();
 
-		std::list<unsigned char>::iterator itt;
+		std::deque<unsigned char>::iterator itt;
 
 		for (itt = Back.Data.begin(); itt != Back.Data.end(); Back.Data.pop_front())
 		{
@@ -419,7 +418,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	void CHV4DBITSTREAM::InsertBits(size_t const& pos, std::vector<unsigned char>::const_iterator citt, size_t const& nbits)
+	void CHV4DBITSTREAM::InsertBits(size_t const& pos, std::deque<unsigned char>::const_iterator citt, size_t const& nbits)
 	{
 		if (pos < 0 || pos >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
@@ -455,9 +454,9 @@ namespace CHV4DARCHIVE
 
 		Consume = BIT_CONSUMPTION_RIGHT_LEFT;
 
-		std::list<unsigned char> Insert{ citt, std::next(citt, Calc::Ceiling((float)nbits/8))};
+		std::deque<unsigned char> Insert{ citt, std::next(citt, Calc::Ceiling((float)nbits/8))};
 
-		std::list<unsigned char>::iterator itt;
+		std::deque<unsigned char>::iterator itt;
 
 		for (itt = Insert.begin(); itt != Insert.end(); Insert.pop_front())
 		{
@@ -469,7 +468,7 @@ namespace CHV4DARCHIVE
 
 		Back.Data.pop_front();
 
-		std::list<unsigned char>::iterator itt;
+		std::deque<unsigned char>::iterator itt;
 
 		for (itt = Back.Data.begin(); itt != Back.Data.end(); Back.Data.pop_back())
 		{
@@ -509,13 +508,13 @@ namespace CHV4DARCHIVE
 
 	}
 
-	size_t CHV4DBITSTREAM::FindNextOf(std::vector<BIT> const& find)
+	size_t CHV4DBITSTREAM::FindNextOf(std::deque<BIT> const& find)
 	{
 		if (find.size() > (Data.size() * 8 + BitPosition)) return -1;
 
 		bool Match{ true };
 
-		std::vector<BIT>::const_iterator citt;
+		std::deque<BIT>::const_iterator citt;
 
 		while (Sentinel.first != Data.end())
 		{
@@ -564,7 +563,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	size_t CHV4DBITSTREAM::ReverseFindNextOf(std::vector<BIT> const& find)
+	size_t CHV4DBITSTREAM::ReverseFindNextOf(std::deque<BIT> const& find)
 	{
 		if (find.size() > (Data.size() * 8 + BitPosition)) return -1;
 
@@ -572,7 +571,7 @@ namespace CHV4DARCHIVE
 
 		bool Match{ true };
 
-		std::vector<BIT>::const_iterator citt;
+		std::deque<BIT>::const_iterator citt;
 
 		while (ReverseSentinel.first != Data.rend())
 		{

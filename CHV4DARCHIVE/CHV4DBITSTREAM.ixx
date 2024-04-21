@@ -2,8 +2,7 @@ module;
 
 #include <string>
 
-#include <vector>
-#include <list>
+#include <deque>
 
 export module CHV4DARCHIVE:CHV4DBITSTREAM;
 
@@ -19,7 +18,7 @@ export namespace CHV4DARCHIVE
 	public:
 		CHV4DBITSTREAM();
 
-		CHV4DBITSTREAM(std::list<unsigned char>::iterator begin, std::list<unsigned char>::iterator end);
+		CHV4DBITSTREAM(std::deque<unsigned char>::iterator begin, std::deque<unsigned char>::iterator end);
 
 	public:
 		typedef enum BIT {
@@ -58,35 +57,35 @@ export namespace CHV4DARCHIVE
 
 		void BitErase(size_t const& beg, size_t const& end);
 
-		void InsertBits(size_t const& pos, std::vector<unsigned char>::const_iterator citt, size_t const& nbytes);
+		void InsertBits(size_t const& pos, std::deque<unsigned char>::const_iterator citt, size_t const& nbytes);
 
 	public:
 		void ClearStream();
 
 		void BeginningOfStream();
 
-		size_t FindNextOf(std::vector<BIT> const& find);
+		size_t FindNextOf(std::deque<BIT> const& find);
 
-		size_t ReverseFindNextOf(std::vector<BIT> const& find);
+		size_t ReverseFindNextOf(std::deque<BIT> const& find);
 
 		void EndOfStream();
 
-		std::list<unsigned char>& GetData() { return Data; }
+		std::deque<unsigned char>& GetData() { return Data; }
 
-		std::vector<unsigned char> GetDataView() { return std::vector<unsigned char>{ Data.begin(), Data.end() }; }
+		std::deque<unsigned char> GetDataView() { return std::deque<unsigned char>{ Data.begin(), Data.end() }; }
 
 		size_t BitStreamSize() { return (Data.size() * 8) + (BitPosition + 1); }
 
 	private:
 		BIT_CONSUMPTION Consume{ BIT_CONSUMPTION_LEFT_RIGHT };
 
-		std::list<unsigned char> Data;
+		std::deque<unsigned char> Data;
 
 		size_t BitPosition{ 0 };
 
-		std::pair<std::list<unsigned char>::iterator, size_t> Sentinel;
+		std::pair<std::deque<unsigned char>::iterator, size_t> Sentinel;
 
-		std::pair<std::list<unsigned char>::reverse_iterator, size_t> ReverseSentinel;
+		std::pair<std::deque<unsigned char>::reverse_iterator, size_t> ReverseSentinel;
 
 	};
 

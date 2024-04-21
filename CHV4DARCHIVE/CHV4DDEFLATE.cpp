@@ -5,7 +5,7 @@ module;
 #include <functional>
 #include <memory>
 
-#include <vector>
+#include <deque>
 
 #include <stdexcept> 
 
@@ -24,23 +24,31 @@ namespace CHV4DARCHIVE
 
 		BitStream->ClearStream();
 
-		Window.clear();
+		Stream.clear();
 
-		while (bsink(Block, FinalBlock) != ARCHIVE_ERROR_EMPTY_STREAM)
+		std::shared_ptr<std::deque<unsigned char>> Block;
+
+		do
 		{
-			BlockSentinel = Block->begin();
+			Block->clear();
 
-			LiteralSentinel = std::next(Block->begin(), 1);
+			FinalBlock = false;
+
+			error = bsink(Block, FinalBlock);
+
+			if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+			Stream.insert(Stream.end(), 
+				std::make_move_iterator(Block->begin()), 
+				std::make_move_iterator(Block->end()));
+
+			BlockSentinel = std::next(Stream.begin(), Stream.size() - Block->size());
+
+			LiteralSentinel = std::next(BlockSentinel, 1);
 
 			Index.clear();
 
-			if (FinalBlock && Block->size() <= 256)
-			{
-				error = AppendNoCompression();
-
-				if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
-
-			}
+			if (FinalBlock && Block->size() < 256) return AppendNoCompression();
 
 			if (Method == DEFLATE_COMPRESSION_NO)
 			{
@@ -48,8 +56,48 @@ namespace CHV4DARCHIVE
 
 				if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
 
+				error = SlideWindow(Block->size());
+
+				if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
 			}
 			else if (Method == DEFLATE_COMPRESSION_FIXED)
+			{
+				for (; BlockSentinel != Stream.end(); ++BlockSentinel)
+				{
+					error = IndexWindow();
+
+					if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+					if (Index.size() == 0)
+					{
+						BitStream->SetConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_RIGHT_LEFT);
+
+						*BitStream << CHV4DBITSTREAM::BIT_ZERO;
+
+						BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, 16);
+
+						error = SlideWindow(2);
+
+						if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+					}
+					else
+					{
+						error = CodePair();
+
+						if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+						error = SlideWindow(std::distance(BlockSentinel, LiteralSentinel));
+
+						if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+					}
+
+				}
+
+			}
+			else if (Method == DEFLATE_COMPRESSION_DYNAMIC)
 			{
 				error = IndexWindow();
 
@@ -63,6 +111,10 @@ namespace CHV4DARCHIVE
 
 					BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, 16);
 
+					error = SlideWindow(2);
+
+					if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
 				}
 				else
 				{
@@ -70,12 +122,11 @@ namespace CHV4DARCHIVE
 
 					if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
 
+					error = SlideWindow(std::distance(BlockSentinel, LiteralSentinel));
+
+					if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+
 				}
-
-			}
-			else if (Method == DEFLATE_COMPRESSION_DYNAMIC)
-			{
-
 
 			}
 			else
@@ -86,6 +137,7 @@ namespace CHV4DARCHIVE
 			}
 
 		}
+		while(!FinalBlock);
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
@@ -127,6 +179,8 @@ namespace CHV4DARCHIVE
 
 	ARCHIVE_ERROR CHV4DSTREAM::AppendNoCompression()
 	{
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
+
 		BitStream->SetConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_RIGHT_LEFT);
 
 		if(!FinalBlock) *BitStream << CHV4DBITSTREAM::BIT_ZERO;
@@ -137,7 +191,16 @@ namespace CHV4DARCHIVE
 
 		*BitStream << CHV4DBITSTREAM::BIT_ZERO;
 
-		BitStream->InsertBits(BitStream->BitStreamSize(), Block->begin(), Block->size() * 8);
+		std::deque<unsigned char>::const_iterator end = Stream.end();
+
+		BitStream->InsertBits(
+			BitStream->BitStreamSize(), 
+			BlockSentinel, 
+			std::distance(BlockSentinel, end) * 8);
+
+		error = SlideWindow(std::distance(BlockSentinel, end));
+
+		if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
@@ -145,22 +208,41 @@ namespace CHV4DARCHIVE
 
 	ARCHIVE_ERROR CHV4DSTREAM::IndexWindow()
 	{
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
-		return ARCHIVE_ERROR_SUCCEEDED;
+		std::deque<unsigned char>::iterator WindowSentinel;
+
+		for (WindowSentinel = Stream.begin(); WindowSentinel != BlockSentinel; ++WindowSentinel)
+		{
+			if (*WindowSentinel == *BlockSentinel && *std::next(WindowSentinel, 1) == *LiteralSentinel)
+			{
+				Index.push_back(WindowSentinel);
+
+			}
+
+		}
+
+		return error;
 
 	}
 
 	ARCHIVE_ERROR CHV4DSTREAM::CodePair()
 	{
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
-		return ARCHIVE_ERROR_SUCCEEDED;
+
+
+
+
+		return error;
 
 	}
 
 	ARCHIVE_ERROR CHV4DSTREAM::SlideWindow(size_t const& shift)
 	{
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
-		return ARCHIVE_ERROR_SUCCEEDED;
+		return error;
 
 	}
 

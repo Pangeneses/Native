@@ -6,6 +6,7 @@ module;
 #include <memory>
 
 #include <vector>
+#include <deque>
 
 #include <stdexcept> 
 
@@ -18,7 +19,7 @@ import :CHV4DBITSTREAM;
 
 export namespace CHV4DARCHIVE
 {
-	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<std::vector<unsigned char>>, bool)> BlockSink;
+	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<std::deque<unsigned char>>, bool)> BlockSink;
 
 	class CHV4DSTREAM
 	{
@@ -41,8 +42,6 @@ export namespace CHV4DARCHIVE
 
 		size_t WindowSize{ 32768 };
 
-		std::shared_ptr<std::vector<unsigned char>> Block = nullptr;
-
 		bool FinalBlock{ false };
 
 		//CHV4DENCLL LL;
@@ -61,15 +60,15 @@ export namespace CHV4DARCHIVE
 		ARCHIVE_ERROR SlideWindow(size_t const& shift);
 
 	private:
-		std::vector<unsigned char>::const_iterator BlockSentinel{};
+		std::deque<unsigned char> Stream{};
 
-		std::vector<unsigned char>::const_iterator LiteralSentinel{};
+		std::deque<unsigned char>::const_iterator BlockSentinel{};
 
-		std::list<std::list<unsigned char>::iterator> Index{};
+		std::deque<unsigned char>::const_iterator LiteralSentinel{};
+
+		std::deque<std::deque<unsigned char>::iterator> Index{};
 
 		std::shared_ptr<CHV4DBITSTREAM> BitStream = nullptr;
-
-		std::list<unsigned char> Window{};
 
 	};
 
