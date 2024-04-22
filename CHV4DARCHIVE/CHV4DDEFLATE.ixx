@@ -27,15 +27,13 @@ export namespace CHV4DARCHIVE
 		CHV4DSTREAM() = default;
 
 	public:
-		ARCHIVE_ERROR DeflateStream(BlockSink bsink = nullptr);
+		ARCHIVE_ERROR DeflateStream(BlockSink bsink = nullptr, size_t const& powWindow = 15);
 
 		ARCHIVE_ERROR SetDeflateCompression(DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO);
 
 		DEFLATE_COMPRESSION GetDeflateCompression();
 
-		ARCHIVE_ERROR SetSizeWindow(size_t sz = 32768);
-
-		size_t GetSizeWindow();
+		ARCHIVE_ERROR NewBlock();
 
 	private:
 		DEFLATE_COMPRESSION Method = DEFLATE_COMPRESSION_NO;
@@ -44,29 +42,33 @@ export namespace CHV4DARCHIVE
 
 		bool FinalBlock{ false };
 
-		//CHV4DENCLL LL;
-		//
-		//CHV4DENCDIST DIST;
-		//
-		//CHV4DENCCL CL;
-
 	private:
 		ARCHIVE_ERROR AppendNoCompression();
 
 		ARCHIVE_ERROR IndexWindow();
 
-		ARCHIVE_ERROR CodePair();
+		ARCHIVE_ERROR PushLiteral();
+
+		ARCHIVE_ERROR Encode();
+
+		ARCHIVE_ERROR PushLength(size_t const& len);
+
+		ARCHIVE_ERROR PushDistance(size_t const& dist);
 
 		ARCHIVE_ERROR SlideWindow(size_t const& shift);
 
 	private:
+		BlockSink Sink;
+
+		std::shared_ptr<std::deque<unsigned char>> Block;
+
 		std::deque<unsigned char> Stream{};
 
 		std::deque<unsigned char>::const_iterator BlockSentinel{};
 
 		std::deque<unsigned char>::const_iterator LiteralSentinel{};
 
-		std::deque<std::deque<unsigned char>::iterator> Index{};
+		std::deque<std::deque<unsigned char>::const_iterator> Index{};
 
 		std::shared_ptr<CHV4DBITSTREAM> BitStream = nullptr;
 

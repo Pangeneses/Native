@@ -76,6 +76,8 @@ export namespace CHV4DARCHIVE
 
 		size_t BitStreamSize() { return (Data.size() * 8) + (BitPosition + 1); }
 
+		void ByteAlignNext();
+
 	private:
 		BIT_CONSUMPTION Consume{ BIT_CONSUMPTION_LEFT_RIGHT };
 

@@ -634,4 +634,31 @@ namespace CHV4DARCHIVE
 
 	}
 
+	std::deque<unsigned char>& CHV4DBITSTREAM::GetData() 
+	{ 
+		
+		return Data; 
+	
+	}
+
+	std::deque<unsigned char> CHV4DBITSTREAM::GetDataView() 
+	{ 
+		
+		return std::deque<unsigned char>{ Data.begin(), Data.end() }; 
+	
+	}
+
+	size_t CHV4DBITSTREAM::BitStreamSize() 
+	{ 
+		
+		return (Data.size() * 8) + (BitPosition + 1); 
+	
+	}
+
+	void CHV4DBITSTREAM::ByteAlignNext()
+	{
+		BitPosition = 7;
+
+	}
+
 }
