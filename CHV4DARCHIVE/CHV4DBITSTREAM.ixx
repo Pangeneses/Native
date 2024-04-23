@@ -31,7 +31,14 @@ export namespace CHV4DARCHIVE
 			BIT_CONSUMPTION_RIGHT_LEFT = 1
 		} BIT_CONSUMPTION;
 
-		void SetConsumption(BIT_CONSUMPTION const& set) { Consume = set; }
+		void SetBitConsumption(BIT_CONSUMPTION const& set) { BitConsume = set; }
+
+		typedef enum BYTE_CONSUMPTION {
+			BYTE_CONSUMPTION_LEFT_RIGHT = 0,
+			BYTE_CONSUMPTION_RIGHT_LEFT = 1
+		} BYTE_CONSUMPTION;
+
+		void SetByteConsumption(BYTE_CONSUMPTION const& set) { ByteConsume = set; }
 
 	public:
 		BIT operator ++();
@@ -50,6 +57,12 @@ export namespace CHV4DARCHIVE
 		void PushBits(uint32_t const& data, size_t const& bits);
 
 		void PushBits(uint64_t const& data, size_t const& bits);
+
+		void PushBytes(uint16_t const& data);
+
+		void PushBytes(uint32_t const& data);
+
+		void PushBytes(uint64_t const& data);
 
 		void PopFrontBits(size_t const& num);
 
@@ -79,7 +92,9 @@ export namespace CHV4DARCHIVE
 		void ByteAlignNext();
 
 	private:
-		BIT_CONSUMPTION Consume{ BIT_CONSUMPTION_LEFT_RIGHT };
+		BIT_CONSUMPTION BitConsume{ BIT_CONSUMPTION_LEFT_RIGHT };
+
+		BYTE_CONSUMPTION ByteConsume{ BYTE_CONSUMPTION_LEFT_RIGHT };
 
 		std::deque<unsigned char> Data;
 

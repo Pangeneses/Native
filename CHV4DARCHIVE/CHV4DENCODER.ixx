@@ -5,12 +5,13 @@ module;
 #include <functional>
 #include <memory>
 
+#include <unordered_map>
 #include <vector>
 #include <deque>
 
 #include <stdexcept> 
 
-export module CHV4DARCHIVE:CHV4DSTREAM;
+export module CHV4DARCHIVE:CHV4DENCODER;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
@@ -21,10 +22,12 @@ export namespace CHV4DARCHIVE
 {
 	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<std::deque<unsigned char>>, bool)> BlockSink;
 
-	class CHV4DSTREAM
+	typedef std::unordered_map<size_t, std::pair<size_t, size_t>> PrefixBucket;
+
+	class CHV4DENCODER
 	{
 	public:
-		CHV4DSTREAM() = default;
+		CHV4DENCODER();
 
 	public:
 		ARCHIVE_ERROR DeflateStream(BlockSink bsink = nullptr, size_t const& powWindow = 15);
@@ -46,6 +49,8 @@ export namespace CHV4DARCHIVE
 		ARCHIVE_ERROR AppendNoCompression();
 
 		ARCHIVE_ERROR IndexWindow();
+
+		ARCHIVE_ERROR LiteralLength();
 
 		ARCHIVE_ERROR PushLiteral();
 
@@ -71,6 +76,11 @@ export namespace CHV4DARCHIVE
 		std::deque<std::deque<unsigned char>::const_iterator> Index{};
 
 		std::shared_ptr<CHV4DBITSTREAM> BitStream = nullptr;
+
+	private:
+		PrefixBucket LengthPrefixBucket;
+
+		PrefixBucket DistancePrefixBucket; 
 
 	};
 

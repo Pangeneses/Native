@@ -138,7 +138,7 @@ namespace CHV4DARCHIVE
 		if ((0b00000010 | data) == 0b00000010) bitset[6] = BIT_ONE; else bitset[6] = BIT_ZERO;
 		if ((0b00000001 | data) == 0b00000001) bitset[7] = BIT_ONE; else bitset[7] = BIT_ZERO;
 
-		if (Consume == BIT_CONSUMPTION_LEFT_RIGHT)
+		if (BitConsume == BIT_CONSUMPTION_LEFT_RIGHT)
 		{
 			for (size_t i = 0; i < bits; ++i)
 			{
@@ -248,6 +248,85 @@ namespace CHV4DARCHIVE
 
 	}
 
+	void CHV4DBITSTREAM::PushBytes(uint16_t const& data)
+	{
+		uint64_t InPlace = data;
+
+		unsigned char* buffer = reinterpret_cast<unsigned char*>(&InPlace);
+
+		if (ByteConsume == BYTE_CONSUMPTION_LEFT_RIGHT)
+		{
+			PushBits(buffer[0], 8);
+			PushBits(buffer[1], 8);
+
+		}
+		else
+		{
+			PushBits(buffer[1], 8);
+			PushBits(buffer[0], 8);
+
+		}
+
+	}
+
+	void CHV4DBITSTREAM::PushBytes(uint32_t const& data)
+	{
+		uint64_t InPlace = data;
+
+		unsigned char* buffer = reinterpret_cast<unsigned char*>(&InPlace);
+
+		if (ByteConsume == BYTE_CONSUMPTION_LEFT_RIGHT)
+		{
+			PushBits(buffer[0], 8);
+			PushBits(buffer[1], 8);
+			PushBits(buffer[2], 8);
+			PushBits(buffer[3], 8);
+
+		}
+		else
+		{
+			PushBits(buffer[3], 8);
+			PushBits(buffer[2], 8);
+			PushBits(buffer[1], 8);
+			PushBits(buffer[0], 8);
+
+		}
+
+	}
+
+	void CHV4DBITSTREAM::PushBytes(uint64_t const& data)
+	{
+		uint64_t InPlace = data;
+
+		unsigned char* buffer = reinterpret_cast<unsigned char*>(&InPlace);
+
+		if (ByteConsume == BYTE_CONSUMPTION_LEFT_RIGHT)
+		{
+			PushBits(buffer[0], 8);
+			PushBits(buffer[1], 8);
+			PushBits(buffer[2], 8);
+			PushBits(buffer[3], 8);
+			PushBits(buffer[4], 8);
+			PushBits(buffer[5], 8);
+			PushBits(buffer[6], 8);
+			PushBits(buffer[7], 8);
+
+		}
+		else
+		{
+			PushBits(buffer[7], 8);
+			PushBits(buffer[6], 8);
+			PushBits(buffer[5], 8);
+			PushBits(buffer[4], 8);
+			PushBits(buffer[3], 8);
+			PushBits(buffer[2], 8);
+			PushBits(buffer[1], 8);
+			PushBits(buffer[0], 8);
+
+		}
+
+	}
+
 	void CHV4DBITSTREAM::PopFrontBits(size_t const& num)
 	{
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -276,7 +355,7 @@ namespace CHV4DARCHIVE
 
 		Data.front() = (Data.front() << remove) >> remove;
 
-		BIT_CONSUMPTION StoreConsumption = Consume;
+		BIT_CONSUMPTION StoreConsumption = BitConsume;
 
 		std::deque<unsigned char> Move{ std::move(Data) };
 
@@ -286,13 +365,13 @@ namespace CHV4DARCHIVE
 
 		for (itt = Move.begin(); itt != Move.end();)
 		{
-			Consume = BIT_CONSUMPTION_RIGHT_LEFT;
+			BitConsume = BIT_CONSUMPTION_RIGHT_LEFT;
 
 			PushBits(Move.front(), 8 - remove);
 
 			if (Move.size() != 1)
 			{
-				Consume = BIT_CONSUMPTION_LEFT_RIGHT;
+				BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
 
 				Move.pop_front();
 
@@ -304,7 +383,7 @@ namespace CHV4DARCHIVE
 
 		Move.clear();
 
-		Consume = StoreConsumption;
+		BitConsume = StoreConsumption;
 
 	}
 
@@ -390,11 +469,11 @@ namespace CHV4DARCHIVE
 
 		Back.Data.front() = (Back.Data.front() << BackBits) >> BackBits;
 
-		BIT_CONSUMPTION StoreConsumption = Consume;
+		BIT_CONSUMPTION StoreConsumption = BitConsume;
 
 		BitPosition = FrontBits;
 
-		Consume = BIT_CONSUMPTION_RIGHT_LEFT;
+		BitConsume = BIT_CONSUMPTION_RIGHT_LEFT;
 
 		PushBits(Back.Data.front(), BackBits);
 
@@ -410,7 +489,7 @@ namespace CHV4DARCHIVE
 
 		Back.Data.clear();
 
-		Consume = StoreConsumption;
+		BitConsume = StoreConsumption;
 
 		BitPosition = ProcessedBitPosition;
 
@@ -448,11 +527,11 @@ namespace CHV4DARCHIVE
 
 		Back.Data.front() = (Back.Data.front() << BackBits) >> BackBits;
 
-		BIT_CONSUMPTION StoreConsumption = Consume;
+		BIT_CONSUMPTION StoreConsumption = BitConsume;
 
 		BitPosition = FrontBits;
 
-		Consume = BIT_CONSUMPTION_RIGHT_LEFT;
+		BitConsume = BIT_CONSUMPTION_RIGHT_LEFT;
 
 		std::deque<unsigned char> Insert{ citt, std::next(citt, Calc::Ceiling((float)nbits/8))};
 
@@ -478,7 +557,7 @@ namespace CHV4DARCHIVE
 
 		Back.Data.clear();
 
-		Consume = StoreConsumption;
+		BitConsume = StoreConsumption;
 
 		BitPosition = ProcessedBitPosition;
 
@@ -488,7 +567,7 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::ClearStream()
 	{
-		Consume = BIT_CONSUMPTION_LEFT_RIGHT;
+		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
 
 		Data.clear();
 

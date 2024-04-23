@@ -54,29 +54,14 @@
     <Filter Include="vii. UTILITY\00. FileStream">
       <UniqueIdentifier>{067ae444-c415-4c8f-ad1e-f2f21e1c593d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER">
-      <UniqueIdentifier>{46fad8a3-e467-4bf0-9eb0-d7170aa930ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER">
       <UniqueIdentifier>{cccb76ac-2cc1-4f36-b887-b2945a9e77db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\01. CHV4DDECLZSS">
-      <UniqueIdentifier>{2b4129bc-b4cb-40fc-bcf3-17756316e1e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\02. CHV4DDECLL">
-      <UniqueIdentifier>{26e29a68-0430-4222-9b09-f9c826703766}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\03. CHV4DDECDIST">
-      <UniqueIdentifier>{84c2136f-015f-487a-9430-d5f3ab4ef026}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\04. CHV4DDECCL">
-      <UniqueIdentifier>{a4bb9444-fe82-44c9-bef7-a86465825496}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\00. CHV4DDECODER">
-      <UniqueIdentifier>{b43edab2-0f4a-49e5-bdf9-3e8ad1c3d804}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vii. UTILITY\02. ZipTest">
       <UniqueIdentifier>{69182e5e-9ca9-45f0-993e-1402d038f423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\A. ENCODER">
+      <UniqueIdentifier>{46fad8a3-e467-4bf0-9eb0-d7170aa930ca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,30 +73,6 @@
     </ClCompile>
     <ClCompile Include="CHV4DRESOURCE.ixx">
       <Filter>iii. CHV4DRESOURCE</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECLZSS.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\01. CHV4DDECLZSS</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECLZSS.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\01. CHV4DDECLZSS</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECLL.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\02. CHV4DDECLL</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECLL.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\02. CHV4DDECLL</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECDIST.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\03. CHV4DDECDIST</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECDIST.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\03. CHV4DDECDIST</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECCL.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\04. CHV4DDECCL</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDECCL.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\04. CHV4DDECCL</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DZIPDIR.cpp">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\C. Central Directory</Filter>
@@ -161,17 +122,17 @@
     <ClCompile Include="CHV4DFSTREAM.ixx">
       <Filter>vii. UTILITY\00. FileStream</Filter>
     </ClCompile>
+    <ClCompile Include="CHV4DENCODER.ixx">
+      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\A. ENCODER</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DENCODER.cpp">
+      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\A. ENCODER</Filter>
+    </ClCompile>
     <ClCompile Include="CHV4DDECODER.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\00. CHV4DDECODER</Filter>
+      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDECODER.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER\00. CHV4DDECODER</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDEFLATE.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DDEFLATE.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\B. ENCODER</Filter>
+      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
