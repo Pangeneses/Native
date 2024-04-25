@@ -32,11 +32,11 @@ export namespace CHV4DARCHIVE
 	public:
 		ARCHIVE_ERROR DeflateStream(BlockSink bsink = nullptr, size_t const& powWindow = 15);
 
-		ARCHIVE_ERROR SetDeflateCompression(DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO);
+		std::shared_ptr<std::deque<unsigned char>> GetStream() { return Stream; }
 
-		DEFLATE_COMPRESSION GetDeflateCompression();
+		void SetDeflateCompression(DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO) { Method = method; }
 
-		ARCHIVE_ERROR NewBlock();
+		DEFLATE_COMPRESSION GetDeflateCompression() { return Method; }
 
 	private:
 		DEFLATE_COMPRESSION Method = DEFLATE_COMPRESSION_NO;
@@ -46,6 +46,8 @@ export namespace CHV4DARCHIVE
 		bool FinalBlock{ false };
 
 	private:
+		ARCHIVE_ERROR NewBlock();
+
 		ARCHIVE_ERROR AppendNoCompression();
 
 		ARCHIVE_ERROR IndexWindow();
@@ -67,7 +69,7 @@ export namespace CHV4DARCHIVE
 
 		std::shared_ptr<std::deque<unsigned char>> Block;
 
-		std::deque<unsigned char> Stream{};
+		std::shared_ptr<std::deque<unsigned char>> Stream{};
 
 		std::deque<unsigned char>::const_iterator BlockSentinel{};
 

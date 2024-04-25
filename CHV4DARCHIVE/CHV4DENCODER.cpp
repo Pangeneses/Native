@@ -91,9 +91,11 @@ namespace CHV4DARCHIVE
 
 		if (powWindow < 8 || powWindow > 15) throw std::out_of_range{ "Window size out of range." };
 
+		if (bsink == nullptr) throw std::invalid_argument{ "No Sink specified." };
+
 		BitStream->ClearStream();
 
-		Stream.clear();
+		Stream->clear();
 
 		Sink = bsink;
 
@@ -115,28 +117,15 @@ namespace CHV4DARCHIVE
 
 				} while (BlockSentinel != Block->end());
 
+				uint8_t end = 0;
+
+				BitStream->PushBits(end, 7);
+
 			}
 
 		} while (!FinalBlock);
 
 		return ARCHIVE_ERROR_SUCCEEDED;
-
-	}
-
-	ARCHIVE_ERROR CHV4DENCODER::SetDeflateCompression(DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO)
-	{
-		Method = method;
-
-		if (Method == DEFLATE_COMPRESSION_RESERVED) throw std::invalid_argument{ "Reserved." };
-
-		else return ARCHIVE_ERROR_SUCCEEDED;
-
-	}
-
-	DEFLATE_COMPRESSION CHV4DENCODER::GetDeflateCompression()
-	{
-
-		return Method;
 
 	}
 
@@ -152,11 +141,11 @@ namespace CHV4DARCHIVE
 
 		if (Block->size() == 0) throw std::out_of_range{ "Empty Block." };
 
-		Stream.insert(Stream.end(),
+		Stream->insert(Stream->end(),
 			std::make_move_iterator(Block->begin()),
 			std::make_move_iterator(Block->end()));
 
-		BlockSentinel = std::next(Stream.begin(), Stream.size() - Block->size());
+		BlockSentinel = std::next(Stream->begin(), Stream->size() - Block->size());
 
 		LiteralSentinel = std::next(BlockSentinel, 1);
 
@@ -210,6 +199,8 @@ namespace CHV4DARCHIVE
 
 			*BitStream << CHV4DBITSTREAM::BIT_ONE;
 
+			throw std::invalid_argument{ "Not supported." };
+
 		}
 		else
 		{
@@ -228,9 +219,9 @@ namespace CHV4DARCHIVE
 
 		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-		BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, std::distance(BlockSentinel, Stream.cend()) * 8);
+		BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, std::distance(BlockSentinel, Stream->cend()) * 8);
 
-		SlideWindow(std::distance(BlockSentinel, Stream.cend()));
+		SlideWindow(std::distance(BlockSentinel, Stream->cend()));
 
 		return ARCHIVE_ERROR_END_OF_STREAM;
 
@@ -242,7 +233,7 @@ namespace CHV4DARCHIVE
 
 		std::deque<unsigned char>::iterator WindowSentinel;
 
-		for (WindowSentinel = Stream.begin(); WindowSentinel != BlockSentinel; ++WindowSentinel)
+		for (WindowSentinel = Stream->begin(); WindowSentinel != BlockSentinel; ++WindowSentinel)
 		{
 			if (std::equal(WindowSentinel, std::next(WindowSentinel, 3), BlockSentinel, std::next(BlockSentinel, 3)))
 			{

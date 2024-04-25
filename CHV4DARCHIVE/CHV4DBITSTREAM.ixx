@@ -41,6 +41,8 @@ export namespace CHV4DARCHIVE
 		void SetByteConsumption(BYTE_CONSUMPTION const& set) { ByteConsume = set; }
 
 	public:
+		BIT operator ()();
+
 		BIT operator ++();
 
 		BIT operator --();
@@ -66,7 +68,11 @@ export namespace CHV4DARCHIVE
 
 		void PopFrontBits(size_t const& num);
 
+		void PopFrontBytes(size_t const& num);
+
 		void PopBackBits(size_t const& num);
+
+		void PopBackBytes(size_t const& num);
 
 		void BitErase(size_t const& beg, size_t const& end);
 
@@ -90,6 +96,10 @@ export namespace CHV4DARCHIVE
 		size_t BitStreamSize() { return (Data.size() * 8) + (BitPosition + 1); }
 
 		void ByteAlignNext();
+
+		size_t ForwardSentinelPosition() { return ((std::distance(Data.begin(), Sentinel.first) - 1) * 8) + Sentinel.second; }
+
+		size_t ReverseSentinelPosition() { return ((std::distance(Data.rbegin(), ReverseSentinel.first) - 1) * 8) + ReverseSentinel.second; }
 
 	private:
 		BIT_CONSUMPTION BitConsume{ BIT_CONSUMPTION_LEFT_RIGHT };

@@ -37,39 +37,42 @@ namespace CHV4DARCHIVE
 
 	}
 
-	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ++()
+	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ()()
 	{
 		if (Sentinel.first == Data.end()) std::out_of_range{ "End of bitstream." };
+
+		switch (Sentinel.second)
+		{
+		case 0: return (*Sentinel.first & 0b10000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 1: return (*Sentinel.first & 0b01000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 2: return (*Sentinel.first & 0b00100000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 3: return (*Sentinel.first & 0b00010000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 4: return (*Sentinel.first & 0b00001000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 5: return (*Sentinel.first & 0b00000100) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 6: return (*Sentinel.first & 0b00000010) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 7: return (*Sentinel.first & 0b00000001) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		}
+
+	}
+
+	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ++()
+	{
+		if (std::distance(Sentinel.first, Data.end()) == 1 && Sentinel.second == 7) std::out_of_range{ "End of bitstream." };
 
 		++Sentinel.second;
 
 		if (Sentinel.second == 8) { Sentinel.second = 0; ++Sentinel.first; }
 
-		if (Sentinel.first == Data.end()) std::out_of_range{ "End of bitstream." };
-
-		if (Sentinel.second == 0) {
-			if ((*Sentinel.first & 0b10000000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 1) {
-			if ((*Sentinel.first & 0b01000000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 2) {
-			if ((*Sentinel.first & 0b00100000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 3) {
-			if ((*Sentinel.first & 0b00010000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 4) {
-			if ((*Sentinel.first & 0b00001000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 5) {
-			if ((*Sentinel.first & 0b00000100) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 6) {
-			if ((*Sentinel.first & 0b00000010) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 7) {
-			if ((*Sentinel.first & 0b00000001) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
+		switch (Sentinel.second)
+		{
+		case 0: return (*Sentinel.first & 0b10000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 1: return (*Sentinel.first & 0b01000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 2: return (*Sentinel.first & 0b00100000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 3: return (*Sentinel.first & 0b00010000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 4: return (*Sentinel.first & 0b00001000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 5: return (*Sentinel.first & 0b00000100) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 6: return (*Sentinel.first & 0b00000010) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 7: return (*Sentinel.first & 0b00000001) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
 		}
 
 	}
@@ -80,29 +83,18 @@ namespace CHV4DARCHIVE
 
 		if (Sentinel.second == 0) { Sentinel.second = 7; --Sentinel.first; }
 
-		if (Sentinel.second == 0) {
-			if ((*Sentinel.first & 0b10000000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 1) {
-			if ((*Sentinel.first & 0b01000000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 2) {
-			if ((*Sentinel.first & 0b00100000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 3) {
-			if ((*Sentinel.first & 0b00010000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 4) {
-			if ((*Sentinel.first & 0b00001000) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 5) {
-			if ((*Sentinel.first & 0b00000100) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 6) {
-			if ((*Sentinel.first & 0b00000010) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
-		}
-		if (Sentinel.second == 7) {
-			if ((*Sentinel.first & 0b00000001) == 0) return BIT::BIT_ZERO; else return BIT::BIT_ONE;
+		else --Sentinel.first;
+
+		switch (Sentinel.second)
+		{
+		case 0: return (*Sentinel.first & 0b10000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 1: return (*Sentinel.first & 0b01000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 2: return (*Sentinel.first & 0b00100000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 3: return (*Sentinel.first & 0b00010000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 4: return (*Sentinel.first & 0b00001000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 5: return (*Sentinel.first & 0b00000100) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 6: return (*Sentinel.first & 0b00000010) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+		case 7: return (*Sentinel.first & 0b00000001) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
 		}
 
 	}
@@ -387,6 +379,14 @@ namespace CHV4DARCHIVE
 
 	}
 
+	void CHV4DBITSTREAM::PopFrontBytes(size_t const& num)
+	{
+		throw std::out_of_range{ "Data is empty." };
+
+		Data.pop_front();
+
+	}
+
 	void CHV4DBITSTREAM::PopBackBits(size_t const& num)
 	{
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -428,6 +428,14 @@ namespace CHV4DARCHIVE
 		Data.back() = (Data.back() >> remove) << remove;
 
 		BitPosition -= remove;
+
+	}
+
+	void CHV4DBITSTREAM::PopFrontBytes(size_t const& num)
+	{
+		throw std::out_of_range{ "Data is empty." };
+
+		Data.pop_front();
 
 	}
 
