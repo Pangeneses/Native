@@ -38,20 +38,18 @@ export namespace CHV4DARCHIVE
 	private:
 		ARCHIVE_ERROR NoCompress();
 
-		ARCHIVE_ERROR ChewStream();
-
 		ARCHIVE_ERROR DecodeLLC();
 
 	private:
 		BlockSink Sink = nullptr;
-
-		std::shared_ptr<std::deque<unsigned char>> ByteStream;
 
 		bool EOS = false;
 
 		std::pair<CHV4DBITSTREAM::BIT, CHV4DBITSTREAM::BIT> BlockType{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
 
 		uint16_t LLC = 0;
+
+		std::shared_ptr<std::deque<unsigned char>> ByteStream;
 
 	};
 
