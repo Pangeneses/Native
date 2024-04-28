@@ -61,7 +61,7 @@ namespace CHV4DARCHIVE
 
 	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ()()
 	{
-		if (Sentinel.first == Data.end()) std::out_of_range{ "End of bitstream." };
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
 		switch (Sentinel.second)
 		{
@@ -74,16 +74,65 @@ namespace CHV4DARCHIVE
 		case 5: return (*Sentinel.first & 0b00000100) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
 		case 6: return (*Sentinel.first & 0b00000010) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
 		case 7: return (*Sentinel.first & 0b00000001) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
-		
+
 		default: throw std::out_of_range{ "BitStream overrun." };
-		
+
+		}
+
+	}
+
+	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ()(size_t const& pos, bool forward)
+	{
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
+		if (pos > this->BitStreamSize()) std::invalid_argument{ "Position out of scope." };
+
+		if (forward)
+		{
+			switch (Sentinel.second)
+			{
+
+			case 0: return (*Sentinel.first & 0b10000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 1: return (*Sentinel.first & 0b01000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 2: return (*Sentinel.first & 0b00100000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 3: return (*Sentinel.first & 0b00010000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 4: return (*Sentinel.first & 0b00001000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 5: return (*Sentinel.first & 0b00000100) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 6: return (*Sentinel.first & 0b00000010) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 7: return (*Sentinel.first & 0b00000001) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+
+			default: throw std::out_of_range{ "BitStream overrun." };
+
+			}
+
+		}
+		else
+		{
+			switch (ReverseSentinel.second)
+			{
+
+			case 0: return (*ReverseSentinel.first & 0b00000001) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 1: return (*ReverseSentinel.first & 0b00000010) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 2: return (*ReverseSentinel.first & 0b00000100) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 3: return (*ReverseSentinel.first & 0b00001000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 4: return (*ReverseSentinel.first & 0b00010000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 5: return (*ReverseSentinel.first & 0b00100000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 6: return (*ReverseSentinel.first & 0b01000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+			case 7: return (*ReverseSentinel.first & 0b10000000) == 0 ? BIT::BIT_ZERO : BIT::BIT_ONE; break;
+
+			default: throw std::out_of_range{ "BitStream overrun." };
+
+			}
+
 		}
 
 	}
 
 	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ++()
 	{
-		if (Sentinel.first == Data.end()) std::out_of_range{ "End of bitstream." };
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
+		if (Sentinel.first == Data.end() && Sentinel.second == 7) std::out_of_range{ "End of bitstream." };
 
 		int64_t Distance = std::distance(Sentinel.first, Data.end());
 
@@ -119,9 +168,11 @@ namespace CHV4DARCHIVE
 
 	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator --()
 	{
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
 		if (Sentinel.first == Data.begin() && Sentinel.second == 0) std::out_of_range{ "End of bitstream." };
 
-		if (Sentinel.second == 0) { Sentinel.second = 7; std::next(Sentinel.first, -1); }
+		if (Sentinel.second == 0) { Sentinel.second = 7; std::prev(Sentinel.first, 1); }
 
 		else --Sentinel.second;
 
@@ -160,14 +211,14 @@ namespace CHV4DARCHIVE
 		switch (BitPosition)
 		{
 
-		case 0: if(in == BIT_ONE) Data.back() | 0b10000000; break;
-		case 1: if(in == BIT_ONE) Data.back() | 0b01000000; break;
-		case 2: if(in == BIT_ONE) Data.back() | 0b00100000; break;
-		case 3: if(in == BIT_ONE) Data.back() | 0b00010000; break;
-		case 4: if(in == BIT_ONE) Data.back() | 0b00001000; break;
-		case 5: if(in == BIT_ONE) Data.back() | 0b00000100; break;
-		case 6: if(in == BIT_ONE) Data.back() | 0b00000010; break;
-		case 7: if(in == BIT_ONE) Data.back() | 0b00000001; break;
+		case 0: if (in == BIT_ONE) Data.back() | 0b10000000; break;
+		case 1: if (in == BIT_ONE) Data.back() | 0b01000000; break;
+		case 2: if (in == BIT_ONE) Data.back() | 0b00100000; break;
+		case 3: if (in == BIT_ONE) Data.back() | 0b00010000; break;
+		case 4: if (in == BIT_ONE) Data.back() | 0b00001000; break;
+		case 5: if (in == BIT_ONE) Data.back() | 0b00000100; break;
+		case 6: if (in == BIT_ONE) Data.back() | 0b00000010; break;
+		case 7: if (in == BIT_ONE) Data.back() | 0b00000001; break;
 
 		default: throw std::runtime_error{ "BitStream overrun." }; break;
 
@@ -387,7 +438,7 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::PopFrontBits(size_t const& num)
 	{
-		if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
@@ -399,7 +450,7 @@ namespace CHV4DARCHIVE
 
 		if ((num - BitPosition) / 8 > 0) Data.erase(Data.begin(), std::next(Data.begin(), (num - BitPosition) / 8));
 
-		EndOfStream(); ReverseSentinelPosition();
+		EndOfStream(); this->operator--();
 
 		while (!(Sentinel.first == Data.end() && Sentinel.second == 7)) Buffer << operator++();
 
@@ -447,6 +498,8 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::BitErase(size_t const& beg, size_t const& end)
 	{
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
 		if (beg < 0 || beg >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
 		if (end < 0 || end >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -463,9 +516,9 @@ namespace CHV4DARCHIVE
 
 		Sentinel.second = end % 8;
 
-		ReverseSentinelPosition();
+		this->operator--();
 
-		while (!(Sentinel.first == std::next(Data.end(), -1) && Sentinel.second == 7)) Buffer << (operator++());
+		while (!(Sentinel.first == std::prev(Data.end(), 1) && Sentinel.second == 7)) Buffer << (operator++());
 
 		this->operator=(Buffer);
 
@@ -473,25 +526,31 @@ namespace CHV4DARCHIVE
 
 	}
 
-	void CHV4DBITSTREAM::InsertBits(size_t const& pos, std::deque<unsigned char>::const_iterator citt, size_t const& nbits)
+	void CHV4DBITSTREAM::InsertBits(size_t const& pos, std::deque<unsigned char>& insert, size_t const& nbits)
 	{
-		if (pos < 0 || pos >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
-		CHV4DBITSTREAM Front;
+		if (pos < -1 || pos > BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
-		if (pos > BitStreamSize())
-		{
-			size_t FrontBytes = ((pos - (pos % 8)) / 8);
+		if (nbits < 0 || nbits > insert.size() * 8) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
-		}
+		if (insert.empty()) throw std::invalid_argument{ "Empty data." };
 
-		
+		CHV4DBITSTREAM Buffer;
 
+		this->BeginningOfStream();
 
-		
-		{ Data.begin(), std::next(Data.begin(), FrontBytes) };
+		while ((std::distance(Data.begin(), Sentinel.first) + Sentinel.second) != pos) Buffer << (operator++());
 
+		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
 
+		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
+
+		while (!insert.empty()) { Buffer.PushBits(insert[0], 8); insert.pop_front(); }
+
+		while (Sentinel.first != Data.end() && Sentinel.second != 7) Buffer << (operator++());
+
+		this->operator=(Buffer);
 
 		return;
 
@@ -499,15 +558,23 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::ClearStream()
 	{
-		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
-
 		Data.clear();
+
+		Data.push_back({});
+
+		Sentinel.first = Data.begin();
+
+		Sentinel.second = 0;
+
+		ReverseSentinel.first = Data.rbegin();
+
+		ReverseSentinel.second = 0;
 
 		BitPosition = 0;
 
-		Sentinel = { Data.begin(), 0 };
+		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
 
-		ReverseSentinel = { Data.rbegin(), 0 };
+		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
 
 	}
 
@@ -520,60 +587,77 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::BeginningOfStream()
 	{
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
 		Sentinel.first = Data.begin();
 
 		Sentinel.second = 0;
+
+		ReverseSentinel.first = Data.rbegin();
+
+		ReverseSentinel.second = 0;
+
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
 	}
 
 	int CHV4DBITSTREAM::FindNextOf(std::deque<BIT> const& find)
 	{
-		if (find.size() > (Data.size() * 8 + BitPosition)) return -1;
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
-		bool Match{ true };
+		if (find.empty()) throw std::invalid_argument{ "No search deque." };
+
+		if (find.size() > this->BitStreamSize()) return -1;
+
+		this->BeginningOfStream();
 
 		std::deque<BIT>::const_iterator citt;
 
-		while (Sentinel.first != Data.end())
+		std::pair<std::deque<unsigned char>::iterator, size_t> poke;
+
+		while (static_cast<size_t>((std::distance(std::next(Sentinel.first, 1), Data.end()) * 8) + (8 - Sentinel.second)) >= find.size() )
 		{
-			size_t ByteIndex = std::distance(Data.begin(), Sentinel.first);
-			
-			size_t BitIndex = Sentinel.second;
+			citt = find.begin();
 
-			for (citt = find.begin(); citt != find.end(); ++citt)
+			poke = Sentinel;
+
+			while (this->operator()((std::distance(Data.begin(), poke.first) * 8) + poke.second) == *citt && citt != find.end())
 			{
-				if (*citt != this->operator++()) { Match = false; break; }
-
-				++Sentinel.second;
-
-				if (Sentinel.second == 8)
+				if (poke.second < 7)
 				{
-					Sentinel.second = 0;
+					++poke.second;
 
-					++Sentinel.first;
+				}
+				else
+				{
+					poke.first = std::next(poke.first, 1);
+
+					poke.second = 0;
 
 				}
 
 			}
 
-			if (!Match)
+			if (citt == find.end()) return ForwardSentinelPosition();
+
+			if (Sentinel.first != std::prev(Data.end(), 1) && Sentinel.second == 7)
+			{
+				Sentinel.first = std::next(Sentinel.first, 1);
+
+				++Sentinel.second;
+
+			}
+			else if (Sentinel.second < 7)
 			{
 				++Sentinel.second;
 
-				if (Sentinel.second == 8)
-				{
-					Sentinel.second = 0;
-
-					++Sentinel.first;
-
-				}
-
 			}
-			else
+			else if (Sentinel.first == std::prev(Data.end(), 1) && Sentinel.second == 7)
 			{
-				return static_cast<int>(ByteIndex * 8 + BitIndex);
+				return -1;
 
 			}
+
 
 		}
 
@@ -583,69 +667,61 @@ namespace CHV4DARCHIVE
 
 	int CHV4DBITSTREAM::ReverseFindNextOf(std::deque<BIT> const& find)
 	{
-		if (find.size() > (Data.size() * 8 + BitPosition)) return -1;
+		if (!isValidReverseSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
-		if (std::distance(Data.rbegin(), ReverseSentinel.first) >= 0)
-		{
-			while (static_cast<size_t>(std::distance(Data.rbegin(), ReverseSentinel.first)) < (find.size() / 8) - 1) ++ReverseSentinel.first;
+		if (find.empty()) throw std::invalid_argument{ "No search deque." };
 
-		}
-		else
-		{
-			throw std::out_of_range{ "BitStream overrun." };
+		if (find.size() > this->BitStreamSize()) return -1;
 
-		}
-
-		bool Match{ true };
+		this->BeginningOfStream();
 
 		std::deque<BIT>::const_iterator citt;
 
-		while (ReverseSentinel.first != Data.rend())
+		std::pair<std::deque<unsigned char>::reverse_iterator, size_t> poke;
+
+		while (static_cast<size_t>((std::distance(std::next(ReverseSentinel.first, 1), Data.rend()) * 8) + (8 - ReverseSentinel.second)) >= find.size())
 		{
-			size_t ByteIndex = std::distance(Data.rbegin(), ReverseSentinel.first);
+			citt = find.begin();
 
-			size_t BitIndex = Sentinel.second;
+			poke = ReverseSentinel;
 
-			for (citt = find.begin(); citt != find.end(); ++citt)
+			while (this->operator()((std::distance(Data.rbegin(), poke.first) * 8, false) + poke.second) == *citt && citt != find.end())
 			{
-				if (*citt != this->operator++()) { Match = false; break; }
-
-				if (ReverseSentinel.second == 0)
+				if (poke.second < 7)
 				{
-					ReverseSentinel.second = 7;
-
-					++ReverseSentinel.first;
+					++poke.second;
 
 				}
 				else
 				{
-					++Sentinel.second;
+					poke.first = std::next(poke.first, 1);
+
+					poke.second = 0;
 
 				}
 
 			}
 
-			if (!Match)
+			if (citt == find.end()) return ReverseSentinelPosition();
+
+			if (ReverseSentinel.first != std::prev(Data.rend(), 1) && ReverseSentinel.second == 7)
 			{
-				if (ReverseSentinel.second == 0)
-				{
-					ReverseSentinel.second = 7;
+				ReverseSentinel.first = std::next(ReverseSentinel.first, 1);
 
-					++ReverseSentinel.first;
-
-				}
-				else
-				{
-					++Sentinel.second;
-
-				}
+				++ReverseSentinel.second;
 
 			}
-			else
+			else if (ReverseSentinel.second < 7)
 			{
-				return static_cast<int>(ByteIndex * 8 + BitIndex);
+				++ReverseSentinel.second;
 
 			}
+			else if (ReverseSentinel.first == std::prev(Data.rend(), 1) && ReverseSentinel.second == 7)
+			{
+				return -1;
+
+			}
+
 
 		}
 
@@ -653,18 +729,24 @@ namespace CHV4DARCHIVE
 
 	}
 
-	int CHV4DBITSTREAM::ForwardSentinelPosition()
-	{ 
-		
-		return static_cast<int>(((std::distance(Data.begin(), Sentinel.first) - 1) * 8) + Sentinel.second); 
-	
+	size_t CHV4DBITSTREAM::ForwardSentinelPosition()
+	{
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
+		size_t Distance = static_cast<size_t>(std::distance(Data.begin(), Sentinel.first));
+
+		return Distance + Sentinel.second;
+
 	}
 
-	int CHV4DBITSTREAM::ReverseSentinelPosition()
-	{ 
-		
-		return static_cast<int>(((std::distance(Data.rbegin(), ReverseSentinel.first) - 1) * 8) + ReverseSentinel.second);
-	
+	size_t CHV4DBITSTREAM::ReverseSentinelPosition()
+	{
+		if (!isValidReverseSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
+		size_t Distance = static_cast<size_t>(std::distance(Data.rbegin(), ReverseSentinel.first));
+
+		return Distance + ReverseSentinel.second;
+
 	}
 
 	void CHV4DBITSTREAM::ByteAlignNext()
@@ -689,9 +771,65 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::EndOfStream()
 	{
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
 		Sentinel.first = --Data.end();
 
 		Sentinel.second = 7;
+
+		ReverseSentinel.first = Data.rend();
+
+		ReverseSentinel.second = 7;
+
+		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+
+	}
+
+	bool CHV4DBITSTREAM::ValidSentinel()
+	{
+		if (!isValidSentinel) return false;
+
+		if (Data.empty())
+		{
+			isValidSentinel = false;
+
+			return false;
+
+		}
+
+		if (Sentinel.first < Data.begin() || Sentinel.first == Data.end())
+		{
+			isValidSentinel = false;
+
+			return false;
+
+		}
+
+		return true;
+
+	}
+
+	bool CHV4DBITSTREAM::ValidReverseSentinel()
+	{
+		if (!isValidSentinel) return false;
+
+		if (Data.empty())
+		{
+			isValidReverseSentinel = false;
+
+			return false;
+
+		}
+
+		if (ReverseSentinel.first < Data.rbegin() || ReverseSentinel.first == Data.rend())
+		{
+			isValidReverseSentinel = false;
+
+			return false;
+
+		}
+
+		return true;
 
 	}
 

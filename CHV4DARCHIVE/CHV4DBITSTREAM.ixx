@@ -43,6 +43,8 @@ export namespace CHV4DARCHIVE
 	public:
 		BIT operator ()();
 
+		BIT operator ()(size_t const& pos, bool forward = true);
+
 		BIT operator ++();
 
 		BIT operator --();
@@ -76,7 +78,7 @@ export namespace CHV4DARCHIVE
 
 		void BitErase(size_t const& beg, size_t const& end);
 
-		void InsertBits(size_t const& pos, std::deque<unsigned char>::const_iterator citt, size_t const& nbytes);
+		void InsertBits(size_t const& pos, std::deque<unsigned char>& insert, size_t const& nbits);
 
 	public:
 		void ClearStream();
@@ -89,9 +91,9 @@ export namespace CHV4DARCHIVE
 
 		int ReverseFindNextOf(std::deque<BIT> const& find);
 
-		int ForwardSentinelPosition();
+		size_t ForwardSentinelPosition();
 
-		int ReverseSentinelPosition();
+		size_t ReverseSentinelPosition();
 
 		void ByteAlignNext();
 
@@ -100,6 +102,11 @@ export namespace CHV4DARCHIVE
 		std::deque<unsigned char> GetDataView();
 
 		void EndOfStream();
+
+	private:
+		bool ValidSentinel();
+
+		bool ValidReverseSentinel();
 
 	private:
 		BIT_CONSUMPTION BitConsume{ BIT_CONSUMPTION_LEFT_RIGHT };
@@ -112,7 +119,11 @@ export namespace CHV4DARCHIVE
 
 		std::pair<std::deque<unsigned char>::iterator, size_t> Sentinel;
 
+		bool isValidSentinel;
+
 		std::pair<std::deque<unsigned char>::reverse_iterator, size_t> ReverseSentinel;
+
+		bool isValidReverseSentinel;
 
 	};
 
