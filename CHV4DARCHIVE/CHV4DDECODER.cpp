@@ -27,7 +27,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DDECODER::InflateStream(BlockSink bsink = nullptr)
+	ARCHIVE_ERROR CHV4DDECODER::InflateStream(BlockSink bsink)
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
@@ -59,7 +59,7 @@ namespace CHV4DARCHIVE
 
 			if (BlockType == std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE })
 			{
-				if ((BitStream.get())->operator++() == CHV4DBITSTREAM::BIT_ONE) EOS == true;
+				if ((BitStream.get())->operator++() == CHV4DBITSTREAM::BIT_ONE) EOS = true;
 
 				BlockType.first = (BitStream.get())->operator++();
 
@@ -106,6 +106,34 @@ namespace CHV4DARCHIVE
 	ARCHIVE_ERROR CHV4DDECODER::NoCompress()
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
+
+		BitStream->ByteAlignNext();
+
+		uint16_t szUncompressed = 0;
+
+		for (size_t i = 0; i < 16; ++i)
+		{
+			BitStream->operator++() == CHV4DBITSTREAM::BIT_ZERO ? 
+				szUncompressed = (szUncompressed >> 1) | 0 : 
+				szUncompressed = (szUncompressed >> 1) | 32768;
+			
+		}
+
+		for (uint16_t count = 0; count < szUncompressed; ++count)
+		{
+			uint8_t Literal = 0;
+
+			for (size_t i = 0; i < 8; ++i)
+			{
+				BitStream->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+					Literal = (Literal << 1) | 0 :
+					Literal = (Literal << 1) | static_cast<uint8_t>(32768);
+
+			}
+
+			ByteStream->push_back(static_cast<unsigned char>(Literal));
+
+		}
 
 		return error;
 

@@ -17,10 +17,11 @@ export namespace CHV4DARCHIVE
 		CHV4DZIPEOF() = default;
 
 	public:
-		ARCHIVE_ERROR OpenArchive(Archive& archive);
+		/*
+		ARCHIVE_ERROR OpenArchive(ARCHIVE& archive);
 
-		ARCHIVE_ERROR AppendNewHeaderToArchive(Archive& archive);
-
+		ARCHIVE_ERROR AppendNewHeaderToArchive(ARCHIVE& archive);
+		*/
 	private:
 		typedef struct Header {
 			std::pair<uint32_t, char*> Field[9]{

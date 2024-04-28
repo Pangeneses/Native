@@ -81,25 +81,25 @@ export namespace CHV4DARCHIVE
 	public:
 		void ClearStream();
 
+		size_t BitStreamSize();
+
 		void BeginningOfStream();
 
-		size_t FindNextOf(std::deque<BIT> const& find);
+		int FindNextOf(std::deque<BIT> const& find);
 
-		size_t ReverseFindNextOf(std::deque<BIT> const& find);
+		int ReverseFindNextOf(std::deque<BIT> const& find);
 
-		void EndOfStream();
+		int ForwardSentinelPosition();
 
-		std::deque<unsigned char>& GetData() { return Data; }
-
-		std::deque<unsigned char> GetDataView() { return std::deque<unsigned char>{ Data.begin(), Data.end() }; }
-
-		size_t BitStreamSize() { return (Data.size() * 8) + (BitPosition + 1); }
+		int ReverseSentinelPosition();
 
 		void ByteAlignNext();
 
-		size_t ForwardSentinelPosition() { return ((std::distance(Data.begin(), Sentinel.first) - 1) * 8) + Sentinel.second; }
+		std::deque<unsigned char>& GetData();
 
-		size_t ReverseSentinelPosition() { return ((std::distance(Data.rbegin(), ReverseSentinel.first) - 1) * 8) + ReverseSentinel.second; }
+		std::deque<unsigned char> GetDataView();
+
+		void EndOfStream();
 
 	private:
 		BIT_CONSUMPTION BitConsume{ BIT_CONSUMPTION_LEFT_RIGHT };

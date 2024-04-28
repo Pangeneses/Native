@@ -16,6 +16,7 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
+	/*
 	ARCHIVE_ERROR CHV4DARCHIVE::OpenArchive(std::string const& archive, size_t const& sz)
 	{
 		std::filesystem::path directory{ archive };
@@ -24,15 +25,15 @@ namespace CHV4DARCHIVE
 
 		if (!std::filesystem::exists(directory)) return ARCHIVE_ERROR_ARCHIVE_DNE;
 
-		File.directory = directory.parent_path();
+		//File.directory = directory.parent_path();
 
-		File.file = directory.filename();
+		//File.file = directory.filename();
 
-		File.window = sz;
+		//File.window = sz;
 
-		Header.OpenArchive(File);
+		//Header.OpenArchive(File);
 
-		Appendix.LoadAppendixFromHeader(Header);
+		//Appendix.LoadAppendixFromHeader(Header);
 
 
 
@@ -103,5 +104,5 @@ namespace CHV4DARCHIVE
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
-
+	*/
 }

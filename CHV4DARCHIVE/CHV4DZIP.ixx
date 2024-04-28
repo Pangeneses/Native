@@ -21,6 +21,7 @@ export namespace CHV4DARCHIVE
 		CHV4DARCHIVE() = default;
 
 	public:
+		/*
 		ARCHIVE_ERROR OpenArchive(std::string const& archive, size_t const& sz = 32768);
 
 		ARCHIVE_ERROR CreateArchive(std::string const& archive, std::vector<std::string> const& files);
@@ -36,7 +37,7 @@ export namespace CHV4DARCHIVE
 		ARCHIVE_ERROR ReleaseStreamFromArchive(std::string const& file, std::vector<uint8_t> const& buffer);
 
 		ARCHIVE_ERROR RenameFileInArchive(std::string const& from, std::string const& to);
-
+		*/
 	private:
 		//Archive File;
 

@@ -11,9 +11,10 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
+	/*
 	ARCHIVE_ERROR CHV4DZIPSTREAM::LoadAndInflateStream(std::vector<uint8_t> const& buffer)
 	{
-
+		buffer.empty();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
@@ -21,7 +22,7 @@ namespace CHV4DARCHIVE
 
 	ARCHIVE_ERROR CHV4DZIPSTREAM::ReturnInflatedStream(std::vector<uint8_t>& buffer)
 	{
-
+		buffer.empty();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
@@ -29,10 +30,10 @@ namespace CHV4DARCHIVE
 
 	ARCHIVE_ERROR CHV4DZIPSTREAM::DeflateAndReturnStream(std::vector<uint8_t>& buffer)
 	{
-
+		buffer.empty();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
-
+	*/
 }

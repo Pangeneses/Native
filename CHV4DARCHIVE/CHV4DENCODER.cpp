@@ -111,10 +111,21 @@ namespace CHV4DARCHIVE
 
 					if (LiteralLength() != ARCHIVE_ERROR_SUCCEEDED) return error;
 
-					if (Encode() != ARCHIVE_ERROR_SUCCEEDED) return error;
+					size_t LiteralLength = std::distance(BlockSentinel, LiteralSentinel);
 
-					if (SlideWindow(std::distance(BlockSentinel, LiteralSentinel)) != ARCHIVE_ERROR_SUCCEEDED) return error;
+					if (LiteralLength > 0 && LiteralLength <= 32768)
+					{
+						if (Encode() != ARCHIVE_ERROR_SUCCEEDED) return error;
 
+						if(SlideWindow(static_cast<uint16_t>(LiteralLength)) != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+					}
+					else
+					{
+						throw std::out_of_range{ "Literal length overrun." };
+
+					}
+						
 				} while (BlockSentinel != Block->end());
 
 				uint8_t end = 0;
@@ -219,11 +230,22 @@ namespace CHV4DARCHIVE
 
 		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-		BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, std::distance(BlockSentinel, Stream->cend()) * 8);
+		size_t szBlock = std::distance(BlockSentinel, Stream->cend());
 
-		SlideWindow(std::distance(BlockSentinel, Stream->cend()));
+		if (szBlock > 0 && szBlock <= 32768)
+		{
+			BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, szBlock * 8);
 
-		return ARCHIVE_ERROR_END_OF_STREAM;
+			error = SlideWindow(static_cast<uint16_t>(szBlock));
+
+		}
+		else
+		{
+			throw std::out_of_range{ "Block size overrun." };
+
+		}
+
+		return error;
 
 	}
 
@@ -267,11 +289,15 @@ namespace CHV4DARCHIVE
 
 			while (*citt == *std::next(BlockSentinel, std::distance(*Literal, citt)) && std::distance(*Literal, citt) <= 258)
 			{
-				if (std::distance(*Literal, citt) > LongestLiteral.size())
+				if (std::distance(*Literal, citt) > 0)
 				{
-					LongestLiteral.push_back(*citt);
+					if (static_cast<size_t>(std::distance(*Literal, citt)) > LongestLiteral.size())
+					{
+						LongestLiteral.push_back(*citt);
 
-					++citt;
+						++citt;
+
+					}
 
 				}
 
@@ -295,7 +321,8 @@ namespace CHV4DARCHIVE
 
 		}
 
-		error = PushLength(std::distance(BlockSentinel, LiteralSentinel));
+		if(std::distance(BlockSentinel, LiteralSentinel) >= 0)
+		error = PushLength();
 
 		if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
 
@@ -346,17 +373,23 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DENCODER::PushLength(size_t const& len)
+	ARCHIVE_ERROR CHV4DENCODER::PushLength(uint16_t const& len)
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
-		if (len < 280)
+		uint8_t Length;
+
+		if (len < 259) Length = len;
+
+		else throw std::out_of_range{ "Literal is too long." };
+
+		if (Length < 259)
 		{
 			BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
 			uint8_t PrefixCode;
 
-			PrefixCode = 0b00000000 + len;
+			PrefixCode = 0b00000000 + Length;
 
 			PrefixCode = PrefixCode << 1;
 
@@ -369,7 +402,7 @@ namespace CHV4DARCHIVE
 
 			uint8_t PrefixCode;
 
-			PrefixCode = 0b11000000 + len;
+			PrefixCode = 0b11000000 + Length;
 
 			BitStream->PushBits(PrefixCode, 8);
 
@@ -382,7 +415,7 @@ namespace CHV4DARCHIVE
 
 			for (; len >= PrefixPoolItt->first && len < std::next(PrefixPoolItt, 1)->first; ++PrefixPoolItt);
 
-			uint8_t ExtraBits = std::next(PrefixPoolItt, 1)->first - PrefixPoolItt->first;
+			uint8_t ExtraBits = static_cast<uint8_t>(std::next(PrefixPoolItt, 1)->first - PrefixPoolItt->first);
 
 			BitStream->PushBits(ExtraBits, PrefixPoolItt->second.second);
 
@@ -392,7 +425,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DENCODER::PushDistance(size_t const& dist)
+	ARCHIVE_ERROR CHV4DENCODER::PushDistance(uint16_t const& dist)
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
@@ -402,9 +435,9 @@ namespace CHV4DARCHIVE
 
 		for (; dist >= PrefixPoolItt->first && dist < std::next(PrefixPoolItt, 1)->first; ++PrefixPoolItt);
 
-		uint8_t DistancePrefixCode = std::next(PrefixPoolItt, 1)->first - PrefixPoolItt->first;
+		uint8_t DistancePrefixCode = static_cast<uint8_t>(std::next(PrefixPoolItt, 1)->first - PrefixPoolItt->first);
 
-		DistancePrefixCode << 3;
+		DistancePrefixCode = DistancePrefixCode << 3;
 
 		BitStream->PushBits(DistancePrefixCode, 5);
 
@@ -418,7 +451,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DENCODER::SlideWindow(size_t const& shift)
+	ARCHIVE_ERROR CHV4DENCODER::SlideWindow(uint16_t const& shift)
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 

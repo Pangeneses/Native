@@ -58,11 +58,11 @@ export namespace CHV4DARCHIVE
 
 		ARCHIVE_ERROR Encode();
 
-		ARCHIVE_ERROR PushLength(size_t const& len);
+		ARCHIVE_ERROR PushLength(uint16_t const& len);
 
-		ARCHIVE_ERROR PushDistance(size_t const& dist);
+		ARCHIVE_ERROR PushDistance(uint16_t const& dist);
 
-		ARCHIVE_ERROR SlideWindow(size_t const& shift);
+		ARCHIVE_ERROR SlideWindow(uint16_t const& shift);
 
 	private:
 		BlockSink Sink;
