@@ -20,10 +20,29 @@ namespace CHV4DARCHIVE
 {
 	CHV4DDECODER::CHV4DDECODER()
 	{
+		BitStream->ClearStream();
 
+		ByteStream->clear();
 
+		EOS = false;
 
+		BlockType = { CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
 
+		LLC = 0b1111111111111111;
+
+	}
+
+	void CHV4DDECODER::NewStream()
+	{
+		BitStream->ClearStream();
+
+		ByteStream->clear();
+
+		EOS = false;
+
+		BlockType = { CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
+
+		LLC = 0b1111111111111111;
 
 	}
 
@@ -32,18 +51,6 @@ namespace CHV4DARCHIVE
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
 		if (bsink == nullptr) throw std::invalid_argument{ "No Sink specified." };
-
-		BitStream->ClearStream();
-
-		ByteStream->clear();
-
-		Sink = bsink;
-
-		EOS = false;
-
-		BlockType = { CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
-
-		LLC = 0b1111111111111111;
 
 		error = ARCHIVE_ERROR_CONSUME_STREAM;
 

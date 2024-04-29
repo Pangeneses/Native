@@ -28,6 +28,8 @@ export namespace CHV4DARCHIVE
 		CHV4DDECODER();
 
 	public:
+		void NewStream();
+
 		ARCHIVE_ERROR InflateStream(BlockSink bsink = nullptr);
 
 		std::shared_ptr<std::deque<unsigned char>> GetByteStream() { return ByteStream; }
@@ -41,8 +43,6 @@ export namespace CHV4DARCHIVE
 		ARCHIVE_ERROR DecodeLLC();
 
 	private:
-		BlockSink Sink = nullptr;
-
 		bool EOS = false;
 
 		std::pair<CHV4DBITSTREAM::BIT, CHV4DBITSTREAM::BIT> BlockType{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };

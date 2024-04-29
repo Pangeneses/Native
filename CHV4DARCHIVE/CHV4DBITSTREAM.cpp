@@ -167,7 +167,7 @@ namespace CHV4DARCHIVE
 
 		else ++Sentinel.second;
 
-		if (Sentinel.second == 8) { Sentinel.second = 0; std::next(Sentinel.first, 1); }
+		if (Sentinel.second == 8) { Sentinel.second = 0; Sentinel.first = std::next(Sentinel.first, 1); }
 
 		switch (Sentinel.second)
 		{
@@ -193,7 +193,7 @@ namespace CHV4DARCHIVE
 
 		if (Sentinel.first == Data.begin() && Sentinel.second == 0) std::out_of_range{ "End of bitstream." };
 
-		if (Sentinel.second == 0) { Sentinel.second = 7; std::prev(Sentinel.first, 1); }
+		if (Sentinel.second == 0) { Sentinel.second = 7; Sentinel.first = std::prev(Sentinel.first, 1); }
 
 		else --Sentinel.second;
 
@@ -236,14 +236,14 @@ namespace CHV4DARCHIVE
 		switch (BitPosition)
 		{
 
-		case 0: if (in == BIT_ONE) Data.back() | 0b10000000; break;
-		case 1: if (in == BIT_ONE) Data.back() | 0b01000000; break;
-		case 2: if (in == BIT_ONE) Data.back() | 0b00100000; break;
-		case 3: if (in == BIT_ONE) Data.back() | 0b00010000; break;
-		case 4: if (in == BIT_ONE) Data.back() | 0b00001000; break;
-		case 5: if (in == BIT_ONE) Data.back() | 0b00000100; break;
-		case 6: if (in == BIT_ONE) Data.back() | 0b00000010; break;
-		case 7: if (in == BIT_ONE) Data.back() | 0b00000001; break;
+		case 0: if (in == BIT_ONE) Data.back() = Data.back() | 0b10000000; break;
+		case 1: if (in == BIT_ONE) Data.back() = Data.back() | 0b01000000; break;
+		case 2: if (in == BIT_ONE) Data.back() = Data.back() | 0b00100000; break;
+		case 3: if (in == BIT_ONE) Data.back() = Data.back() | 0b00010000; break;
+		case 4: if (in == BIT_ONE) Data.back() = Data.back() | 0b00001000; break;
+		case 5: if (in == BIT_ONE) Data.back() = Data.back() | 0b00000100; break;
+		case 6: if (in == BIT_ONE) Data.back() = Data.back() | 0b00000010; break;
+		case 7: if (in == BIT_ONE) Data.back() = Data.back() | 0b00000001; break;
 
 		default: throw std::runtime_error{ "BitStream overrun." }; break;
 
@@ -320,7 +320,7 @@ namespace CHV4DARCHIVE
 	{
 		if (bits < 1 || bits > 32) throw std::invalid_argument{ "Invalid bit insertion in PushBits." };
 
-		uint16_t InPlace = data;
+		uint32_t InPlace = data;
 
 		unsigned char* buffer = reinterpret_cast<unsigned char*>(&InPlace);
 
@@ -349,7 +349,7 @@ namespace CHV4DARCHIVE
 	{
 		if (bits < 1 || bits > 64) throw std::invalid_argument{ "Invalid bit insertion in PushBits." };
 
-		uint16_t InPlace = data;
+		uint64_t InPlace = data;
 
 		unsigned char* buffer = reinterpret_cast<unsigned char*>(&InPlace);
 
@@ -513,7 +513,7 @@ namespace CHV4DARCHIVE
 
 		BitPosition = 8 - (num % 8);
 
-		Data.erase(std::next(Data.end(), -(num - (num % 8)) / 8), Data.end());
+		Data.erase(std::prev(Data.end(), (num - (num % 8)) / 8), Data.end());
 
 		isValidSentinel = false;
 
@@ -585,6 +585,10 @@ namespace CHV4DARCHIVE
 
 		while ((std::distance(Data.begin(), Sentinel.first) + Sentinel.second) != pos) Buffer << (operator++());
 
+		BIT_CONSUMPTION HoldBitConsume{ BitConsume };
+
+		BYTE_CONSUMPTION HoldByteConsume{ ByteConsume };
+
 		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
 
 		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
@@ -598,6 +602,10 @@ namespace CHV4DARCHIVE
 		isValidSentinel = false;
 
 		isValidReverseSentinel = false;
+
+		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
+
+		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
 
 		return;
 
@@ -655,11 +663,11 @@ namespace CHV4DARCHIVE
 
 	}
 
-	int CHV4DBITSTREAM::FindNextOf(std::deque<BIT> const& find)
+	bool CHV4DBITSTREAM::FindNextOf(std::deque<BIT> const& find)
 	{
 		if (find.empty()) throw std::invalid_argument{ "No search deque." };
 
-		if (find.size() > this->BitStreamSize()) return -1;
+		if (find.size() > this->BitStreamSize()) return false;
 
 		this->BeginningOfStream();
 
@@ -692,7 +700,7 @@ namespace CHV4DARCHIVE
 
 			}
 
-			if (citt == find.end()) return ForwardSentinelPosition();
+			if (citt == find.end()) return true;
 
 			if (Sentinel.first != std::prev(Data.end(), 1) && Sentinel.second == 7)
 			{
@@ -708,22 +716,22 @@ namespace CHV4DARCHIVE
 			}
 			else if (Sentinel.first == std::prev(Data.end(), 1) && Sentinel.second == 7)
 			{
-				return -1;
+				return false;
 
 			}
 
 
 		}
 
-		return -1;
+		return false;
 
 	}
 
-	int CHV4DBITSTREAM::ReverseFindNextOf(std::deque<BIT> const& find)
+	bool CHV4DBITSTREAM::ReverseFindNextOf(std::deque<BIT> const& find)
 	{
 		if (find.empty()) throw std::invalid_argument{ "No search deque." };
 
-		if (find.size() > this->BitStreamSize()) return -1;
+		if (find.size() > this->BitStreamSize()) return false;
 
 		this->BeginningOfStream();
 
@@ -756,7 +764,7 @@ namespace CHV4DARCHIVE
 
 			}
 
-			if (citt == find.end()) return ReverseSentinelPosition();
+			if (citt == find.end()) return true;
 
 			if (ReverseSentinel.first != std::prev(Data.rend(), 1) && ReverseSentinel.second == 7)
 			{
@@ -772,14 +780,14 @@ namespace CHV4DARCHIVE
 			}
 			else if (ReverseSentinel.first == std::prev(Data.rend(), 1) && ReverseSentinel.second == 7)
 			{
-				return -1;
+				return false;
 
 			}
 
 
 		}
 
-		return -1;
+		return false;
 
 	}
 

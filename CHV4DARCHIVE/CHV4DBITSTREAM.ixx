@@ -87,9 +87,9 @@ export namespace CHV4DARCHIVE
 
 		void BeginningOfStream();
 
-		int FindNextOf(std::deque<BIT> const& find);
+		bool FindNextOf(std::deque<BIT> const& find);
 
-		int ReverseFindNextOf(std::deque<BIT> const& find);
+		bool ReverseFindNextOf(std::deque<BIT> const& find);
 
 		size_t ForwardSentinelPosition();
 
