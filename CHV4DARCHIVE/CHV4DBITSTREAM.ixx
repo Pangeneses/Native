@@ -41,7 +41,7 @@ export namespace CHV4DARCHIVE
 		void SetByteConsumption(BYTE_CONSUMPTION const& set) { ByteConsume = set; }
 
 	public:
-		BIT operator ()();
+		BIT operator ()(bool forward = true);
 
 		BIT operator ()(size_t const& pos, bool forward = true);
 

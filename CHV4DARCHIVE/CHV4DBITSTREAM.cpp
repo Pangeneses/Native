@@ -65,7 +65,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ()()
+	CHV4DBITSTREAM::BIT CHV4DBITSTREAM::operator ()(bool forward = true)
 	{
 		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
@@ -140,15 +140,7 @@ namespace CHV4DARCHIVE
 
 		if (Sentinel.first == Data.end() && Sentinel.second == 7) std::out_of_range{ "End of bitstream." };
 
-		int64_t Distance = std::distance(Sentinel.first, Data.end());
-
-		size_t AbsoluteDistance{ 0 };
-
-		if (Distance > 0) AbsoluteDistance = static_cast<size_t>(std::distance(Sentinel.first, Data.end()));
-
-		else throw std::out_of_range{ "BitStream overrun error." };
-
-		if (AbsoluteDistance == 1 && Sentinel.second == 7) std::out_of_range{ "End of bitstream." };
+		if (std::distance(Sentinel.first, Data.end()) == 1ll && Sentinel.second == 7) std::out_of_range{ "End of bitstream." };
 
 		else ++Sentinel.second;
 
