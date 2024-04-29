@@ -17,28 +17,34 @@ namespace CHV4DARCHIVE
 {
 	CHV4DBITSTREAM::CHV4DBITSTREAM()
 	{
-		Data.clear();
+		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
 
-		Data.push_back({});
+		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
+
+		Data.clear();
 
 		Sentinel.first = Data.begin();
 
 		Sentinel.second = 0;
 
+		isValidSentinel = false;
+
 		ReverseSentinel.first = Data.rbegin();
 
 		ReverseSentinel.second = 0;
 
+		isValidReverseSentinel = false;
+
 		BitPosition = 0;
-
-		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
-
-		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
 
 	}
 
 	CHV4DBITSTREAM::CHV4DBITSTREAM(std::deque<unsigned char>::iterator begin, std::deque<unsigned char>::iterator end)
 	{
+		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
+
+		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
+
 		Data.clear();
 
 		std::move(begin, end, Data.begin());
@@ -47,15 +53,15 @@ namespace CHV4DARCHIVE
 
 		Sentinel.second = 0;
 
+		isValidSentinel = true;
+
 		ReverseSentinel.first = Data.rbegin();
 
 		ReverseSentinel.second = 0;
 
+		isValidReverseSentinel = true;
+
 		BitPosition = 0;
-
-		BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
-
-		ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
 
 	}
 
@@ -199,6 +205,10 @@ namespace CHV4DARCHIVE
 		Data.clear();
 
 		Data.insert(Data.begin(), std::move_iterator(in.Data.begin()), std::move_iterator(in.Data.end()));
+
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
 
 	}
 
@@ -405,6 +415,10 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::PushBytes(uint64_t const& data)
 	{
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
+
 		uint64_t InPlace = data;
 
 		unsigned char* buffer = reinterpret_cast<unsigned char*>(&InPlace);
@@ -438,11 +452,15 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::PopFrontBits(size_t const& num)
 	{
-		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
 		if (num > this->BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
+
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
+
+		Sentinel.first = Data.begin(); Sentinel.second = 0;
 
 		CHV4DBITSTREAM Buffer;
 
@@ -460,6 +478,10 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::PopFrontBytes(size_t const& num)
 	{
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
+
 		if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
 
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -472,6 +494,10 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::PopBackBits(size_t const& num)
 	{
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
+
 		if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
 
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -486,6 +512,10 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::PopBackBytes(size_t const& num)
 	{
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
+
 		if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
 
 		if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -498,8 +528,6 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::BitErase(size_t const& beg, size_t const& end)
 	{
-		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
 		if (beg < 0 || beg >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
 		if (end < 0 || end >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -521,6 +549,10 @@ namespace CHV4DARCHIVE
 		while (!(Sentinel.first == std::prev(Data.end(), 1) && Sentinel.second == 7)) Buffer << (operator++());
 
 		this->operator=(Buffer);
+
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
 
 		return;
 
@@ -552,6 +584,10 @@ namespace CHV4DARCHIVE
 
 		this->operator=(Buffer);
 
+		isValidSentinel = false;
+
+		isValidReverseSentinel = false;
+
 		return;
 
 	}
@@ -560,15 +596,17 @@ namespace CHV4DARCHIVE
 	{
 		Data.clear();
 
-		Data.push_back({});
-
 		Sentinel.first = Data.begin();
 
 		Sentinel.second = 0;
 
+		isValidSentinel = false;
+
 		ReverseSentinel.first = Data.rbegin();
 
 		ReverseSentinel.second = 0;
+
+		isValidReverseSentinel = false;
 
 		BitPosition = 0;
 
@@ -593,9 +631,13 @@ namespace CHV4DARCHIVE
 
 		Sentinel.second = 0;
 
+		isValidSentinel = true;
+
 		ReverseSentinel.first = Data.rbegin();
 
 		ReverseSentinel.second = 0;
+
+		isValidReverseSentinel = true;
 
 		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
@@ -603,8 +645,6 @@ namespace CHV4DARCHIVE
 
 	int CHV4DBITSTREAM::FindNextOf(std::deque<BIT> const& find)
 	{
-		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
 		if (find.empty()) throw std::invalid_argument{ "No search deque." };
 
 		if (find.size() > this->BitStreamSize()) return -1;
@@ -667,8 +707,6 @@ namespace CHV4DARCHIVE
 
 	int CHV4DBITSTREAM::ReverseFindNextOf(std::deque<BIT> const& find)
 	{
-		if (!isValidReverseSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
 		if (find.empty()) throw std::invalid_argument{ "No search deque." };
 
 		if (find.size() > this->BitStreamSize()) return -1;
@@ -764,22 +802,29 @@ namespace CHV4DARCHIVE
 
 	std::deque<unsigned char> CHV4DBITSTREAM::GetDataView()
 	{
+		isValidSentinel = false;
 
-		return std::deque<unsigned char>{ Data.begin(), Data.end() };
+		isValidReverseSentinel = false;
+
+		return std::deque<unsigned char>{ std::move_iterator(Data.begin()), std::move_iterator(Data.end()) };
 
 	}
 
 	void CHV4DBITSTREAM::EndOfStream()
 	{
-		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+		if (Data.empty()) throw std::runtime_error{ "Empty stream." };
 
 		Sentinel.first = --Data.end();
 
 		Sentinel.second = 7;
 
+		isValidSentinel = true;
+
 		ReverseSentinel.first = Data.rend();
 
 		ReverseSentinel.second = 7;
+
+		isValidReverseSentinel = true;
 
 		if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
 
