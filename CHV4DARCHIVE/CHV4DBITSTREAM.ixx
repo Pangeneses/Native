@@ -2,6 +2,9 @@ module;
 
 #include <string>
 
+#include <functional>
+#include <memory>
+
 #include <deque>
 
 export module CHV4DARCHIVE:CHV4DBITSTREAM;
@@ -94,6 +97,8 @@ export namespace CHV4DARCHIVE
 		size_t ForwardSentinelPosition();
 
 		size_t ReverseSentinelPosition();
+
+		size_t Remain();
 
 		void ByteAlignNext();
 

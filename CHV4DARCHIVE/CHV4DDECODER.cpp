@@ -20,125 +20,200 @@ namespace CHV4DARCHIVE
 {
 	CHV4DDECODER::CHV4DDECODER()
 	{
-		BitStream->ClearStream();
+		Segment->ClearStream();
 
 		ByteStream->clear();
 
-		EOS = false;
+		ReadHeader = true; 
 
 		BlockType = { CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
 
-		LLC = 0b1111111111111111;
+		ZeroZeroBlock.first = 0; ZeroZeroBlock.second = 0;
 
-	}
-
-	void CHV4DDECODER::NewStream()
-	{
-		BitStream->ClearStream();
-
-		ByteStream->clear();
+		std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
 
 		EOS = false;
-
-		BlockType = { CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
-
-		LLC = 0b1111111111111111;
 
 	}
 
 	ARCHIVE_ERROR CHV4DDECODER::InflateStream(BlockSink bsink)
 	{
-		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
 
 		if (bsink == nullptr) throw std::invalid_argument{ "No Sink specified." };
 
-		error = ARCHIVE_ERROR_CONSUME_STREAM;
+		NewStream();
 
-		while (!(EOS && LLC == 0))
+		while (error == ARCHIVE_ERROR_CONSUME_STREAM)
 		{
-			error = Sink(BitStream);
-
-			if (error != ARCHIVE_ERROR_SUCCEEDED || error != ARCHIVE_ERROR_END_OF_STREAM) return error;
-
-			if (BitStream->BitStreamSize() == 0) throw std::invalid_argument{ "Empty BitStream." };
-
-			if (!((BitStream->BitStreamSize() - BitStream->ForwardSentinelPosition()) > 4)) break;
-
-			if (BlockType == std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE })
+			if (Segment->Remain() == 0)
 			{
-				if ((BitStream.get())->operator++() == CHV4DBITSTREAM::BIT_ONE) EOS = true;
+				error = bsink(Segment);
 
-				BlockType.first = (BitStream.get())->operator++();
-
-				BlockType.second = (BitStream.get())->operator++();
-
-				if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ZERO, CHV4DBITSTREAM::BIT_ONE })
-				{
-					throw std::invalid_argument{ "Dynamic trees not supported." };
-
-				}
-				else if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE })
-				{
-					throw std::invalid_argument{ "Reserved." };
-
-				}
+				Segment->BeginningOfStream();
 
 			}
 
-			if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ZERO, CHV4DBITSTREAM::BIT_ZERO })
-			{
-				do
-				{
-					error = NoCompress();
+			if (Segment->Remain() == 0 && error == ARCHIVE_ERROR_CONSUME_STREAM) throw std::invalid_argument{ "Empty Segment." };
 
-				} while (error == ARCHIVE_ERROR_CONSUME_STREAM);
+			if (ReadHeader && error == ARCHIVE_ERROR_CONSUME_STREAM)
+			{
+				error = Header();
 
 			}
-			else
+			else if(!ReadHeader && error == ARCHIVE_ERROR_CONSUME_STREAM)
 			{
-				do
+				if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ZERO, CHV4DBITSTREAM::BIT_ZERO })
 				{
-					error = DecodeLLC();
+					do
+					{
+						error = NoCompress();
 
-				} while (error == ARCHIVE_ERROR_CONSUME_STREAM);
+					} while (error == ARCHIVE_ERROR_CONSUME_STREAM);
+
+				}
+				else if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ZERO })
+				{
+					do
+					{
+						error = DecodeLLC();
+
+					} while (error == ARCHIVE_ERROR_CONSUME_STREAM);
+
+				}
 
 			}
 
 		}
 
-		return error;
+		return ARCHIVE_ERROR_SUCCEEDED;
+
+	}
+
+	ARCHIVE_ERROR CHV4DDECODER::Header()
+	{
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
+
+		if (Segment->operator++() == CHV4DBITSTREAM::BIT_ONE) EOS = true;
+
+		if (Segment->Remain() == 0) return ARCHIVE_ERROR_CONSUME_STREAM;
+
+		BlockType.first = Segment->operator++();
+
+		if (Segment->Remain() == 0) return ARCHIVE_ERROR_CONSUME_STREAM;
+
+		BlockType.second = Segment->operator++();
+
+		if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ZERO, CHV4DBITSTREAM::BIT_ONE })
+		{
+			throw std::invalid_argument{ "Dynamic trees not supported." };
+
+		}
+		else if (std::pair{ BlockType.first, BlockType.second } == std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE })
+		{
+			throw std::invalid_argument{ "Reserved." };
+
+		}
+
+		ReadHeader = false;
+
+		if (Segment->Remain() > 8) Segment->ByteAlignNext();
+
+		else Segment->EndOfStream();
+
+		return ARCHIVE_ERROR_CONSUME_STREAM;
 
 	}
 
 	ARCHIVE_ERROR CHV4DDECODER::NoCompress()
 	{
-		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
 
-		BitStream->ByteAlignNext();
+		if (Segment->BitStreamSize() % 8 != 0) throw std::invalid_argument{ "All segments should be mod 8 except last." };
 
-		uint16_t szUncompressed = 0;
-
-		for (size_t i = 0; i < 16; ++i)
+		if (ZeroZeroBlock.second != 4)
 		{
-			BitStream->operator++() == CHV4DBITSTREAM::BIT_ZERO ? 
-				szUncompressed = (szUncompressed >> 1) | 0 : 
-				szUncompressed = (szUncompressed >> 1) | 32768;
-			
-		}
-
-		for (uint16_t count = 0; count < szUncompressed; ++count)
-		{
-			uint8_t Literal = 0;
-
-			for (size_t i = 0; i < 8; ++i)
+			for (size_t i = ZeroZeroBlock.second; i < 4; ++i)
 			{
-				BitStream->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-					Literal = (Literal << 1) | 0 :
-					Literal = (Literal << 1) | static_cast<uint8_t>(32768);
+				if (ZeroZeroBlock.second == i)
+				{
+					for (size_t i = 0; i < 4; ++i)
+					{
+						Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+							ZeroZeroBlock.first = (ZeroZeroBlock.first >> 1) | 0 :
+							ZeroZeroBlock.first = (ZeroZeroBlock.first >> 1) | 32768;
+
+					}
+
+					++ZeroZeroBlock.second;
+
+					if (Segment->Remain() == 0) return ARCHIVE_ERROR_CONSUME_STREAM;
+
+				}
 
 			}
 
-			ByteStream->push_back(static_cast<unsigned char>(Literal));
+		}
+		else if (NotZeroZeroBlock.second != 4)
+		{
+			for (size_t i = NotZeroZeroBlock.second; i < 4; ++i)
+			{
+				if (NotZeroZeroBlock.second == i)
+				{
+					for (size_t i = 0; i < 4; ++i)
+					{
+						Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+							NotZeroZeroBlock.first = (NotZeroZeroBlock.first >> 1) | 0 :
+							NotZeroZeroBlock.first = (NotZeroZeroBlock.first >> 1) | 32768;
+
+					}
+
+					++NotZeroZeroBlock.second;
+
+					if (Segment->Remain() == 0) return ARCHIVE_ERROR_CONSUME_STREAM;
+
+				}
+
+			}
+
+		}
+		else if (ZeroZeroBlock.first != 0)
+		{
+			if (ZeroZeroBlock.second == 4)
+			{
+				while (ZeroZeroBlock.first != 0)
+				{
+					for (size_t i = (Segment->Remain() % 8); i != 0; --i)
+					{
+						uint8_t Literal = 0;
+
+						for (size_t i = 0; i < 8; ++i)
+						{
+							Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+								Literal = (Literal << 1) | 0 :
+								Literal = (Literal << 1) | static_cast<uint8_t>(32768);
+
+						}
+
+						ByteStream->push_back(static_cast<unsigned char>(Literal));
+
+						--ZeroZeroBlock.first;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		if (ZeroZeroBlock.first == 0)
+		{
+			BlockType = std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
+
+			ReadHeader = true;
+
+			ZeroZeroBlock.first = 0; ZeroZeroBlock.second = 0;
 
 		}
 
@@ -150,8 +225,62 @@ namespace CHV4DARCHIVE
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
+		if ((Segment->BitStreamSize() % 8 != 0) && !EOS) throw std::invalid_argument{ "All segments should be mod 8 except last." };
+
+		if (BackRef.LPrefixCode.second != 9)
+		{
+			if (BackRef.LPrefixCode.second != 7)
+			{
+
+
+			}
+			else
+			{
+
+
+			}
+
+		}
+		else if (BackRef.Length.second != 5)
+		{
+
+
+
+		}
+		else if (BackRef.DPrefixCode.second != 5)
+		{
+
+
+
+		}
+		else if (BackRef.Distance.second != 13)
+		{
+
+
+
+		}
+
+
 
 		return error;
+
+	}
+
+	void CHV4DDECODER::NewStream()
+	{
+		Segment->ClearStream();
+
+		ByteStream->clear();
+
+		ReadHeader = true;
+
+		BlockType = { CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
+
+		ZeroZeroBlock.first = 0; ZeroZeroBlock.second = 0;
+
+		std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
+
+		EOS = false;
 
 	}
 

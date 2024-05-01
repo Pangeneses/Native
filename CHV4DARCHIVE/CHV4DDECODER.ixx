@@ -22,34 +22,49 @@ export namespace CHV4DARCHIVE
 {
 	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<CHV4DBITSTREAM> BitStream)> BlockSink;
 
+	typedef struct LLC {
+		std::pair<uint16_t, uint8_t> LPrefixCode;
+		std::pair<uint16_t, uint8_t> Length;
+		std::pair<uint16_t, uint8_t> DPrefixCode;
+		std::pair<uint16_t, uint8_t> Distance;
+	}LLC;
+
 	class CHV4DDECODER
 	{
 	public:
 		CHV4DDECODER();
 
 	public:
-		void NewStream();
-
 		ARCHIVE_ERROR InflateStream(BlockSink bsink = nullptr);
 
 		std::shared_ptr<std::deque<unsigned char>> GetByteStream() { return ByteStream; }
 
 	private:
-		std::shared_ptr<CHV4DBITSTREAM> BitStream;
+		ARCHIVE_ERROR Header();
 
-	private:
 		ARCHIVE_ERROR NoCompress();
 
 		ARCHIVE_ERROR DecodeLLC();
 
 	private:
-		bool EOS = false;
+		std::shared_ptr<CHV4DBITSTREAM> Segment;
+
+		bool ReadHeader = true;
 
 		std::pair<CHV4DBITSTREAM::BIT, CHV4DBITSTREAM::BIT> BlockType{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
 
-		uint16_t LLC = 0;
+		std::pair<uint16_t, size_t> ZeroZeroBlock;
+
+		std::pair<uint16_t, size_t> NotZeroZeroBlock;
+
+		LLC BackRef;
 
 		std::shared_ptr<std::deque<unsigned char>> ByteStream;
+
+		bool EOS{ false };
+
+	private:
+		void NewStream();
 
 	};
 
