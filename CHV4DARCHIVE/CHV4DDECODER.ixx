@@ -22,13 +22,13 @@ export namespace CHV4DARCHIVE
 {
 	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<CHV4DBITSTREAM> BitStream)> BlockSink;
 
-	typedef std::unordered_map<uint16_t, std::pair<uint16_t, uint8_t>> PrefixBucket;
+	typedef std::unordered_map<uint16_t, std::pair<uint16_t, size_t>> PrefixBucket;
 
 	typedef struct LLC {
-		std::pair<uint16_t, uint8_t> LPrefixCode;
-		std::pair<uint16_t, uint8_t> Length;
-		std::pair<uint16_t, uint8_t> DPrefixCode;
-		std::pair<uint16_t, uint8_t> Distance;
+		std::pair<uint16_t, size_t> LPrefixCode;
+		std::pair<uint16_t, size_t> Length;
+		std::pair<uint16_t, size_t> DPrefixCode;
+		std::pair<uint16_t, size_t> Distance;
 	}LLC;
 
 	class CHV4DDECODER
@@ -74,6 +74,10 @@ export namespace CHV4DARCHIVE
 		bool EOS{ false };
 
 	private:
+		void InitPrefixCodeBits();
+
+		void InitDistanceCodeBits();
+
 		void NewStream(BlockSink bsink);
 
 	private:

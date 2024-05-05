@@ -15,33 +15,30 @@ import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
-{
-	/*
-	ARCHIVE_ERROR CHV4DARCHIVE::OpenArchive(std::string const& archive, size_t const& sz)
+{	
+	ARCHIVE_ERROR CHV4DARCHIVE::OpenArchive(std::string const& archive)
 	{
+		if (archive.empty()) throw std::invalid_argument{ "No archive specified" };
+
 		std::filesystem::path directory{ archive };
 
 		if (!std::filesystem::is_directory(directory.parent_path())) return ARCHIVE_ERROR_DIR_DNE;
 
 		if (!std::filesystem::exists(directory)) return ARCHIVE_ERROR_ARCHIVE_DNE;
 
-		//File.directory = directory.parent_path();
+		//Archive->directory = directory.parent_path();
 
-		//File.file = directory.filename();
+		//Archive.file = directory.filename();
 
-		//File.window = sz;
+		//if (EndOfCentralDir.OpenArchive(Archive) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
 
-		//Header.OpenArchive(File);
-
-		//Appendix.LoadAppendixFromHeader(Header);
-
-
+		//if (CentralDirHeader.LoadAppendixFromHeader(EndOfCentralDir) != ARCHIVE_ERROR_SUCCEEDED);
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::CreateArchive(std::string const& archive, std::vector<std::string> const& files)
+	ARCHIVE_ERROR CHV4DARCHIVE::CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed = true)
 	{
 
 
@@ -50,7 +47,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ExtractArchive(std::vector<std::string>& files)
+	ARCHIVE_ERROR CHV4DARCHIVE::ExtractArchive(std::vector<std::string const&>& files)
 	{
 
 
@@ -59,7 +56,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::AddFilesToCurrentArchive(std::vector<std::string> const& files)
+	ARCHIVE_ERROR CHV4DARCHIVE::AddFilesToCurrentArchive(std::vector<std::string const&> const& files)
 	{
 
 
@@ -77,7 +74,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ReleaseFilesFromArchive(std::vector<std::string> const& files)
+	ARCHIVE_ERROR CHV4DARCHIVE::ReleaseFilesFromArchive(std::vector<std::string const&>& files)
 	{
 
 
@@ -86,7 +83,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ReleaseStreamFromArchive(std::string const& file, std::vector<uint8_t> const& buffer)
+	ARCHIVE_ERROR CHV4DARCHIVE::ReleaseStreamFromArchive(std::string const& file, std::vector<unsigned char>& buffer)
 	{
 
 
@@ -104,5 +101,5 @@ namespace CHV4DARCHIVE
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
-	*/
+	
 }

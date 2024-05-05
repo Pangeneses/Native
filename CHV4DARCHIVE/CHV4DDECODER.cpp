@@ -9,6 +9,8 @@ module;
 #include <vector>
 #include <deque>
 
+#include <stdint.h>
+
 #include <stdexcept> 
 
 module CHV4DARCHIVE:CHV4DDECODER;
@@ -19,7 +21,7 @@ import :CHV4DRESOURCE;
 namespace CHV4DARCHIVE
 {
 	CHV4DDECODER::CHV4DDECODER()
-	{
+	{		
 		Segment->ClearStream();
 
 		ByteStream->clear();
@@ -30,77 +32,20 @@ namespace CHV4DARCHIVE
 
 		ZeroZeroBlock.first = 0; ZeroZeroBlock.second = 0;
 
-		std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
+		std::memset((void*)&BackRef, '\0', sizeof(BackRef));
 
 		EOS = false;
 
-		PrefixCodeBits.insert({ 257, {  3, 0} });
-		PrefixCodeBits.insert({ 258, {  4, 0} });
-		PrefixCodeBits.insert({ 259, {  5, 0} });
-		PrefixCodeBits.insert({ 260, {  6, 0} });
-		PrefixCodeBits.insert({ 261, {  7, 0} });
-		PrefixCodeBits.insert({ 262, {  8, 0} });
-		PrefixCodeBits.insert({ 263, {  9, 0} });
-		PrefixCodeBits.insert({ 264, { 10, 0} });
-		PrefixCodeBits.insert({ 265, { 11, 1} });
-		PrefixCodeBits.insert({ 266, { 13, 1} });
-		PrefixCodeBits.insert({ 267, { 15, 1} });
-		PrefixCodeBits.insert({ 268, { 17, 1} });
-		PrefixCodeBits.insert({ 269, { 19, 2} });
-		PrefixCodeBits.insert({ 270, { 23, 2} });
-		PrefixCodeBits.insert({ 271, { 27, 2} });
-		PrefixCodeBits.insert({ 272, { 31, 2} });
-		PrefixCodeBits.insert({ 273, { 35, 3} });
-		PrefixCodeBits.insert({ 274, { 43, 3} });
-		PrefixCodeBits.insert({ 275, { 51, 3} });
-		PrefixCodeBits.insert({ 276, { 59, 3} });
-		PrefixCodeBits.insert({ 277, { 67, 4} });
-		PrefixCodeBits.insert({ 278, { 83, 4} });
-		PrefixCodeBits.insert({ 279, { 99, 4} });
-		PrefixCodeBits.insert({ 280, {115, 4} });
-		PrefixCodeBits.insert({ 281, {131, 5} });
-		PrefixCodeBits.insert({ 282, {163, 5} });
-		PrefixCodeBits.insert({ 283, {195, 5} });
-		PrefixCodeBits.insert({ 284, {227, 5} });
-		PrefixCodeBits.insert({ 285, {258, 0} });
+		InitPrefixCodeBits();
 
-		DistanceCodeBits.insert({ 0 ,{    1,  0} }); 
-		DistanceCodeBits.insert({ 1 ,{    2,  0} });
-		DistanceCodeBits.insert({ 2 ,{    3,  0} });
-		DistanceCodeBits.insert({ 3 ,{    4,  0} });
-		DistanceCodeBits.insert({ 4 ,{    5,  1} });
-		DistanceCodeBits.insert({ 5 ,{    7,  1} });
-		DistanceCodeBits.insert({ 6 ,{    9,  2} });
-		DistanceCodeBits.insert({ 7 ,{   13,  2} });
-		DistanceCodeBits.insert({ 8 ,{   17,  3} });
-		DistanceCodeBits.insert({ 9 ,{   25,  3} });
-		DistanceCodeBits.insert({10 ,{   33,  4} });
-		DistanceCodeBits.insert({11 ,{   49,  4} });
-		DistanceCodeBits.insert({12 ,{   65,  5} });
-		DistanceCodeBits.insert({13 ,{   97,  5} });
-		DistanceCodeBits.insert({14 ,{  129,  6} });
-		DistanceCodeBits.insert({15 ,{  193,  6} });
-		DistanceCodeBits.insert({16 ,{  257,  7} });
-		DistanceCodeBits.insert({17 ,{  385,  7} });
-		DistanceCodeBits.insert({18 ,{  513,  8} });
-		DistanceCodeBits.insert({19 ,{  769,  8} });
-		DistanceCodeBits.insert({20 ,{ 1025,  9} });
-		DistanceCodeBits.insert({21 ,{ 1537,  9} });
-		DistanceCodeBits.insert({22 ,{ 2049, 10} });
-		DistanceCodeBits.insert({23 ,{ 3073, 10} });
-		DistanceCodeBits.insert({24 ,{ 4097, 11} });
-		DistanceCodeBits.insert({25 ,{ 6145, 11} });
-		DistanceCodeBits.insert({26 ,{ 8193, 12} });
-		DistanceCodeBits.insert({27 ,{12289, 12} });
-		DistanceCodeBits.insert({28 ,{16385, 13} });
-		DistanceCodeBits.insert({29 ,{24577, 13} });
-
+		InitDistanceCodeBits();
+		
 	}
 
 	ARCHIVE_ERROR CHV4DDECODER::InflateStream(BlockSink bsink)
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
-
+		
 		NewStream(bsink);
 
 		while (error == ARCHIVE_ERROR_CONSUME_STREAM)
@@ -134,7 +79,7 @@ namespace CHV4DARCHIVE
 			}
 
 		}
-
+		
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
@@ -166,15 +111,13 @@ namespace CHV4DARCHIVE
 			Segment->BeginningOfStream();
 
 		}
-
+		
 		return ARCHIVE_ERROR_CONSUME_STREAM;
 
 	}
 
 	ARCHIVE_ERROR CHV4DDECODER::Header()
 	{
-		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
-
 		if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
 
 		if (Segment->operator++() == CHV4DBITSTREAM::BIT_ONE) EOS = true;
@@ -206,7 +149,7 @@ namespace CHV4DARCHIVE
 		}
 
 		ReadHeader = false;
-
+		
 		return ARCHIVE_ERROR_CONSUME_STREAM;
 
 	}
@@ -214,16 +157,16 @@ namespace CHV4DARCHIVE
 	ARCHIVE_ERROR CHV4DDECODER::NoCompress()
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
-
+		
 		if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
 
 		if (Segment->BitStreamSize() % 8 != 0) throw std::invalid_argument{ "All segments should be mod 8 except last." };
 
-		if (ZeroZeroBlock.second != 4)
+		if (ZeroZeroBlock.second != 2)
 		{
-			for (; ZeroZeroBlock.second < 4; ++ZeroZeroBlock.second)
+			for (; ZeroZeroBlock.second < 2; ++ZeroZeroBlock.second)
 			{
-				for (size_t i = 0; i < 4; ++i)
+				for (size_t i = 0; i < 8; ++i)
 				{
 					Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
 						ZeroZeroBlock.first = (ZeroZeroBlock.first >> 1) | 0 :
@@ -236,11 +179,11 @@ namespace CHV4DARCHIVE
 			}
 
 		}
-		else if (NotZeroZeroBlock.second != 4)
+		else if (NotZeroZeroBlock.second != 2)
 		{
-			for (; NotZeroZeroBlock.second < 4; ++NotZeroZeroBlock.second)
+			for (; NotZeroZeroBlock.second < 2; ++NotZeroZeroBlock.second)
 			{
-				for (size_t i = 0; i < 4; ++i)
+				for (size_t i = 0; i < 8; ++i)
 				{
 					Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
 						NotZeroZeroBlock.first = (NotZeroZeroBlock.first >> 1) | 0 :
@@ -255,7 +198,7 @@ namespace CHV4DARCHIVE
 		}
 		else if (ZeroZeroBlock.first != 0)
 		{
-			for (;  ZeroZeroBlock.first != 0; --ZeroZeroBlock.first)
+			for (; ZeroZeroBlock.first != 0; --ZeroZeroBlock.first)
 			{
 				uint8_t Literal = 0;
 
@@ -286,7 +229,7 @@ namespace CHV4DARCHIVE
 			if (EOS) return ARCHIVE_ERROR_END_OF_STREAM;
 
 		}
-
+		
 		return error;
 
 	}
@@ -296,7 +239,7 @@ namespace CHV4DARCHIVE
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
 
 		if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
+		
 		for (; BackRef.LPrefixCode.second != 7; ++BackRef.LPrefixCode.second)
 		{
 			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
@@ -304,88 +247,76 @@ namespace CHV4DARCHIVE
 				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
 
 			if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
+			
 		}
-
+		
 		if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
-		if (BackRef.LPrefixCode.second == 7)
+		
+		if (BackRef.LPrefixCode.first >= 24 && BackRef.LPrefixCode.first >= 95)
 		{
-			if (BackRef.LPrefixCode.first >= 24 && BackRef.LPrefixCode.first >= 95)
-			{
-				Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-					BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
-					BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
+			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
 
-				uint16_t Literal = BackRef.LPrefixCode.first - 48;
+			ByteStream->push_back(reinterpret_cast<unsigned char*>(&BackRef.LPrefixCode.first)[1]); 
+		
+			std::memset((void*)&BackRef, '\0', sizeof(BackRef));
 
-				ByteStream->push_back(reinterpret_cast<unsigned char*>(&Literal)[4]);
-
-				std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
-
-				return ARCHIVE_ERROR_CONSUME_STREAM;
-
-			}
-			else if (BackRef.LPrefixCode.first >= 100 && BackRef.LPrefixCode.first >= 127)
-			{
-				Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-					BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
-					BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
-
-				BackRef.LPrefixCode.second = 8;
-
-				if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
-				if (BackRef.LPrefixCode.second == 8)
-				{
-					Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-						BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
-						BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
-
-					uint16_t Literal = BackRef.LPrefixCode.first - 400;
-
-					ByteStream->push_back(reinterpret_cast<unsigned char*>(&Literal)[4]);
-
-					std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
-
-				}
-
-				return ARCHIVE_ERROR_CONSUME_STREAM;
-
-			}
-			else if (BackRef.LPrefixCode.first >= 0 && BackRef.LPrefixCode.first >= 23)
-			{
-				if (BackRef.LPrefixCode.first == 0)
-				{
-					BlockType = std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
-
-					ReadHeader = true;
-
-					std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
-
-					if (EOS) return ARCHIVE_ERROR_EMPTY_STREAM;
-
-				}
-
-				if (DecodeLiteralLength() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Decoder failure." };
-
-				return;
-
-			}
-			else if (BackRef.LPrefixCode.first >= 96 && BackRef.LPrefixCode.first >= 99)
-			{
-				Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-					BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
-					BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
-
-				if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
-				if (DecodeLiteralLength() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Decoder failure." };
-
-			}
-
+			return ARCHIVE_ERROR_CONSUME_STREAM;
+			
 		}
+		else if (BackRef.LPrefixCode.first >= 100 && BackRef.LPrefixCode.first >= 127)
+		{
+			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
 
+			if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
+
+			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
+
+			ByteStream->push_back(reinterpret_cast<unsigned char*>(&BackRef.LPrefixCode.first)[1]);
+
+			std::memset((void*)&BackRef, '\0', sizeof(BackRef));
+
+			return ARCHIVE_ERROR_CONSUME_STREAM;
+			
+		}
+		else if (BackRef.LPrefixCode.first >= 0 && BackRef.LPrefixCode.first >= 23)
+		{
+			if (BackRef.LPrefixCode.first == 0)
+			{
+				BlockType = std::pair{ CHV4DBITSTREAM::BIT_ONE, CHV4DBITSTREAM::BIT_ONE };
+
+				ReadHeader = true;
+
+				std::memset((void*)&BackRef, '\0', sizeof(BackRef));
+
+				if (EOS) return ARCHIVE_ERROR_EMPTY_STREAM;
+
+			}
+
+			if (DecodeLiteralLength() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Decoder failure." };
+
+			return ARCHIVE_ERROR_CONSUME_STREAM;
+		
+		}
+		else if (BackRef.LPrefixCode.first >= 96 && BackRef.LPrefixCode.first >= 99)
+		{
+			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | 0 :
+				BackRef.LPrefixCode.first = (BackRef.LPrefixCode.first << 1) | static_cast<uint8_t>(32768);
+
+			if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
+
+			if (DecodeLiteralLength() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Decoder failure." };
+			
+			return ARCHIVE_ERROR_CONSUME_STREAM;
+			
+		}
+		
 		return error;
 
 	}
@@ -393,23 +324,23 @@ namespace CHV4DARCHIVE
 	ARCHIVE_ERROR CHV4DDECODER::DecodeLiteralLength()
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
-
+		
 		uint16_t Prefix{ 0 };
 
-		if (BackRef.LPrefixCode.first >= 192 && BackRef.LPrefixCode.first <= 199)
+		if (BackRef.LPrefixCode.first >= 1 && BackRef.LPrefixCode.first <= 23)
 		{
-			Prefix = BackRef.LPrefixCode.first - 192 + 280;
+			Prefix = BackRef.LPrefixCode.first + 256ui16;
 
 		}
 		else
 		{
-			Prefix = BackRef.LPrefixCode.first + 257;
+			Prefix = BackRef.LPrefixCode.first - 192ui16 + 280ui16;
 
 		}
 
 		BackRef.Length = PrefixCodeBits.at(Prefix);
 
-		uint8_t Offset{ 0 };
+		uint16_t Offset{ 0 };
 
 		for (; BackRef.Length.second > 0; --BackRef.Length.second)
 		{
@@ -422,41 +353,7 @@ namespace CHV4DARCHIVE
 		}
 
 		BackRef.Length.first = BackRef.Length.first + Offset;
-
-		return error;
-
-	}
-
-	ARCHIVE_ERROR CHV4DDECODER::DecodeLiteralLength()
-	{
-		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
-
-		for (BackRef.DPrefixCode.second = 0; BackRef.DPrefixCode.second < 5; ++BackRef.DPrefixCode.second)
-		{
-			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-				BackRef.DPrefixCode.first = (BackRef.DPrefixCode.first << 1) | 0 :
-				BackRef.DPrefixCode.first = (BackRef.DPrefixCode.first << 1) | static_cast<uint8_t>(32768);
-
-			if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
-		}
-
-		BackRef.Distance = DistanceCodeBits.at(BackRef.DPrefixCode.first);
-
-		uint8_t Offset{ 0 };
-
-		for (; BackRef.Distance.second > 0; --BackRef.Distance.second)
-		{
-			Segment->operator++() == CHV4DBITSTREAM::BIT_ZERO ?
-				Offset = (Offset << 1) | 0 :
-				Offset = (Offset << 1) | static_cast<uint8_t>(32768);
-
-			if (FetchStream() != ARCHIVE_ERROR_CONSUME_STREAM) throw std::runtime_error{ "Stream overrun." };
-
-		}
-
-		BackRef.Distance.first = BackRef.Distance.first + Offset;
-
+		
 		return error;
 
 	}
@@ -464,10 +361,12 @@ namespace CHV4DARCHIVE
 	ARCHIVE_ERROR CHV4DDECODER::PushFromDictionary()
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_CONSUME_STREAM;
-
-
-
-
+		
+		ByteStream->insert(
+			ByteStream->end(),
+			std::prev(ByteStream->end(), BackRef.Length.first),
+			std::next(std::prev(ByteStream->end(), BackRef.Length.first), BackRef.Distance.first));
+			
 		return error;
 
 	}
@@ -488,10 +387,79 @@ namespace CHV4DARCHIVE
 
 		ZeroZeroBlock.first = 0; ZeroZeroBlock.second = 0;
 
-		std::memcpy((void*)&BackRef, '\0', sizeof(BackRef));
+		std::memset((void*)&BackRef, '\0', sizeof(BackRef));
 
 		EOS = false;
+		
+	}
 
+	void CHV4DDECODER::InitPrefixCodeBits()
+	{
+		PrefixCodeBits.insert({257ui16, {  3ui16, 0}});
+		PrefixCodeBits.insert({258ui16, {  4ui16, 0}});
+		PrefixCodeBits.insert({259ui16, {  5ui16, 0}});
+		PrefixCodeBits.insert({260ui16, {  6ui16, 0}});
+		PrefixCodeBits.insert({261ui16, {  7ui16, 0}});
+		PrefixCodeBits.insert({262ui16, {  8ui16, 0}});
+		PrefixCodeBits.insert({263ui16, {  9ui16, 0}});
+		PrefixCodeBits.insert({264ui16, { 10ui16, 0}});
+		PrefixCodeBits.insert({265ui16, { 11ui16, 1}});
+		PrefixCodeBits.insert({266ui16, { 13ui16, 1}});
+		PrefixCodeBits.insert({267ui16, { 15ui16, 1}});
+		PrefixCodeBits.insert({268ui16, { 17ui16, 1}});
+		PrefixCodeBits.insert({269ui16, { 19ui16, 2}});
+		PrefixCodeBits.insert({270ui16, { 23ui16, 2}});
+		PrefixCodeBits.insert({271ui16, { 27ui16, 2}});
+		PrefixCodeBits.insert({272ui16, { 31ui16, 2}});
+		PrefixCodeBits.insert({273ui16, { 35ui16, 3}});
+		PrefixCodeBits.insert({274ui16, { 43ui16, 3}});
+		PrefixCodeBits.insert({275ui16, { 51ui16, 3}});
+		PrefixCodeBits.insert({276ui16, { 59ui16, 3}});
+		PrefixCodeBits.insert({277ui16, { 67ui16, 4}});
+		PrefixCodeBits.insert({278ui16, { 83ui16, 4}});
+		PrefixCodeBits.insert({279ui16, { 99ui16, 4}});
+		PrefixCodeBits.insert({280ui16, {115ui16, 4}});
+		PrefixCodeBits.insert({281ui16, {131ui16, 5}});
+		PrefixCodeBits.insert({282ui16, {163ui16, 5}});
+		PrefixCodeBits.insert({283ui16, {195ui16, 5}});
+		PrefixCodeBits.insert({284ui16, {227ui16, 5}});
+		PrefixCodeBits.insert({285ui16, {258ui16, 0}});
+		
+	}
+
+	void CHV4DDECODER::InitDistanceCodeBits()
+	{
+		DistanceCodeBits.insert({  0ui16, {    1ui16,  0} });
+		DistanceCodeBits.insert({  1ui16, {    2ui16,  0} });
+		DistanceCodeBits.insert({  2ui16, {    3ui16,  0} });
+		DistanceCodeBits.insert({  3ui16, {    4ui16,  0} });
+		DistanceCodeBits.insert({  4ui16, {    5ui16,  1} });
+		DistanceCodeBits.insert({  5ui16, {    7ui16,  1} });
+		DistanceCodeBits.insert({  6ui16, {    9ui16,  2} });
+		DistanceCodeBits.insert({  7ui16, {   13ui16,  2} });
+		DistanceCodeBits.insert({  8ui16, {   17ui16,  3} });
+		DistanceCodeBits.insert({  9ui16, {   25ui16,  3} });
+		DistanceCodeBits.insert({ 10ui16, {   33ui16,  4} });
+		DistanceCodeBits.insert({ 11ui16, {   49ui16,  4} });
+		DistanceCodeBits.insert({ 12ui16, {   65ui16,  5} });
+		DistanceCodeBits.insert({ 13ui16, {   97ui16,  5} });
+		DistanceCodeBits.insert({ 14ui16, {  129ui16,  6} });
+		DistanceCodeBits.insert({ 15ui16, {  193ui16,  6} });
+		DistanceCodeBits.insert({ 16ui16, {  257ui16,  7} });
+		DistanceCodeBits.insert({ 17ui16, {  385ui16,  7} });
+		DistanceCodeBits.insert({ 18ui16, {  513ui16,  8} });
+		DistanceCodeBits.insert({ 19ui16, {  769ui16,  8} });
+		DistanceCodeBits.insert({ 20ui16, { 1025ui16,  9} });
+		DistanceCodeBits.insert({ 21ui16, { 1537ui16,  9} });
+		DistanceCodeBits.insert({ 22ui16, { 2049ui16, 10} });
+		DistanceCodeBits.insert({ 23ui16, { 3073ui16, 10} });
+		DistanceCodeBits.insert({ 24ui16, { 4097ui16, 11} });
+		DistanceCodeBits.insert({ 25ui16, { 6145ui16, 11} });
+		DistanceCodeBits.insert({ 26ui16, { 8193ui16, 12} });
+		DistanceCodeBits.insert({ 27ui16, {12289ui16, 12} });
+		DistanceCodeBits.insert({ 28ui16, {16385ui16, 13} });
+		DistanceCodeBits.insert({ 29ui16, {24577ui16, 13} });
+		
 	}
 
 }

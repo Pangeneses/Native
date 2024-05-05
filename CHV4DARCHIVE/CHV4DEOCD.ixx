@@ -4,26 +4,27 @@ module;
 
 #include <vector>
 
-export module CHV4DARCHIVE:CHV4DZIPEOF;
+export module CHV4DARCHIVE:CHV4DEOCD;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
+import :CHV4DLFH;
+
 export namespace CHV4DARCHIVE
 {
-	class CHV4DZIPEOF
+	class CHV4DEOCD
 	{
 	public:
-		CHV4DZIPEOF() = default;
+		CHV4DEOCD() = default;
 
-	public:
-		/*
-		ARCHIVE_ERROR OpenArchive(ARCHIVE& archive);
+	public:		
+		ARCHIVE_ERROR ReadEndOfCentralDir(std::shared_ptr<ZARCHIVE> archive);
 
-		ARCHIVE_ERROR AppendNewHeaderToArchive(ARCHIVE& archive);
-		*/
+		ARCHIVE_ERROR AppendToArchive(std::shared_ptr<std::vector<CHV4DLFH>> streams);
+		
 	private:
-		typedef struct Header {
+		typedef struct EndOfCentralDir {
 			std::pair<uint32_t, char*> Field[9]{
 			/*0*/ {  0, new char[4] }, /*Central Directory EOF 0x06054b50*/
 			/*1*/ {  4, new char[2] }, /*Current Disk*/
@@ -34,7 +35,7 @@ export namespace CHV4DARCHIVE
 			/*6*/ { 16, new char[4] }, /*Central Directory Offset*/
 			/*7*/ { 20, new char[2] }, /*Comment Length*/
 			/*8*/ { 22, nullptr     } };/*Comment*/
-		} Header;
+		} EndOfCentralDir;
 
 	};
 

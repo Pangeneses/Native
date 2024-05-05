@@ -4,17 +4,17 @@ module;
 
 #include <vector>
 
-export module CHV4DARCHIVE:CHV4DZIPDESC;
+export module CHV4DARCHIVE:CHV4DDATADESC;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 export namespace CHV4DARCHIVE
 {
-	class CHV4DZIPDESC
+	class CHV4DDATADESC
 	{
 	public:
-		CHV4DZIPDESC() = default;
+		CHV4DDATADESC() = default;
 
 
 	};

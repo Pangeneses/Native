@@ -4,15 +4,14 @@ module;
 
 #include <vector>
 
-module CHV4DARCHIVE:CHV4DZIPSTREAM;
+module CHV4DARCHIVE:CHV4DLFH;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
-	/*
-	ARCHIVE_ERROR CHV4DZIPSTREAM::LoadAndInflateStream(std::vector<uint8_t> const& buffer)
+	ARCHIVE_ERROR CHV4DLFH::LoadAndInflateStream(std::vector<uint8_t> const& buffer)
 	{
 		buffer.empty();
 
@@ -20,7 +19,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DZIPSTREAM::ReturnInflatedStream(std::vector<uint8_t>& buffer)
+	ARCHIVE_ERROR CHV4DLFH::ReturnInflatedStream(std::vector<uint8_t>& buffer)
 	{
 		buffer.empty();
 
@@ -28,12 +27,12 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DZIPSTREAM::DeflateAndReturnStream(std::vector<uint8_t>& buffer)
+	ARCHIVE_ERROR CHV4DLFH::DeflateAndReturnStream(std::vector<uint8_t>& buffer)
 	{
 		buffer.empty();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
-	*/
+	
 }

@@ -57,7 +57,7 @@ export namespace CHV4DARCHIVE
 		void operator <<(BIT in);
 
 	public:
-		void PushBits(unsigned char const& data, size_t const& bits);
+		void PushBits(unsigned char const& data, size_t const& bits = 8);
 
 		void PushBits(uint16_t const& data, size_t const& bits);
 

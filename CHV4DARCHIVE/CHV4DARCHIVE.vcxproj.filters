@@ -74,10 +74,10 @@
     <ClCompile Include="CHV4DRESOURCE.ixx">
       <Filter>iii. CHV4DRESOURCE</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPDIR.cpp">
+    <ClCompile Include="CHV4DCDFH.cpp">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\C. Central Directory</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPDIR.ixx">
+    <ClCompile Include="CHV4DCDFH.ixx">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\C. Central Directory</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DZIP.cpp">
@@ -86,22 +86,22 @@
     <ClCompile Include="CHV4DZIP.ixx">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\A. Zip Archive</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPEOF.cpp">
+    <ClCompile Include="CHV4DEOCD.cpp">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\B. End of File</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPEOF.ixx">
+    <ClCompile Include="CHV4DEOCD.ixx">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\B. End of File</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPSTREAM.cpp">
+    <ClCompile Include="CHV4DLFH.cpp">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\D. Stream</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPSTREAM.ixx">
+    <ClCompile Include="CHV4DLFH.ixx">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\D. Stream</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPDESC.ixx">
+    <ClCompile Include="CHV4DDATADESC.ixx">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\E. Descriptor</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DZIPDESC.cpp">
+    <ClCompile Include="CHV4DDATADESC.cpp">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\E. Descriptor</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DZLIB.cpp">

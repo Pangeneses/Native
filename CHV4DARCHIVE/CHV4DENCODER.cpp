@@ -20,68 +20,29 @@ namespace CHV4DARCHIVE
 {
 	CHV4DENCODER::CHV4DENCODER()
 	{
-		LengthPrefixBucket.insert({ 0, {0, 0} });
-		LengthPrefixBucket.insert({ 2, {1, 0} });
-		LengthPrefixBucket.insert({ 3, {257, 0} });
-		LengthPrefixBucket.insert({ 4, {258, 0} });
-		LengthPrefixBucket.insert({ 5, {259, 0} });
-		LengthPrefixBucket.insert({ 6, {260, 0} });
-		LengthPrefixBucket.insert({ 7, {261, 0} });
-		LengthPrefixBucket.insert({ 8, {262, 0} });
-		LengthPrefixBucket.insert({ 9, {263, 0} });
-		LengthPrefixBucket.insert({ 10, {264, 0} });
-		LengthPrefixBucket.insert({ 12, {265, 1} });
-		LengthPrefixBucket.insert({ 14, {266, 1} });
-		LengthPrefixBucket.insert({ 16, {267, 1} });
-		LengthPrefixBucket.insert({ 18, {268, 1} });
-		LengthPrefixBucket.insert({ 22, {269, 2} });
-		LengthPrefixBucket.insert({ 26, {270, 2} });
-		LengthPrefixBucket.insert({ 30, {271, 2} });
-		LengthPrefixBucket.insert({ 34, {272, 2} });
-		LengthPrefixBucket.insert({ 42, {273, 3} });
-		LengthPrefixBucket.insert({ 50, {274, 3} });
-		LengthPrefixBucket.insert({ 58, {275, 3} });
-		LengthPrefixBucket.insert({ 66, {276, 3} });
-		LengthPrefixBucket.insert({ 82, {277, 4} });
-		LengthPrefixBucket.insert({ 98, {278, 4} });
-		LengthPrefixBucket.insert({ 114, {279, 4} });
-		LengthPrefixBucket.insert({ 130, {280, 4} });
-		LengthPrefixBucket.insert({ 162, {281, 5} });
-		LengthPrefixBucket.insert({ 194, {282, 5} });
-		LengthPrefixBucket.insert({ 226, {283, 5} });
-		LengthPrefixBucket.insert({ 257, {284, 5} });
-		LengthPrefixBucket.insert({ 258, {285, 0} });
+		InitDistancePrefixBucket();
 
-		DistancePrefixBucket.insert({ 1, {0, 0} });
-		DistancePrefixBucket.insert({ 2, {1, 0} });
-		DistancePrefixBucket.insert({ 3, {2, 0} });
-		DistancePrefixBucket.insert({ 4, {3, 0} });
-		DistancePrefixBucket.insert({ 6, {4, 1} });
-		DistancePrefixBucket.insert({ 8, {5, 1} });
-		DistancePrefixBucket.insert({ 12, {6, 2} });
-		DistancePrefixBucket.insert({ 16, {7, 2} });
-		DistancePrefixBucket.insert({ 24, {8, 3} });
-		DistancePrefixBucket.insert({ 32, {9, 3} });
-		DistancePrefixBucket.insert({ 48, {10, 4} });
-		DistancePrefixBucket.insert({ 64, {11, 4} });
-		DistancePrefixBucket.insert({ 96, {12, 5} });
-		DistancePrefixBucket.insert({ 128, {13, 5} });
-		DistancePrefixBucket.insert({ 192, {14, 6} });
-		DistancePrefixBucket.insert({ 256, {15, 6} });
-		DistancePrefixBucket.insert({ 384, {16, 7} });
-		DistancePrefixBucket.insert({ 512, {17, 7} });
-		DistancePrefixBucket.insert({ 768, {18, 8} });
-		DistancePrefixBucket.insert({ 1024, {19, 8} });
-		DistancePrefixBucket.insert({ 1536, {20, 9} });
-		DistancePrefixBucket.insert({ 2048, {21, 9} });
-		DistancePrefixBucket.insert({ 3072, {22, 10} });
-		DistancePrefixBucket.insert({ 4096, {23, 10} });
-		DistancePrefixBucket.insert({ 6144, {24, 11} });
-		DistancePrefixBucket.insert({ 8192, {25, 11} });
-		DistancePrefixBucket.insert({ 12288, {26, 12} });
-		DistancePrefixBucket.insert({ 16384, {27, 12} });
-		DistancePrefixBucket.insert({ 24576, {28, 13} });
-		DistancePrefixBucket.insert({ 32768, {29, 13} });
+		InitDistancePrefixBucket();
+
+		Method = DEFLATE_COMPRESSION_NO;
+
+		WindowSize = 32768;
+
+		FinalBlock = false;
+
+		BlockSink Sink;
+
+		Block = std::make_shared<std::deque<unsigned char>>();
+
+		Stream = std::make_shared<std::deque<unsigned char>>();
+
+		BlockSentinel = Block->begin();
+
+		LiteralSentinel = Block->begin();
+
+		Index.clear();
+
+		BitStream = nullptr;
 
 	}
 
@@ -89,21 +50,24 @@ namespace CHV4DARCHIVE
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
+		ResetEncoder();
+
 		if (powWindow < 8 || powWindow > 15) throw std::out_of_range{ "Window size out of range." };
+
+		else WindowSize = pow(2.0, powWindow);
 
 		if (bsink == nullptr) throw std::invalid_argument{ "No Sink specified." };
 
-		BitStream->ClearStream();
+		else Sink = bsink;
 
-		Stream->clear();
-
-		Sink = bsink;
-
-		do
+		while (NewBlock() != ARCHIVE_ERROR_END_OF_STREAM)
 		{
-			error = NewBlock();
+			if (Method == DEFLATE_COMPRESSION_NO || Block->size() < 258)
+			{
+				if (AppendNoCompression() != ARCHIVE_ERROR_SUCCEEDED) return error;
 
-			if (error != ARCHIVE_ERROR_END_OF_STREAM)
+			}
+			else if (Method != DEFLATE_COMPRESSION_FIXED)
 			{
 				do
 				{
@@ -111,32 +75,71 @@ namespace CHV4DARCHIVE
 
 					if (LiteralLength() != ARCHIVE_ERROR_SUCCEEDED) return error;
 
-					size_t LiteralLength = std::distance(BlockSentinel, LiteralSentinel);
+					int64_t Length = std::distance(BlockSentinel, LiteralSentinel);
 
-					if (LiteralLength > 0 && LiteralLength <= 32768)
-					{
-						if (Encode() != ARCHIVE_ERROR_SUCCEEDED) return error;
+					if (Length < 0 || Length > 258) throw std::out_of_range{ "Literal length overrun." };
 
-						if(SlideWindow(static_cast<uint16_t>(LiteralLength)) != ARCHIVE_ERROR_SUCCEEDED) return error;
+					if (Encode() != ARCHIVE_ERROR_SUCCEEDED) return error;
 
-					}
-					else
-					{
-						throw std::out_of_range{ "Literal length overrun." };
+					if (SlideWindow(static_cast<uint16_t>(Length)) != ARCHIVE_ERROR_SUCCEEDED) return error;
 
-					}
-						
-				} while (BlockSentinel != Block->end());
+				} while (BlockSentinel != Stream->end());
 
-				uint8_t end = 0;
-
-				BitStream->PushBits(end, 7);
+				BitStream->PushBits(0ui8, 7);
 
 			}
 
-		} while (!FinalBlock);
+		}
 
 		return ARCHIVE_ERROR_SUCCEEDED;
+
+	}
+
+	std::shared_ptr<std::deque<unsigned char>> CHV4DENCODER::GetStream()
+	{
+
+		return Stream;
+
+	}
+
+	void CHV4DENCODER::SetDeflateCompression(DEFLATE_COMPRESSION method)
+	{
+		Method = method;
+
+	}
+
+	DEFLATE_COMPRESSION CHV4DENCODER::GetDeflateCompression()
+	{
+
+		return Method;
+
+	}
+
+	ARCHIVE_ERROR CHV4DENCODER::ResetEncoder()
+	{
+		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
+
+		Method = DEFLATE_COMPRESSION_NO;
+
+		WindowSize = 32768;
+
+		FinalBlock = false;
+
+		BlockSink Sink;
+
+		Block = std::make_shared<std::deque<unsigned char>>();
+
+		Stream = std::make_shared<std::deque<unsigned char>>();
+
+		BlockSentinel = Block->begin();
+
+		LiteralSentinel = Block->begin();
+
+		Index.clear();
+
+		BitStream = nullptr;
+
+		return error;
 
 	}
 
@@ -148,15 +151,17 @@ namespace CHV4DARCHIVE
 
 		FinalBlock = false;
 
-		if (Sink(Block, FinalBlock) != ARCHIVE_ERROR_SUCCEEDED) return error;
+		if (Sink(Block) == ARCHIVE_ERROR_END_OF_STREAM) FinalBlock = true;
 
 		if (Block->size() == 0) throw std::out_of_range{ "Empty Block." };
+
+		BlockSentinel = std::prev(Stream->end(), 1);
 
 		Stream->insert(Stream->end(),
 			std::make_move_iterator(Block->begin()),
 			std::make_move_iterator(Block->end()));
 
-		BlockSentinel = std::next(Stream->begin(), Stream->size() - Block->size());
+		BlockSentinel = std::next(BlockSentinel, 1);
 
 		LiteralSentinel = std::next(BlockSentinel, 1);
 
@@ -171,30 +176,6 @@ namespace CHV4DARCHIVE
 			*BitStream << CHV4DBITSTREAM::BIT_ZERO;
 
 			*BitStream << CHV4DBITSTREAM::BIT_ZERO;
-
-			BitStream->ByteAlignNext();
-
-			size_t sz = Block->size();
-
-			unsigned char* ptr = reinterpret_cast<unsigned char*>(&sz);
-
-			BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
-
-			BitStream->PushBits(ptr[7], 8);
-			BitStream->PushBits(ptr[6], 8);
-			BitStream->PushBits(ptr[5], 8);
-			BitStream->PushBits(ptr[4], 8);
-
-			sz = ~sz;
-
-			BitStream->PushBits(ptr[7], 8);
-			BitStream->PushBits(ptr[6], 8);
-			BitStream->PushBits(ptr[5], 8);
-			BitStream->PushBits(ptr[4], 8);
-
-			if (AppendNoCompression() != ARCHIVE_ERROR_SUCCEEDED) return error;
-
-			if (FinalBlock) return ARCHIVE_ERROR_EMPTY_STREAM;
 
 		}
 		else if (Method == DEFLATE_COMPRESSION_FIXED)
@@ -228,13 +209,43 @@ namespace CHV4DARCHIVE
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
+		BitStream->ByteAlignNext();
+
+		size_t sz = Block->size();
+
+		unsigned char* ptr = reinterpret_cast<unsigned char*>(&sz);
+
+		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
+
+		BitStream->PushBits(ptr[7], 8);
+		BitStream->PushBits(ptr[6], 8);
+		BitStream->PushBits(ptr[5], 8);
+		BitStream->PushBits(ptr[4], 8);
+		BitStream->PushBits(ptr[3], 8);
+		BitStream->PushBits(ptr[2], 8);
+		BitStream->PushBits(ptr[1], 8);
+		BitStream->PushBits(ptr[0], 8);
+
+		sz = ~sz;
+
+		ptr = reinterpret_cast<unsigned char*>(&sz);
+
+		BitStream->PushBits(ptr[7], 8);
+		BitStream->PushBits(ptr[6], 8);
+		BitStream->PushBits(ptr[5], 8);
+		BitStream->PushBits(ptr[4], 8);
+		BitStream->PushBits(ptr[3], 8);
+		BitStream->PushBits(ptr[2], 8);
+		BitStream->PushBits(ptr[1], 8);
+		BitStream->PushBits(ptr[0], 8);
+
 		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
 		size_t szBlock = std::distance(BlockSentinel, Stream->cend());
 
-		if (szBlock > 0 && szBlock <= 32768)
+		if (szBlock > 0 && szBlock <= 65536)
 		{
-			BitStream->InsertBits(BitStream->BitStreamSize(), BlockSentinel, szBlock * 8);
+			for (; szBlock > 0; --szBlock) BitStream->PushBits((*Block)[(Block->size() - szBlock)]);
 
 			error = SlideWindow(static_cast<uint16_t>(szBlock));
 
@@ -245,6 +256,8 @@ namespace CHV4DARCHIVE
 
 		}
 
+		if (FinalBlock) return ARCHIVE_ERROR_EMPTY_STREAM;
+
 		return error;
 
 	}
@@ -253,9 +266,9 @@ namespace CHV4DARCHIVE
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
-		std::deque<unsigned char>::iterator WindowSentinel;
+		std::deque<unsigned char>::const_iterator WindowSentinel = std::prev(BlockSentinel, WindowSize);
 
-		for (WindowSentinel = Stream->begin(); WindowSentinel != BlockSentinel; ++WindowSentinel)
+		for (; WindowSentinel != BlockSentinel; ++WindowSentinel)
 		{
 			if (std::equal(WindowSentinel, std::next(WindowSentinel, 3), BlockSentinel, std::next(BlockSentinel, 3)))
 			{
@@ -275,31 +288,20 @@ namespace CHV4DARCHIVE
 
 		if (Index.empty()) return error;
 
-		std::deque<unsigned char> LongestLiteral;
-
-		std::deque<std::deque<unsigned char>::const_iterator>::const_reverse_iterator Literal;
-
-		LongestLiteral.insert(LongestLiteral.end(), *Index.crbegin(), std::next(*Index.crbegin(), 3));
-
-		for (Literal = Index.crbegin(); Index.size() > 1; ++Literal)
+		while (Index.size() > 1 && std::distance(BlockSentinel, LiteralSentinel) < 258 && LiteralSentinel != Stream->end())
 		{
-			std::deque<unsigned char>::const_iterator citt = *Literal;
+			LiteralSentinel = std::next(LiteralSentinel, 1);
 
-			citt = std::next(citt, 3);
+			int64_t Length = std::distance(BlockSentinel, LiteralSentinel);
 
-			while (*citt == *std::next(BlockSentinel, std::distance(*Literal, citt)) && std::distance(*Literal, citt) <= 258)
+			if (*std::next(*Index.crbegin(), Length) == *LiteralSentinel)
 			{
-				if (std::distance(*Literal, citt) > 0)
-				{
-					if (static_cast<size_t>(std::distance(*Literal, citt)) > LongestLiteral.size())
-					{
-						LongestLiteral.push_back(*citt);
+				Index.erase(std::prev(Index.end(), 2));
 
-						++citt;
-
-					}
-
-				}
+			}
+			else if (*std::next(std::next(*Index.crbegin(), Length), 1) == *LiteralSentinel)
+			{
+				Index.pop_back();
 
 			}
 
@@ -321,14 +323,11 @@ namespace CHV4DARCHIVE
 
 		}
 
-		if(std::distance(BlockSentinel, LiteralSentinel) >= 0)
-		error = PushLength();
+		if (std::distance(BlockSentinel, LiteralSentinel) >= 3) throw std::runtime_error{ "Stream overrun." };
 
-		if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
+		if (PushLength(std::distance(BlockSentinel, LiteralSentinel)) != ARCHIVE_ERROR_SUCCEEDED) return error;
 
 		error = PushDistance(std::distance(Index.front(), BlockSentinel));
-
-		if (error != ARCHIVE_ERROR_SUCCEEDED) return error;
 
 		return error;
 
@@ -340,30 +339,20 @@ namespace CHV4DARCHIVE
 
 		std::deque<unsigned char>::const_iterator Chew;
 
-		for (Chew = BlockSentinel; Chew != Block->end(); ++Chew)
+		for (Chew = BlockSentinel; Chew != std::next(BlockSentinel, 2); std::next(Chew, 1))
 		{
 			if (static_cast<uint8_t>(*Chew) < 144)
 			{
 				BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-				uint8_t PrefixCode;
-
-				PrefixCode = 0b00110000 + *BlockSentinel;
-
-				BitStream->PushBits(PrefixCode, 8);
+				BitStream->PushBits(static_cast<unsigned char>(0b00110000 + *Chew));
 
 			}
 			else
 			{
 				BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-				uint16_t PrefixCode;
-
-				PrefixCode = 0b110010000 + *BlockSentinel;
-
-				PrefixCode = PrefixCode << 7;
-
-				BitStream->PushBits(PrefixCode, 9);
+				BitStream->PushBits(static_cast<uint16_t>(0b00110000 + *Chew << 7), 9);
 
 			}
 
@@ -462,6 +451,77 @@ namespace CHV4DARCHIVE
 		LiteralSentinel = std::next(BlockSentinel, 1);
 
 		return error;
+
+	}
+
+	void CHV4DENCODER::InitLengthPrefixBucket()
+	{
+		LengthPrefixBucket.insert({ 0, {0,   0} });
+		LengthPrefixBucket.insert({ 2, {1,   0} });
+		LengthPrefixBucket.insert({ 3, {257, 0} });
+		LengthPrefixBucket.insert({ 4, {258, 0} });
+		LengthPrefixBucket.insert({ 5, {259, 0} });
+		LengthPrefixBucket.insert({ 6, {260, 0} });
+		LengthPrefixBucket.insert({ 7, {261, 0} });
+		LengthPrefixBucket.insert({ 8, {262, 0} });
+		LengthPrefixBucket.insert({ 9, {263, 0} });
+		LengthPrefixBucket.insert({ 10, {264, 0} });
+		LengthPrefixBucket.insert({ 12, {265, 1} });
+		LengthPrefixBucket.insert({ 14, {266, 1} });
+		LengthPrefixBucket.insert({ 16, {267, 1} });
+		LengthPrefixBucket.insert({ 18, {268, 1} });
+		LengthPrefixBucket.insert({ 22, {269, 2} });
+		LengthPrefixBucket.insert({ 26, {270, 2} });
+		LengthPrefixBucket.insert({ 30, {271, 2} });
+		LengthPrefixBucket.insert({ 34, {272, 2} });
+		LengthPrefixBucket.insert({ 42, {273, 3} });
+		LengthPrefixBucket.insert({ 50, {274, 3} });
+		LengthPrefixBucket.insert({ 58, {275, 3} });
+		LengthPrefixBucket.insert({ 66, {276, 3} });
+		LengthPrefixBucket.insert({ 82, {277, 4} });
+		LengthPrefixBucket.insert({ 98, {278, 4} });
+		LengthPrefixBucket.insert({ 114, {279, 4} });
+		LengthPrefixBucket.insert({ 130, {280, 4} });
+		LengthPrefixBucket.insert({ 162, {281, 5} });
+		LengthPrefixBucket.insert({ 194, {282, 5} });
+		LengthPrefixBucket.insert({ 226, {283, 5} });
+		LengthPrefixBucket.insert({ 257, {284, 5} });
+		LengthPrefixBucket.insert({ 258, {285, 0} });
+
+	}
+
+	void CHV4DENCODER::InitDistancePrefixBucket()
+	{
+		DistancePrefixBucket.insert({ 1, { 0,  0} });
+		DistancePrefixBucket.insert({ 2, { 1,  0} });
+		DistancePrefixBucket.insert({ 3, { 2,  0} });
+		DistancePrefixBucket.insert({ 4, { 3,  0} });
+		DistancePrefixBucket.insert({ 6, { 4,  1} });
+		DistancePrefixBucket.insert({ 8, { 5,  1} });
+		DistancePrefixBucket.insert({ 12, { 6,  2} });
+		DistancePrefixBucket.insert({ 16, { 7,  2} });
+		DistancePrefixBucket.insert({ 24, { 8,  3} });
+		DistancePrefixBucket.insert({ 32, { 9,  3} });
+		DistancePrefixBucket.insert({ 48, {10,  4} });
+		DistancePrefixBucket.insert({ 64, {11,  4} });
+		DistancePrefixBucket.insert({ 96, {12,  5} });
+		DistancePrefixBucket.insert({ 128, {13,  5} });
+		DistancePrefixBucket.insert({ 192, {14,  6} });
+		DistancePrefixBucket.insert({ 256, {15,  6} });
+		DistancePrefixBucket.insert({ 384, {16,  7} });
+		DistancePrefixBucket.insert({ 512, {17,  7} });
+		DistancePrefixBucket.insert({ 768, {18,  8} });
+		DistancePrefixBucket.insert({ 1024, {19,  8} });
+		DistancePrefixBucket.insert({ 1536, {20,  9} });
+		DistancePrefixBucket.insert({ 2048, {21,  9} });
+		DistancePrefixBucket.insert({ 3072, {22, 10} });
+		DistancePrefixBucket.insert({ 4096, {23, 10} });
+		DistancePrefixBucket.insert({ 6144, {24, 11} });
+		DistancePrefixBucket.insert({ 8192, {25, 11} });
+		DistancePrefixBucket.insert({ 12288, {26, 12} });
+		DistancePrefixBucket.insert({ 16384, {27, 12} });
+		DistancePrefixBucket.insert({ 24576, {28, 13} });
+		DistancePrefixBucket.insert({ 32768, {29, 13} });
 
 	}
 

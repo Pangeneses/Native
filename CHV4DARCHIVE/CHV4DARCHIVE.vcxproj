@@ -23,24 +23,24 @@
     <ClCompile Include="CHV4DDECODER.ixx" />
     <ClCompile Include="CHV4DENCODER.cpp" />
     <ClCompile Include="CHV4DENCODER.ixx" />
-    <ClCompile Include="CHV4DZIPDIR.cpp" />
-    <ClCompile Include="CHV4DZIPDIR.ixx" />
-    <ClCompile Include="CHV4DZIPDESC.cpp" />
-    <ClCompile Include="CHV4DZIPDESC.ixx" />
+    <ClCompile Include="CHV4DCDFH.cpp" />
+    <ClCompile Include="CHV4DCDFH.ixx" />
+    <ClCompile Include="CHV4DDATADESC.cpp" />
+    <ClCompile Include="CHV4DDATADESC.ixx" />
     <ClCompile Include="CHV4DZIP.cpp" />
     <ClCompile Include="CHV4DZIP.ixx" />
     <ClCompile Include="CHV4DZLIB.cpp" />
     <ClCompile Include="CHV4DZLIB.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />
-    <ClCompile Include="CHV4DZIPEOF.cpp" />
-    <ClCompile Include="CHV4DZIPEOF.ixx" />
+    <ClCompile Include="CHV4DEOCD.cpp" />
+    <ClCompile Include="CHV4DEOCD.ixx" />
     <ClCompile Include="CHV4DBITSTREAM.cpp" />
     <ClCompile Include="CHV4DBITSTREAM.ixx" />
     <ClCompile Include="CHV4DFSTREAM.cpp" />
     <ClCompile Include="CHV4DFSTREAM.ixx" />
     <ClCompile Include="CHV4DRESOURCE.ixx" />
-    <ClCompile Include="CHV4DZIPSTREAM.cpp" />
-    <ClCompile Include="CHV4DZIPSTREAM.ixx" />
+    <ClCompile Include="CHV4DLFH.cpp" />
+    <ClCompile Include="CHV4DLFH.ixx" />
     <ClCompile Include="CHV4DARCHIVE.ixx" />
   </ItemGroup>
   <ItemGroup>

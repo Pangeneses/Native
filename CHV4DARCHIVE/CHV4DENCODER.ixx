@@ -20,7 +20,7 @@ import :CHV4DBITSTREAM;
 
 export namespace CHV4DARCHIVE
 {
-	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<std::deque<unsigned char>>, bool)> BlockSink;
+	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<std::deque<unsigned char>>)> BlockSink;
 
 	typedef std::unordered_map<size_t, std::pair<size_t, size_t>> PrefixBucket;
 
@@ -32,11 +32,11 @@ export namespace CHV4DARCHIVE
 	public:
 		ARCHIVE_ERROR DeflateStream(BlockSink bsink = nullptr, size_t const& powWindow = 15);
 
-		std::shared_ptr<std::deque<unsigned char>> GetStream() { return Stream; }
+		std::shared_ptr<std::deque<unsigned char>> GetStream();
 
-		void SetDeflateCompression(DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO) { Method = method; }
+		void SetDeflateCompression(DEFLATE_COMPRESSION method = DEFLATE_COMPRESSION_NO);
 
-		DEFLATE_COMPRESSION GetDeflateCompression() { return Method; }
+		DEFLATE_COMPRESSION GetDeflateCompression();
 
 	private:
 		DEFLATE_COMPRESSION Method = DEFLATE_COMPRESSION_NO;
@@ -46,6 +46,8 @@ export namespace CHV4DARCHIVE
 		bool FinalBlock{ false };
 
 	private:
+		ARCHIVE_ERROR ResetEncoder();
+
 		ARCHIVE_ERROR NewBlock();
 
 		ARCHIVE_ERROR AppendNoCompression();
@@ -80,9 +82,15 @@ export namespace CHV4DARCHIVE
 		std::shared_ptr<CHV4DBITSTREAM> BitStream = nullptr;
 
 	private:
+		void InitLengthPrefixBucket();
+
+		void InitDistancePrefixBucket();
+
+	private:
 		PrefixBucket LengthPrefixBucket;
 
 		PrefixBucket DistancePrefixBucket; 
+
 
 	};
 
