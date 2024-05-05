@@ -11,25 +11,25 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {
-	ARCHIVE_ERROR CHV4DLFH::LoadAndInflateStream(std::vector<uint8_t> const& buffer)
+	ARCHIVE_ERROR CHV4DLFH::LoadAndInflateStream()
 	{
-		buffer.empty();
+		StreamBuffer.clear();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ARCHIVE_ERROR CHV4DLFH::ReturnInflatedStream(std::vector<uint8_t>& buffer)
+	ARCHIVE_ERROR CHV4DLFH::ReturnInflatedStream(std::shared_ptr<std::vector<unsigned char>>)
 	{
-		buffer.empty();
+		StreamBuffer.clear();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ARCHIVE_ERROR CHV4DLFH::DeflateAndReturnStream(std::vector<uint8_t>& buffer)
+	ARCHIVE_ERROR CHV4DLFH::DeflateAndReturnStream(std::shared_ptr<std::vector<unsigned char>>)
 	{
-		buffer.empty();
+		StreamBuffer.clear();
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 

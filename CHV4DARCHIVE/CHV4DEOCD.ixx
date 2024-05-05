@@ -2,6 +2,8 @@ module;
 
 #include <string>
 
+#include <memory>
+
 #include <vector>
 
 export module CHV4DARCHIVE:CHV4DEOCD;

@@ -30,7 +30,7 @@ namespace CHV4DARCHIVE
 
 		FinalBlock = false;
 
-		BlockSink Sink;
+		Sink = nullptr;
 
 		Block = std::make_shared<std::deque<unsigned char>>();
 
@@ -54,7 +54,7 @@ namespace CHV4DARCHIVE
 
 		if (powWindow < 8 || powWindow > 15) throw std::out_of_range{ "Window size out of range." };
 
-		else WindowSize = pow(2.0, powWindow);
+		else WindowSize = static_cast<size_t>(pow(2.0, powWindow));
 
 		if (bsink == nullptr) throw std::invalid_argument{ "No Sink specified." };
 
@@ -125,7 +125,7 @@ namespace CHV4DARCHIVE
 
 		FinalBlock = false;
 
-		BlockSink Sink;
+		Sink = nullptr;
 
 		Block = std::make_shared<std::deque<unsigned char>>();
 
@@ -145,8 +145,6 @@ namespace CHV4DARCHIVE
 
 	ARCHIVE_ERROR CHV4DENCODER::NewBlock()
 	{
-		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
-
 		Block->clear();
 
 		FinalBlock = false;
@@ -200,8 +198,6 @@ namespace CHV4DARCHIVE
 			throw std::invalid_argument{ "Reserved." };
 
 		}
-
-		return error;
 
 	}
 
@@ -323,13 +319,21 @@ namespace CHV4DARCHIVE
 
 		}
 
-		if (std::distance(BlockSentinel, LiteralSentinel) >= 3) throw std::runtime_error{ "Stream overrun." };
+		if (std::distance(BlockSentinel, LiteralSentinel) < 2) throw std::runtime_error{ "Stream overrun." };
 
-		if (PushLength(std::distance(BlockSentinel, LiteralSentinel)) != ARCHIVE_ERROR_SUCCEEDED) return error;
+		if (std::distance(BlockSentinel, LiteralSentinel) > 258) throw std::runtime_error{ "Stream overrun." };
 
-		error = PushDistance(std::distance(Index.front(), BlockSentinel));
+		uint16_t Length = static_cast<uint16_t>(std::distance(BlockSentinel, LiteralSentinel));
 
-		return error;
+		if (PushLength(Length) != ARCHIVE_ERROR_SUCCEEDED) return error;
+
+		if (std::distance(Index.front(), BlockSentinel) < 1) throw std::runtime_error{ "Stream overrun." };
+
+		if (std::distance(Index.front(), BlockSentinel) > 32768) throw std::runtime_error{ "Stream overrun." };
+
+		uint16_t Distance = static_cast<uint16_t>(std::distance(Index.front(), BlockSentinel));
+
+		return PushDistance(Distance);
 
 	}
 
@@ -339,7 +343,7 @@ namespace CHV4DARCHIVE
 
 		std::deque<unsigned char>::const_iterator Chew;
 
-		for (Chew = BlockSentinel; Chew != std::next(BlockSentinel, 2); std::next(Chew, 1))
+		for (Chew = BlockSentinel; Chew != std::next(BlockSentinel, 2); Chew = std::next(Chew, 1))
 		{
 			if (static_cast<uint8_t>(*Chew) < 144)
 			{
@@ -352,7 +356,7 @@ namespace CHV4DARCHIVE
 			{
 				BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-				BitStream->PushBits(static_cast<uint16_t>(0b00110000 + *Chew << 7), 9);
+				BitStream->PushBits(static_cast<uint16_t>(0b00110000 + ((*Chew) << 7)), 9);
 
 			}
 
@@ -366,49 +370,42 @@ namespace CHV4DARCHIVE
 	{
 		ARCHIVE_ERROR error = ARCHIVE_ERROR_SUCCEEDED;
 
-		uint8_t Length;
+		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-		if (len < 259) Length = len;
+		uint16_t Length{ len }, PrefixCode{ 0 }, ExtraBits{ 0 }, Offset{ 0 };
 
-		else throw std::out_of_range{ "Literal is too long." };
+		PrefixBucket::const_iterator Bucket = std::next(LengthPrefixBucket.begin(), 2);
 
-		if (Length < 259)
+		for (; !(Bucket->first >= Length && Length < std::next(Bucket, 1)->first); Bucket = std::next(Bucket, 1));
+
+		PrefixCode = static_cast<uint16_t>(Bucket->second.first);
+
+		ExtraBits = static_cast<uint16_t>(Bucket->second.second);
+
+		if (PrefixCode >= 257 && Length <= 279)
 		{
-			BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
+			PrefixCode = PrefixCode - 256;
 
-			uint8_t PrefixCode;
-
-			PrefixCode = 0b00000000 + Length;
-
-			PrefixCode = PrefixCode << 1;
+			PrefixCode = PrefixCode << 9;
 
 			BitStream->PushBits(PrefixCode, 7);
 
 		}
-		else
+		else if (PrefixCode >= 280 && PrefixCode <= 287)
 		{
-			BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
+			PrefixCode = PrefixCode - 88;
 
-			uint8_t PrefixCode;
-
-			PrefixCode = 0b11000000 + Length;
+			PrefixCode = PrefixCode << 8;
 
 			BitStream->PushBits(PrefixCode, 8);
 
 		}
 
-		{
-			BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_RIGHT_LEFT);
+		Offset = Length - static_cast<uint16_t>(Bucket->second.first);
 
-			std::unordered_map<size_t, std::pair<size_t, size_t>>::const_iterator PrefixPoolItt = std::next(LengthPrefixBucket.begin(), 2);
+		Offset = Offset << (16 - ExtraBits);
 
-			for (; len >= PrefixPoolItt->first && len < std::next(PrefixPoolItt, 1)->first; ++PrefixPoolItt);
-
-			uint8_t ExtraBits = static_cast<uint8_t>(std::next(PrefixPoolItt, 1)->first - PrefixPoolItt->first);
-
-			BitStream->PushBits(ExtraBits, PrefixPoolItt->second.second);
-
-		}
+		BitStream->PushBits(Offset, ExtraBits);
 
 		return error;
 
@@ -420,19 +417,19 @@ namespace CHV4DARCHIVE
 
 		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_LEFT_RIGHT);
 
-		std::unordered_map<size_t, std::pair<size_t, size_t>>::const_iterator PrefixPoolItt = DistancePrefixBucket.begin();
+		uint16_t Distance{ dist }, DistancePrefixCode{ 0 }, ExtraBits{ 0 };
 
-		for (; dist >= PrefixPoolItt->first && dist < std::next(PrefixPoolItt, 1)->first; ++PrefixPoolItt);
+		PrefixBucket::const_iterator PrefixPoolItt = DistancePrefixBucket.begin();
 
-		uint8_t DistancePrefixCode = static_cast<uint8_t>(std::next(PrefixPoolItt, 1)->first - PrefixPoolItt->first);
+		for (; Distance >= PrefixPoolItt->first && Distance < std::next(PrefixPoolItt, 1)->first; PrefixPoolItt = std::next(PrefixPoolItt, 1));
 
-		DistancePrefixCode = DistancePrefixCode << 3;
+		DistancePrefixCode = static_cast<uint16_t>(PrefixPoolItt->second.first);
+
+		DistancePrefixCode = DistancePrefixCode << 11;
 
 		BitStream->PushBits(DistancePrefixCode, 5);
 
-		BitStream->SetBitConsumption(CHV4DBITSTREAM::BIT_CONSUMPTION_RIGHT_LEFT);
-
-		uint16_t ExtraBits = static_cast<uint16_t>(dist - PrefixPoolItt->first);
+		ExtraBits = Distance - static_cast<uint16_t>(PrefixPoolItt->first);
 
 		BitStream->PushBits(ExtraBits, PrefixPoolItt->second.second);
 
@@ -466,62 +463,62 @@ namespace CHV4DARCHIVE
 		LengthPrefixBucket.insert({ 8, {262, 0} });
 		LengthPrefixBucket.insert({ 9, {263, 0} });
 		LengthPrefixBucket.insert({ 10, {264, 0} });
-		LengthPrefixBucket.insert({ 12, {265, 1} });
-		LengthPrefixBucket.insert({ 14, {266, 1} });
-		LengthPrefixBucket.insert({ 16, {267, 1} });
-		LengthPrefixBucket.insert({ 18, {268, 1} });
-		LengthPrefixBucket.insert({ 22, {269, 2} });
-		LengthPrefixBucket.insert({ 26, {270, 2} });
-		LengthPrefixBucket.insert({ 30, {271, 2} });
-		LengthPrefixBucket.insert({ 34, {272, 2} });
-		LengthPrefixBucket.insert({ 42, {273, 3} });
-		LengthPrefixBucket.insert({ 50, {274, 3} });
-		LengthPrefixBucket.insert({ 58, {275, 3} });
-		LengthPrefixBucket.insert({ 66, {276, 3} });
-		LengthPrefixBucket.insert({ 82, {277, 4} });
-		LengthPrefixBucket.insert({ 98, {278, 4} });
-		LengthPrefixBucket.insert({ 114, {279, 4} });
-		LengthPrefixBucket.insert({ 130, {280, 4} });
-		LengthPrefixBucket.insert({ 162, {281, 5} });
-		LengthPrefixBucket.insert({ 194, {282, 5} });
-		LengthPrefixBucket.insert({ 226, {283, 5} });
-		LengthPrefixBucket.insert({ 257, {284, 5} });
+		LengthPrefixBucket.insert({ 11, {265, 1} });
+		LengthPrefixBucket.insert({ 13, {266, 1} });
+		LengthPrefixBucket.insert({ 15, {267, 1} });
+		LengthPrefixBucket.insert({ 17, {268, 1} });
+		LengthPrefixBucket.insert({ 19, {269, 2} });
+		LengthPrefixBucket.insert({ 23, {270, 2} });
+		LengthPrefixBucket.insert({ 27, {271, 2} });
+		LengthPrefixBucket.insert({ 31, {272, 2} });
+		LengthPrefixBucket.insert({ 35, {273, 3} });
+		LengthPrefixBucket.insert({ 43, {274, 3} });
+		LengthPrefixBucket.insert({ 51, {275, 3} });
+		LengthPrefixBucket.insert({ 59, {276, 3} });
+		LengthPrefixBucket.insert({ 67, {277, 4} });
+		LengthPrefixBucket.insert({ 83, {278, 4} });
+		LengthPrefixBucket.insert({ 99, {279, 4} });
+		LengthPrefixBucket.insert({ 115, {280, 4} });
+		LengthPrefixBucket.insert({ 131, {281, 5} });
+		LengthPrefixBucket.insert({ 163, {282, 5} });
+		LengthPrefixBucket.insert({ 195, {283, 5} });
+		LengthPrefixBucket.insert({ 227, {284, 5} });
 		LengthPrefixBucket.insert({ 258, {285, 0} });
 
 	}
 
 	void CHV4DENCODER::InitDistancePrefixBucket()
 	{
-		DistancePrefixBucket.insert({ 1, { 0,  0} });
-		DistancePrefixBucket.insert({ 2, { 1,  0} });
-		DistancePrefixBucket.insert({ 3, { 2,  0} });
-		DistancePrefixBucket.insert({ 4, { 3,  0} });
-		DistancePrefixBucket.insert({ 6, { 4,  1} });
-		DistancePrefixBucket.insert({ 8, { 5,  1} });
-		DistancePrefixBucket.insert({ 12, { 6,  2} });
-		DistancePrefixBucket.insert({ 16, { 7,  2} });
-		DistancePrefixBucket.insert({ 24, { 8,  3} });
-		DistancePrefixBucket.insert({ 32, { 9,  3} });
-		DistancePrefixBucket.insert({ 48, {10,  4} });
-		DistancePrefixBucket.insert({ 64, {11,  4} });
-		DistancePrefixBucket.insert({ 96, {12,  5} });
-		DistancePrefixBucket.insert({ 128, {13,  5} });
-		DistancePrefixBucket.insert({ 192, {14,  6} });
-		DistancePrefixBucket.insert({ 256, {15,  6} });
-		DistancePrefixBucket.insert({ 384, {16,  7} });
-		DistancePrefixBucket.insert({ 512, {17,  7} });
-		DistancePrefixBucket.insert({ 768, {18,  8} });
-		DistancePrefixBucket.insert({ 1024, {19,  8} });
-		DistancePrefixBucket.insert({ 1536, {20,  9} });
-		DistancePrefixBucket.insert({ 2048, {21,  9} });
-		DistancePrefixBucket.insert({ 3072, {22, 10} });
-		DistancePrefixBucket.insert({ 4096, {23, 10} });
-		DistancePrefixBucket.insert({ 6144, {24, 11} });
-		DistancePrefixBucket.insert({ 8192, {25, 11} });
-		DistancePrefixBucket.insert({ 12288, {26, 12} });
-		DistancePrefixBucket.insert({ 16384, {27, 12} });
-		DistancePrefixBucket.insert({ 24576, {28, 13} });
-		DistancePrefixBucket.insert({ 32768, {29, 13} });
+		DistancePrefixBucket.insert({ 1, {0,  0} });
+		DistancePrefixBucket.insert({ 2, {1,  0} });
+		DistancePrefixBucket.insert({ 3, {2,  0} });
+		DistancePrefixBucket.insert({ 4, {3,  0} });
+		DistancePrefixBucket.insert({ 5, {4,  1} });
+		DistancePrefixBucket.insert({ 7, {5,  1} });
+		DistancePrefixBucket.insert({ 9, {6,  2} });
+		DistancePrefixBucket.insert({ 13, {7,  2} });
+		DistancePrefixBucket.insert({ 17, {8,  3} });
+		DistancePrefixBucket.insert({ 25, {9,  3} });
+		DistancePrefixBucket.insert({ 33, {10,  4} });
+		DistancePrefixBucket.insert({ 49, {11,  4} });
+		DistancePrefixBucket.insert({ 65, {12,  5} });
+		DistancePrefixBucket.insert({ 97, {13,  5} });
+		DistancePrefixBucket.insert({ 129, {14,  6} });
+		DistancePrefixBucket.insert({ 193, {15,  6} });
+		DistancePrefixBucket.insert({ 257, {16,  7} });
+		DistancePrefixBucket.insert({ 385, {17,  7} });
+		DistancePrefixBucket.insert({ 513, {18,  8} });
+		DistancePrefixBucket.insert({ 769, {19,  8} });
+		DistancePrefixBucket.insert({ 1025, {20,  9} });
+		DistancePrefixBucket.insert({ 1537, {21,  9} });
+		DistancePrefixBucket.insert({ 2049, {22, 10} });
+		DistancePrefixBucket.insert({ 3073, {23, 10} });
+		DistancePrefixBucket.insert({ 4097, {24, 11} });
+		DistancePrefixBucket.insert({ 6145, {25, 11} });
+		DistancePrefixBucket.insert({ 8193, {26, 12} });
+		DistancePrefixBucket.insert({ 12289, {27, 12} });
+		DistancePrefixBucket.insert({ 16385, {28, 13} });
+		DistancePrefixBucket.insert({ 24577, {29, 13} });
 
 	}
 

@@ -19,11 +19,10 @@ export namespace CHV4DARCHIVE
 	public:
 		CHV4DCDFH() = default;
 
-	public:
-		
-		ARCHIVE_ERROR LoadAppendixFromHeader(CHV4DEOCD const& header);
+	public:		
+		ARCHIVE_ERROR LoadCentralDirHeader(CHV4DEOCD const& EOCD);
 
-		ARCHIVE_ERROR LoadAppendixFromHeader(std::vector<CHV4DLFH>& streams);
+		ARCHIVE_ERROR IndexStreams(std::vector<CHV4DLFH>& streams);
 		
 	private:
 		typedef struct Entry {

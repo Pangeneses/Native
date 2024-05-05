@@ -38,7 +38,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed = true)
+	ARCHIVE_ERROR CHV4DARCHIVE::CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed)
 	{
 
 

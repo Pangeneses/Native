@@ -14,10 +14,10 @@ import :CHV4DLFH;
 
 namespace CHV4DARCHIVE
 {
-	ARCHIVE_ERROR CHV4DCDFH::LoadAppendixFromHeader(CHV4DEOCD const& header)
+	ARCHIVE_ERROR CHV4DCDFH::LoadCentralDirHeader(CHV4DEOCD const& EOCD)
 	{
-		CHV4DEOCD Header = header;
-
+		CHV4DEOCD Header = EOCD;
+		/*
 		char at[5]{ '\0' };
 
 		for (zip.seekg(0, zip.end); zip.tellg() != -1; zip.seekg(-1, zip.cur))
@@ -53,14 +53,14 @@ namespace CHV4DARCHIVE
 		}
 
 		std::reverse(CentralDirectoryBOF.begin(), CentralDirectoryBOF.end());
-		
+		*/
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ARCHIVE_ERROR CHV4DCDFH::LoadAppendixFromHeader(std::vector<CHV4DLFH>& streams)
+	ARCHIVE_ERROR CHV4DCDFH::IndexStreams(std::vector<CHV4DLFH>& streams)
 	{
-		streams.empty();
+		streams.clear();
 
 
 		return ARCHIVE_ERROR_SUCCEEDED;

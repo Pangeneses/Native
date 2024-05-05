@@ -2,6 +2,8 @@ module;
 
 #include <string>
 
+#include <memory>
+
 #include <vector>
 
 export module CHV4DARCHIVE:CHV4DLFH;
@@ -17,11 +19,11 @@ export namespace CHV4DARCHIVE
 		CHV4DLFH() = default;
 
 	public:
-		ARCHIVE_ERROR LoadAndInflateStream(std::vector<uint8_t> const& buffer);
+		ARCHIVE_ERROR LoadAndInflateStream();
 
-		ARCHIVE_ERROR ReturnInflatedStream(std::vector<uint8_t>& buffer);
+		ARCHIVE_ERROR ReturnInflatedStream(std::shared_ptr<std::vector<unsigned char>> buffer);
 
-		ARCHIVE_ERROR DeflateAndReturnStream(std::vector<uint8_t>& buffer);
+		ARCHIVE_ERROR DeflateAndReturnStream(std::shared_ptr<std::vector<unsigned char>> buffer);
 		
 	private:
 		typedef struct StreamHeader {
@@ -42,7 +44,7 @@ export namespace CHV4DARCHIVE
 		} StreamHeader;
 
 	private:
-		std::vector<uint8_t> StreamBuffer;
+		std::vector<unsigned char> StreamBuffer;
 		
 	};
 

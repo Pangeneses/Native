@@ -814,7 +814,7 @@ namespace CHV4DARCHIVE
 
 	void CHV4DBITSTREAM::ByteAlignNext()
 	{
-		if (!ValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+		if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 		if (Sentinel.first == Data.end()) Sentinel.second = BitPosition;
 
