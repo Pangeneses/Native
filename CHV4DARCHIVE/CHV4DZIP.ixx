@@ -27,26 +27,26 @@ export namespace CHV4DARCHIVE
 
 		ARCHIVE_ERROR CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed = true);
 
-		ARCHIVE_ERROR ExtractArchive(std::vector<std::string const&>& files);
+		ARCHIVE_ERROR ExtractArchive(std::string const& dir);
 
 		ARCHIVE_ERROR AddFilesToCurrentArchive(std::vector<std::string const&> const& files);
 
-		ARCHIVE_ERROR AddStreamToCurrentArchive(std::vector<unsigned char> const& buffer);
+		ARCHIVE_ERROR AddStreamToCurrentArchive(CHV4DLFH const& stream);
 
-		ARCHIVE_ERROR ReleaseFilesFromArchive(std::vector<std::string const&>& files);
+		ARCHIVE_ERROR ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::string const& dir);
 
-		ARCHIVE_ERROR ReleaseStreamFromArchive(std::string const& file, std::vector<unsigned char>& buffer);
+		ARCHIVE_ERROR ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::vector<CHV4DLFH const&>& streams);
 
 		ARCHIVE_ERROR RenameFileInArchive(std::string const& from, std::string const& to);
 		
 	private:
-		std::shared_ptr<ZARCHIVE> Archive;
+		ZARCHIVE Archive;
 
 		CHV4DEOCD EndOfCentralDir;
 
 		CHV4DCDFH CentralDirHeader;
 
-		std::shared_ptr<std::vector<CHV4DLFH>> FileHeaders;
+		std::vector<CHV4DLFH> FileStreams;
 	
 	};
 

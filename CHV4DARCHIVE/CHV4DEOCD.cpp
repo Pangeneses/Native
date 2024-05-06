@@ -13,7 +13,7 @@ import :CHV4DLFH;
 
 namespace CHV4DARCHIVE
 {	
-	ARCHIVE_ERROR CHV4DEOCD::ReadEndOfCentralDir(std::shared_ptr<ZARCHIVE> archive)
+	ARCHIVE_ERROR CHV4DEOCD::ReadArchiveHeader(FileStream stream)
 	{
 
 
@@ -22,13 +22,4 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DEOCD::AppendToArchive(std::shared_ptr<std::vector<CHV4DLFH>> streams)
-	{
-
-
-
-		return ARCHIVE_ERROR_SUCCEEDED;
-
-	}
-	
 }

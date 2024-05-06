@@ -26,13 +26,13 @@ namespace CHV4DARCHIVE
 
 		if (!std::filesystem::exists(directory)) return ARCHIVE_ERROR_ARCHIVE_DNE;
 
-		//Archive->directory = directory.parent_path();
+		Archive.directory = directory.parent_path();
 
-		//Archive.file = directory.filename();
+		Archive.file = directory.filename();
 
-		//if (EndOfCentralDir.OpenArchive(Archive) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
+		if (EndOfCentralDir.ReadEndOfCentralDir(Archive) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
 
-		//if (CentralDirHeader.LoadAppendixFromHeader(EndOfCentralDir) != ARCHIVE_ERROR_SUCCEEDED);
+		if (CentralDirHeader.LoadCentralDirHeader(EndOfCentralDir) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
@@ -40,6 +40,7 @@ namespace CHV4DARCHIVE
 
 	ARCHIVE_ERROR CHV4DARCHIVE::CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed)
 	{
+		std::vector<std::string const&>::const_iterator FileItt;
 
 
 
@@ -47,7 +48,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ExtractArchive(std::vector<std::string const&>& files)
+	ARCHIVE_ERROR CHV4DARCHIVE::ExtractArchive(std::string const& dir)
 	{
 
 
@@ -65,7 +66,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::AddStreamToCurrentArchive(std::vector<uint8_t> const& buffer)
+	ARCHIVE_ERROR CHV4DARCHIVE::AddStreamToCurrentArchive(CHV4DLFH const& stream)
 	{
 
 
@@ -74,7 +75,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ReleaseFilesFromArchive(std::vector<std::string const&>& files)
+	ARCHIVE_ERROR CHV4DARCHIVE::ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::string const& dir)
 	{
 
 
@@ -83,7 +84,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ReleaseStreamFromArchive(std::string const& file, std::vector<unsigned char>& buffer)
+	ARCHIVE_ERROR CHV4DARCHIVE::ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::vector<CHV4DLFH const&>& streams)
 	{
 
 
