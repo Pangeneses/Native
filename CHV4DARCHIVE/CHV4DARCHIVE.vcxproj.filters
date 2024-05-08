@@ -17,24 +17,12 @@
     <Filter Include="iv. ARCHIVE\02. CHV4DZLIB">
       <UniqueIdentifier>{5d75da1a-ece7-46f7-80d7-62dd22c82f42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE">
-      <UniqueIdentifier>{14a819e0-b1b1-45f5-ad30-e1bc703a0144}</UniqueIdentifier>
-    </Filter>
     <Filter Include="iii. CHV4DRESOURCE">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="ii. CHV4DFORWARD">
       <UniqueIdentifier>{fe87c3d1-ac18-487a-ab3f-415fba220c3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\01. CHV4DZIP\B. End of File">
-      <UniqueIdentifier>{6ae065b5-4f05-43ec-9a4d-258741a51d69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\01. CHV4DZIP\C. Central Directory">
-      <UniqueIdentifier>{264bb0f2-a715-40b1-89d2-51b052c48677}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. ARCHIVE\01. CHV4DZIP\D. Stream">
-      <UniqueIdentifier>{22129b15-6442-4714-925d-4d29e01996af}</UniqueIdentifier>
     </Filter>
     <Filter Include="iv. ARCHIVE\01. CHV4DZIP\E. Descriptor">
       <UniqueIdentifier>{df6125a8-5583-40ee-b60c-3ab7787c8fb5}</UniqueIdentifier>
@@ -54,14 +42,35 @@
     <Filter Include="vii. UTILITY\00. FileStream">
       <UniqueIdentifier>{067ae444-c415-4c8f-ad1e-f2f21e1c593d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER">
-      <UniqueIdentifier>{cccb76ac-2cc1-4f36-b887-b2945a9e77db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vii. UTILITY\02. ZipTest">
       <UniqueIdentifier>{69182e5e-9ca9-45f0-993e-1402d038f423}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. ARCHIVE\00. CHV4DDEFLATE\A. ENCODER">
+    <Filter Include="iv. ARCHIVE\01. CHV4DZIP\C. End of File">
+      <UniqueIdentifier>{6ae065b5-4f05-43ec-9a4d-258741a51d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. ARCHIVE\01. CHV4DZIP\D. Central Directory">
+      <UniqueIdentifier>{264bb0f2-a715-40b1-89d2-51b052c48677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. ARCHIVE\01. CHV4DZIP\B. Stream">
+      <UniqueIdentifier>{22129b15-6442-4714-925d-4d29e01996af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. ALGORITHM">
+      <UniqueIdentifier>{4c2fbf77-cbf6-413b-a7e2-f69ec51838f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. ALGORITHM\01. CHV4DDEFLATE">
+      <UniqueIdentifier>{14a819e0-b1b1-45f5-ad30-e1bc703a0144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. ALGORITHM\01. CHV4DDEFLATE\C. DECODER">
+      <UniqueIdentifier>{cccb76ac-2cc1-4f36-b887-b2945a9e77db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. ALGORITHM\01. CHV4DDEFLATE\A. ENCODER">
       <UniqueIdentifier>{46fad8a3-e467-4bf0-9eb0-d7170aa930ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. ALGORITHM\00. CHV4DRAW">
+      <UniqueIdentifier>{61b387f2-4c2b-4d89-9a40-df108f18e84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. ARCHIVE\00. CHV4DFILE">
+      <UniqueIdentifier>{72d32d26-bb32-488e-a900-38c83d0923d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,10 +84,10 @@
       <Filter>iii. CHV4DRESOURCE</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DCDFH.cpp">
-      <Filter>iv. ARCHIVE\01. CHV4DZIP\C. Central Directory</Filter>
+      <Filter>iv. ARCHIVE\01. CHV4DZIP\D. Central Directory</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DCDFH.ixx">
-      <Filter>iv. ARCHIVE\01. CHV4DZIP\C. Central Directory</Filter>
+      <Filter>iv. ARCHIVE\01. CHV4DZIP\D. Central Directory</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DZIP.cpp">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\A. Zip Archive</Filter>
@@ -87,16 +96,16 @@
       <Filter>iv. ARCHIVE\01. CHV4DZIP\A. Zip Archive</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DEOCD.cpp">
-      <Filter>iv. ARCHIVE\01. CHV4DZIP\B. End of File</Filter>
+      <Filter>iv. ARCHIVE\01. CHV4DZIP\C. End of File</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DEOCD.ixx">
-      <Filter>iv. ARCHIVE\01. CHV4DZIP\B. End of File</Filter>
+      <Filter>iv. ARCHIVE\01. CHV4DZIP\C. End of File</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DLFH.cpp">
-      <Filter>iv. ARCHIVE\01. CHV4DZIP\D. Stream</Filter>
+    <ClCompile Include="CHV4DFLOCAL.cpp">
+      <Filter>iv. ARCHIVE\01. CHV4DZIP\B. Stream</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DLFH.ixx">
-      <Filter>iv. ARCHIVE\01. CHV4DZIP\D. Stream</Filter>
+    <ClCompile Include="CHV4DFLOCAL.ixx">
+      <Filter>iv. ARCHIVE\01. CHV4DZIP\B. Stream</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDATADESC.ixx">
       <Filter>iv. ARCHIVE\01. CHV4DZIP\E. Descriptor</Filter>
@@ -123,16 +132,22 @@
       <Filter>vii. UTILITY\00. FileStream</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DENCODER.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\A. ENCODER</Filter>
+      <Filter>v. ALGORITHM\01. CHV4DDEFLATE\A. ENCODER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DENCODER.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\A. ENCODER</Filter>
+      <Filter>v. ALGORITHM\01. CHV4DDEFLATE\A. ENCODER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDECODER.cpp">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER</Filter>
+      <Filter>v. ALGORITHM\01. CHV4DDEFLATE\C. DECODER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DDECODER.ixx">
-      <Filter>iv. ARCHIVE\00. CHV4DDEFLATE\C. DECODER</Filter>
+      <Filter>v. ALGORITHM\01. CHV4DDEFLATE\C. DECODER</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFILE.cpp">
+      <Filter>iv. ARCHIVE\00. CHV4DFILE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFILE.ixx">
+      <Filter>iv. ARCHIVE\00. CHV4DFILE</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

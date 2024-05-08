@@ -11,16 +11,15 @@ export module CHV4DARCHIVE:CHV4DZIP;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DEOCD;
-import :CHV4DCDFH;
-import :CHV4DLFH;
+import :CHV4DFILE;
+import :CHV4DFLOCAL;
 
 export namespace CHV4DARCHIVE
 {
-	class CHV4DARCHIVE
+	class CHV4DZIP
 	{
 	public:
-		CHV4DARCHIVE() = default;
+		CHV4DZIP();
 
 	public:		
 		ARCHIVE_ERROR OpenArchive(std::string const& archive);
@@ -31,23 +30,24 @@ export namespace CHV4DARCHIVE
 
 		ARCHIVE_ERROR AddFilesToCurrentArchive(std::vector<std::string const&> const& files);
 
-		ARCHIVE_ERROR AddStreamToCurrentArchive(CHV4DLFH const& stream);
+		ARCHIVE_ERROR AddStreamToCurrentArchive(std::shared_ptr<CHV4DFLOCAL> stream);
 
 		ARCHIVE_ERROR ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::string const& dir);
 
-		ARCHIVE_ERROR ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::vector<CHV4DLFH const&>& streams);
+		ARCHIVE_ERROR ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::shared_ptr<std::vector<CHV4DFLOCAL>> streams);
 
 		ARCHIVE_ERROR RenameFileInArchive(std::string const& from, std::string const& to);
-		
+
+		ARCHIVE_ERROR DeleteFileFromArchive(std::string const& file);
+
 	private:
-		ZARCHIVE Archive;
+		CHV4DFILE Archive;
 
-		CHV4DEOCD EndOfCentralDir;
+		CHV4DFLOCAL LocalFiles;
 
-		CHV4DCDFH CentralDirHeader;
+	private:
+		ARCHIVE_ERROR ValidateArchive();
 
-		std::vector<CHV4DLFH> FileStreams;
-	
 	};
 
 }

@@ -1,7 +1,7 @@
 module;
 
-#include <iostream>
-#include <fstream>
+//#include <iostream>
+//#include <fstream>
 
 #include <filesystem>
 
@@ -16,7 +16,14 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DARCHIVE
 {	
-	ARCHIVE_ERROR CHV4DARCHIVE::OpenArchive(std::string const& archive)
+	CHV4DZIP::CHV4DZIP()
+	{
+
+
+
+	}
+
+	ARCHIVE_ERROR CHV4DZIP::OpenArchive(std::string const& archive)
 	{
 		if (archive.empty()) throw std::invalid_argument{ "No archive specified" };
 
@@ -26,38 +33,33 @@ namespace CHV4DARCHIVE
 
 		if (!std::filesystem::exists(directory)) return ARCHIVE_ERROR_ARCHIVE_DNE;
 
-		Archive.directory = directory.parent_path();
+		//Archive.directory = directory.parent_path();
 
-		Archive.file = directory.filename();
+		//Archive.file = directory.filename();
 
-		if (EndOfCentralDir.ReadEndOfCentralDir(Archive) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
-
-		if (CentralDirHeader.LoadCentralDirHeader(EndOfCentralDir) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
+		if (LocalFiles.IndexLocalFiles(Archive) != ARCHIVE_ERROR_SUCCEEDED) throw std::runtime_error{ "Malformed archive." };
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed)
-	{
-		std::vector<std::string const&>::const_iterator FileItt;
-
-
-
-		return ARCHIVE_ERROR_SUCCEEDED;
-
-	}
-
-	ARCHIVE_ERROR CHV4DARCHIVE::ExtractArchive(std::string const& dir)
+	ARCHIVE_ERROR CHV4DZIP::CreateArchive(std::string const& archive, std::vector<std::string const&> const& files, bool compressed)
 	{
 
 
+		return ARCHIVE_ERROR_SUCCEEDED;
+
+	}
+
+	ARCHIVE_ERROR CHV4DZIP::ExtractArchive(std::string const& dir)
+	{
+
 
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::AddFilesToCurrentArchive(std::vector<std::string const&> const& files)
+	ARCHIVE_ERROR CHV4DZIP::AddFilesToCurrentArchive(std::vector<std::string const&> const& files)
 	{
 
 
@@ -66,7 +68,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::AddStreamToCurrentArchive(CHV4DLFH const& stream)
+	ARCHIVE_ERROR CHV4DZIP::AddStreamToCurrentArchive(std::shared_ptr<CHV4DFLOCAL> stream)
 	{
 
 
@@ -75,7 +77,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::string const& dir)
+	ARCHIVE_ERROR CHV4DZIP::ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::string const& dir)
 	{
 
 
@@ -84,7 +86,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::vector<CHV4DLFH const&>& streams)
+	ARCHIVE_ERROR CHV4DZIP::ExtractFilesFromArchive(std::vector<std::string const&> const& files, std::shared_ptr<std::vector<CHV4DFLOCAL>> streams)
 	{
 
 
@@ -94,7 +96,7 @@ namespace CHV4DARCHIVE
 
 	}
 
-	ARCHIVE_ERROR CHV4DARCHIVE::RenameFileInArchive(std::string const& from, std::string const& to)
+	ARCHIVE_ERROR CHV4DZIP::RenameFileInArchive(std::string const& from, std::string const& to)
 	{
 
 
@@ -102,5 +104,23 @@ namespace CHV4DARCHIVE
 		return ARCHIVE_ERROR_SUCCEEDED;
 
 	}
-	
+
+	ARCHIVE_ERROR CHV4DZIP::ValidateArchive()
+	{
+
+
+
+		return ARCHIVE_ERROR_SUCCEEDED;
+
+	}
+
+	ARCHIVE_ERROR CHV4DZIP::DeleteFileFromArchive(std::string const& file)
+	{
+
+
+
+		return ARCHIVE_ERROR_SUCCEEDED;
+
+	}
+
 }

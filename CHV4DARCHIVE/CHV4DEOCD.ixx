@@ -11,14 +11,14 @@ export module CHV4DARCHIVE:CHV4DEOCD;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DLFH;
+import :CHV4DFILE;
 
 export namespace CHV4DARCHIVE
 {
 	class CHV4DEOCD
 	{
 	public:
-		CHV4DEOCD() = default;
+		CHV4DEOCD();
 
 	public:
 		typedef struct CEndOfCentralDir {
@@ -34,13 +34,13 @@ export namespace CHV4DARCHIVE
 				/*8*/ { 22, nullptr     } };/*Comment*/
 		} CEndOfCentralDir;
 
-		CEndOfCentralDir& RefEndOfCentralDir() { return EndOfCentralDir; }
+		std::shared_ptr<CEndOfCentralDir> RefEndOfCentralDir() { return EndOfCentralDir; }
 
 	private:
-		CEndOfCentralDir EndOfCentralDir;
+		std::shared_ptr<CEndOfCentralDir> EndOfCentralDir;
 
 	public:
-		ARCHIVE_ERROR ReadArchiveHeader(FileStream stream);
+		ARCHIVE_ERROR ReadEndOfCentralDir(CHV4DFILE const& file);
 
 	};
 

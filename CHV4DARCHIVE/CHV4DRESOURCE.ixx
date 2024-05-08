@@ -2,6 +2,9 @@
 
 #include <string>
 
+#include <memory>
+
+#include <vector>
 
 export module CHV4DARCHIVE:CHV4DRESOURCE;
 
@@ -25,14 +28,6 @@ export namespace CHV4DARCHIVE
 		ARCHIVE_ERROR_CONSUME_STREAM	= 12
 	} ARCHIVE_ERROR;
 
-	typedef struct ZARCHIVE {
-		CHV4DTBASIC::CHV4DHVID uuid;
-		CHV4DTBASIC::CHV4DMAXPATH directory;
-		CHV4DTBASIC::CHV4DMAXPATH file;
-		CHV4DTBASIC::CHV4DMMDDYYYY date;
-		CHV4DTBASIC::CHV4DHHMMSS time;
-	} ZARCHIVE;
-
 	typedef enum DEFLATE_COMPRESSION {
 		DEFLATE_COMPRESSION_STREAM		= 0,
 		DEFLATE_COMPRESSION_NO			= 1,
@@ -40,10 +35,5 @@ export namespace CHV4DARCHIVE
 		DEFLATE_COMPRESSION_DYNAMIC		= 3,
 		DEFLATE_COMPRESSION_RESERVED	= 4
 	} DEFLATE_COMPRESSION;
-
-	typedef struct FileStream {
-		DEFLATE_COMPRESSION deflate;
-		std::shared_ptr<std::vector<unsigned char>> stream;
-	} FileStream;
 
 }
