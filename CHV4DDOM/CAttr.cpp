@@ -9,15 +9,15 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring CAttr::nspaceURI() { return nullptr; }
+	std::wstring CAttr::nspaceURI() { return {}; }
 
-	std::wstring CAttr::prefix() { return nullptr; }
+	std::wstring CAttr::prefix() { return {}; }
 
-	std::wstring CAttr::localName() { return nullptr; }
+	std::wstring CAttr::localName() { return {}; }
 
-	std::wstring CAttr::name() { return nullptr; }
+	std::wstring CAttr::name() { return {}; }
 
-	std::wstring CAttr::value() { return nullptr; }
+	std::wstring CAttr::value() { return {}; }
 	void CAttr::value(std::wstring val) {}
 
 	IElement CAttr::ownerElement() { return nullptr; }
@@ -27,9 +27,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CAttr::nodeType() { return XML_DOM_ATTRIBUTE_NODE; }
 
-	std::wstring CAttr::nodeName() { return nullptr; }
+	std::wstring CAttr::nodeName() { return {}; }
 
-	std::wstring CAttr::baseURI() { return nullptr; }
+	std::wstring CAttr::baseURI() { return {}; }
 
 	bool CAttr::isConnected() { return false; }
 
@@ -51,10 +51,10 @@ namespace CHV4DXML
 	INode CAttr::previousSibling() { return nullptr; }
 	INode CAttr::nextSibling() { return nullptr; }
 
-	std::wstring CAttr::nodeValue() { return nullptr; }
+	std::wstring CAttr::nodeValue() { return {}; }
 	void CAttr::nodeValue(std::wstring val) {}
 
-	std::wstring CAttr::textContent() { return nullptr; }
+	std::wstring CAttr::textContent() { return {}; }
 	void CAttr::textContent(std::wstring text) {}
 
 	void CAttr::Normalize() {}
@@ -69,9 +69,9 @@ namespace CHV4DXML
 
 	bool CAttr::Contains(INode other) { return false; }
 
-	std::wstring CAttr::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CAttr::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CAttr::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CAttr::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CAttr::IsDefaultNamespace(std::wstring nspace) { return false; }
 

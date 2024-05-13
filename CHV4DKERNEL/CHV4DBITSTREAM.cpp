@@ -9,14 +9,12 @@ module;
 
 #include <stdexcept>
 
-module CHV4DARCHIVE:CHV4DBITSTREAM;
+module CHV4DKERNEL:CHV4DBITSTREAM;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import CHV4DTENSOR;
-
-namespace CHV4DARCHIVE
+namespace CHV4DKERNEL
 {
 	CHV4DBITSTREAM::CHV4DBITSTREAM()
 	{

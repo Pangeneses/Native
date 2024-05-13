@@ -19,12 +19,12 @@ namespace CHV4DXML
 	
 	}
 
-	std::wstring CDocument::documentURI() { return nullptr; }
-	std::wstring CDocument::compatMode() { return nullptr; }
-	std::wstring CDocument::characterSet() { return nullptr; }
+	std::wstring CDocument::documentURI() { return {}; }
+	std::wstring CDocument::compatMode() { return {}; }
+	std::wstring CDocument::characterSet() { return {}; }
 	std::wstring CDocument::charset() { return characterSet(); } // legacy alias of .characterSet
 	std::wstring CDocument::inputEncoding() { return characterSet(); } // legacy alias of .characterSet
-	std::wstring CDocument::contentType() { return nullptr; }
+	std::wstring CDocument::contentType() { return {}; }
 
 	IDocumentType CDocument::doctype() { return nullptr; }
 
@@ -69,9 +69,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CDocument::nodeType() { return XML_DOM_DOCUMENT_TYPE_NODE; }
 
-	std::wstring CDocument::nodeName() { return nullptr; }
+	std::wstring CDocument::nodeName() { return {}; }
 
-	std::wstring CDocument::baseURI() { return nullptr; }
+	std::wstring CDocument::baseURI() { return {}; }
 
 	bool CDocument::isConnected() { return false; }
 
@@ -93,10 +93,10 @@ namespace CHV4DXML
 	INode CDocument::previousSibling() { return nullptr; }
 	INode CDocument::nextSibling() { return nullptr; }
 
-	std::wstring CDocument::nodeValue() { return nullptr; }
+	std::wstring CDocument::nodeValue() { return {}; }
 	void CDocument::nodeValue(std::wstring val) {}
 
-	std::wstring CDocument::textContent() { return nullptr; }
+	std::wstring CDocument::textContent() { return {}; }
 	void CDocument::textContent(std::wstring text) {}
 
 	void CDocument::Normalize() {}
@@ -111,9 +111,9 @@ namespace CHV4DXML
 
 	bool CDocument::Contains(INode other) { return false; }
 
-	std::wstring CDocument::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CDocument::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CDocument::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CDocument::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CDocument::IsDefaultNamespace(std::wstring nspace) { return false; }
 

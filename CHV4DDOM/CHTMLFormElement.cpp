@@ -10,34 +10,34 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring CHTMLFormElement::acceptcharset() { return nullptr; }
+	std::wstring CHTMLFormElement::acceptcharset() { return {}; }
 	void CHTMLFormElement::acceptcharset(std::wstring set) {}
 
-	std::wstring CHTMLFormElement::action() { return nullptr; }
+	std::wstring CHTMLFormElement::action() { return {}; }
 	void CHTMLFormElement::action(std::wstring doActtion) {}
 
-	std::wstring CHTMLFormElement::autocomplete() { return nullptr; }
+	std::wstring CHTMLFormElement::autocomplete() { return {}; }
 	void CHTMLFormElement::autocomplete(std::wstring fill) {}
 
-	std::wstring CHTMLFormElement::enctype() { return nullptr; }
+	std::wstring CHTMLFormElement::enctype() { return {}; }
 	void CHTMLFormElement::enctype(std::wstring enc) {}
 
-	std::wstring CHTMLFormElement::encoding() { return nullptr; }
+	std::wstring CHTMLFormElement::encoding() { return {}; }
 	void CHTMLFormElement::encoding(std::wstring coding) {}
 
-	std::wstring CHTMLFormElement::method() { return nullptr; }
+	std::wstring CHTMLFormElement::method() { return {}; }
 	void CHTMLFormElement::method(std::wstring way) {}
 
-	std::wstring CHTMLFormElement::name() { return nullptr; }
+	std::wstring CHTMLFormElement::name() { return {}; }
 	void CHTMLFormElement::name(std::wstring n) {}
 
 	bool CHTMLFormElement::noValidate() { return false; }
 	void CHTMLFormElement::noValidate(bool validity) {}
 
-	std::wstring CHTMLFormElement::target() { return nullptr; }
+	std::wstring CHTMLFormElement::target() { return {}; }
 	void CHTMLFormElement::target(std::wstring name) {}
 
-	std::wstring CHTMLFormElement::rel() { return nullptr; }
+	std::wstring CHTMLFormElement::rel() { return {}; }
 	void CHTMLFormElement::rel(std::wstring name) {}
 
 	INodeList CHTMLFormElement::relList() { return nullptr; }
@@ -61,13 +61,13 @@ namespace CHV4DXML
 
 	bool CHTMLFormElement::ReportValidity() { return false; }
 
-	std::wstring CHTMLFormElement::title() { return nullptr; }
+	std::wstring CHTMLFormElement::title() { return {}; }
 
-	std::wstring CHTMLFormElement::lang() { return nullptr; }
+	std::wstring CHTMLFormElement::lang() { return {}; }
 
 	bool CHTMLFormElement::translate() { return false; }
 
-	std::wstring CHTMLFormElement::dir() { return nullptr; }
+	std::wstring CHTMLFormElement::dir() { return {}; }
 
 	// user interaction
 	void* CHTMLFormElement::hidden() { return nullptr; }
@@ -76,18 +76,18 @@ namespace CHV4DXML
 
 	void CHTMLFormElement::Click() {}
 
-	std::wstring CHTMLFormElement::accessKey() { return nullptr; }
+	std::wstring CHTMLFormElement::accessKey() { return {}; }
 
-	std::wstring CHTMLFormElement::accessKeyLabel() { return nullptr; }
+	std::wstring CHTMLFormElement::accessKeyLabel() { return {}; }
 
 	bool CHTMLFormElement::draggable() { return false; }
 
 	bool CHTMLFormElement::spellcheck() { return false; }
 
-	std::wstring CHTMLFormElement::autocapitalize() { return nullptr; }
+	std::wstring CHTMLFormElement::autocapitalize() { return {}; }
 
-	std::wstring CHTMLFormElement::innerText() { return nullptr; }
-	std::wstring CHTMLFormElement::outerText() { return nullptr; }
+	std::wstring CHTMLFormElement::innerText() { return {}; }
+	std::wstring CHTMLFormElement::outerText() { return {}; }
 
 	IElementInternals CHTMLFormElement::attachInternals() { return nullptr; }
 
@@ -99,21 +99,21 @@ namespace CHV4DXML
 	bool CHTMLFormElement::TogglePopover() { return false; }
 	void CHTMLFormElement::TogglePopover(bool force) {}
 
-	std::wstring CHTMLFormElement::popover() { return nullptr; }
+	std::wstring CHTMLFormElement::popover() { return {}; }
 
-	std::wstring CHTMLFormElement::nspaceURI() { return nullptr; }
-	std::wstring CHTMLFormElement::prefix() { return nullptr; }
-	std::wstring CHTMLFormElement::localName() { return nullptr; }
-	std::wstring CHTMLFormElement::tagName() { return nullptr; }
+	std::wstring CHTMLFormElement::nspaceURI() { return {}; }
+	std::wstring CHTMLFormElement::prefix() { return {}; }
+	std::wstring CHTMLFormElement::localName() { return {}; }
+	std::wstring CHTMLFormElement::tagName() { return {}; }
 
-	std::wstring CHTMLFormElement::eid() { return nullptr; }
+	std::wstring CHTMLFormElement::eid() { return {}; }
 
-	std::wstring CHTMLFormElement::className() { return nullptr; }
+	std::wstring CHTMLFormElement::className() { return {}; }
 	void CHTMLFormElement::className(std::wstring name) {}
 
 	IDOMTokenList CHTMLFormElement::classList() { return nullptr; }
 
-	std::wstring CHTMLFormElement::slot() { return nullptr; }
+	std::wstring CHTMLFormElement::slot() { return {}; }
 	void CHTMLFormElement::slot(std::wstring in) {}
 
 	bool CHTMLFormElement::HasAttributes() { return false; }
@@ -122,8 +122,8 @@ namespace CHV4DXML
 
 	std::vector<std::wstring> CHTMLFormElement::GetAttributeNames() { return std::vector<std::wstring>{}; }
 
-	std::wstring CHTMLFormElement::GetAttribute(std::wstring qualifiedName) { return nullptr; }
-	std::wstring CHTMLFormElement::GetAttributeNS(std::wstring nspace, std::wstring localName) { return nullptr; }
+	std::wstring CHTMLFormElement::GetAttribute(std::wstring qualifiedName) { return {}; }
+	std::wstring CHTMLFormElement::GetAttributeNS(std::wstring nspace, std::wstring localName) { return {}; }
 
 	void CHTMLFormElement::SetAttribute(std::wstring qualifiedName, std::wstring value) {}
 	void CHTMLFormElement::SetAttributeNS(std::wstring nspace, std::wstring qualifiedName, std::wstring value) {}
@@ -161,9 +161,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CHTMLFormElement::nodeType() { return XML_DOM_ELEMENT_NODE; }
 
-	std::wstring CHTMLFormElement::nodeName() { return nullptr; }
+	std::wstring CHTMLFormElement::nodeName() { return {}; }
 
-	std::wstring CHTMLFormElement::baseURI() { return nullptr; }
+	std::wstring CHTMLFormElement::baseURI() { return {}; }
 
 	bool CHTMLFormElement::isConnected() { return false; }
 
@@ -185,10 +185,10 @@ namespace CHV4DXML
 	INode CHTMLFormElement::previousSibling() { return nullptr; }
 	INode CHTMLFormElement::nextSibling() { return nullptr; }
 
-	std::wstring CHTMLFormElement::nodeValue() { return nullptr; }
+	std::wstring CHTMLFormElement::nodeValue() { return {}; }
 	void CHTMLFormElement::nodeValue(std::wstring val) {}
 
-	std::wstring CHTMLFormElement::textContent() { return nullptr; }
+	std::wstring CHTMLFormElement::textContent() { return {}; }
 	void CHTMLFormElement::textContent(std::wstring text) {}
 
 	void CHTMLFormElement::Normalize() {}
@@ -203,9 +203,9 @@ namespace CHV4DXML
 
 	bool CHTMLFormElement::Contains(INode other) { return false; }
 
-	std::wstring CHTMLFormElement::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CHTMLFormElement::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CHTMLFormElement::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CHTMLFormElement::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CHTMLFormElement::IsDefaultNamespace(std::wstring nspace) { return false; }
 

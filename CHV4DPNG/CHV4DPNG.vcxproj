@@ -18,46 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="CHV4DDECODER.cpp" />
-    <ClCompile Include="CHV4DDECODER.ixx" />
-    <ClCompile Include="CHV4DENCODER.cpp" />
-    <ClCompile Include="CHV4DENCODER.ixx" />
-    <ClCompile Include="CHV4DCDFH.cpp" />
-    <ClCompile Include="CHV4DCDFH.ixx" />
-    <ClCompile Include="CHV4DDATADESC.cpp" />
-    <ClCompile Include="CHV4DDATADESC.ixx" />
-    <ClCompile Include="CHV4DFILE.cpp" />
-    <ClCompile Include="CHV4DFILE.ixx" />
-    <ClCompile Include="CHV4DZIP.cpp" />
-    <ClCompile Include="CHV4DZIP.ixx" />
-    <ClCompile Include="CHV4DZLIB.cpp" />
-    <ClCompile Include="CHV4DZLIB.ixx" />
-    <ClCompile Include="CHV4DFORWARD.ixx" />
-    <ClCompile Include="CHV4DEOCD.cpp" />
-    <ClCompile Include="CHV4DEOCD.ixx" />
-    <ClCompile Include="CHV4DBITSTREAM.cpp" />
-    <ClCompile Include="CHV4DBITSTREAM.ixx" />
-    <ClCompile Include="CHV4DFSTREAM.cpp" />
-    <ClCompile Include="CHV4DFSTREAM.ixx" />
-    <ClCompile Include="CHV4DRESOURCE.ixx" />
-    <ClCompile Include="CHV4DFLOCAL.cpp" />
-    <ClCompile Include="CHV4DFLOCAL.ixx" />
-    <ClCompile Include="CHV4DARCHIVE.ixx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CHV4DTBASIC\CHV4DTBASIC.vcxproj">
-      <Project>{4a015cdf-fc61-4537-90a7-eef923d07ab1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\CHV4DTENSOR\CHV4DTENSOR.vcxproj">
-      <Project>{bb01a3b0-79f6-4a9c-bc53-6e09a249dabc}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4668484c-9f2a-4f07-a56a-01c91295659d}</ProjectGuid>
-    <RootNamespace>CHV4DARCHIVE</RootNamespace>
+    <ProjectGuid>{2e6bde3f-23d4-456f-b483-1581a09c178b}</ProjectGuid>
+    <RootNamespace>CHV4DPNG</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -141,14 +106,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <SDLCheck>false</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -175,6 +138,19 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CHV4DPNG.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

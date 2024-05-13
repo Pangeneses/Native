@@ -11,15 +11,15 @@ namespace CHV4DXML
 {
 	IText CCDATASection::splitText(uint32_t offset) { return nullptr; }
 
-	std::wstring CCDATASection::wholeText() { return nullptr; }
+	std::wstring CCDATASection::wholeText() { return {}; }
 
-	std::wstring CCDATASection::data() { return nullptr; }
+	std::wstring CCDATASection::data() { return {}; }
 	void CCDATASection::data(std::wstring e) {}
 
 	uint32_t CCDATASection::length() { return 0; }
 	void CCDATASection::length(uint32_t len) {}
 
-	std::wstring CCDATASection::SubstringData(uint32_t offset, uint32_t count) { return nullptr; }
+	std::wstring CCDATASection::SubstringData(uint32_t offset, uint32_t count) { return {}; }
 
 	void CCDATASection::AppendData(std::wstring data) {}
 	void CCDATASection::InsertData(uint32_t offset, std::wstring data) {}
@@ -28,9 +28,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CCDATASection::nodeType() { return XML_DOM_CDATA_SECTION_NODE; }
 
-	std::wstring CCDATASection::nodeName() { return nullptr; }
+	std::wstring CCDATASection::nodeName() { return {}; }
 
-	std::wstring CCDATASection::baseURI() { return nullptr; }
+	std::wstring CCDATASection::baseURI() { return {}; }
 
 	bool CCDATASection::isConnected() { return false; }
 
@@ -52,10 +52,10 @@ namespace CHV4DXML
 	INode CCDATASection::previousSibling() { return nullptr; }
 	INode CCDATASection::nextSibling() { return nullptr; }
 
-	std::wstring CCDATASection::nodeValue() { return nullptr; }
+	std::wstring CCDATASection::nodeValue() { return {}; }
 	void CCDATASection::nodeValue(std::wstring val) {}
 
-	std::wstring CCDATASection::textContent() { return nullptr; }
+	std::wstring CCDATASection::textContent() { return {}; }
 	void CCDATASection::textContent(std::wstring text) {}
 
 	void CCDATASection::Normalize() {}
@@ -70,9 +70,9 @@ namespace CHV4DXML
 
 	bool CCDATASection::Contains(INode other) { return false; }
 
-	std::wstring CCDATASection::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CCDATASection::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CCDATASection::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CCDATASection::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CCDATASection::IsDefaultNamespace(std::wstring nspace) { return false; }
 

@@ -13,7 +13,7 @@ namespace CHV4DXML
 
 	double CXPathResult::numberValue() { return 0; }
 
-	std::wstring CXPathResult::stringValue() { return nullptr; }
+	std::wstring CXPathResult::stringValue() { return {}; }
 
 	bool CXPathResult::boolValue() { return false; }
 

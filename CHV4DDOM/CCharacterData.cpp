@@ -9,13 +9,13 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring CCharacterData::data() { return nullptr; }
+	std::wstring CCharacterData::data() { return {}; }
 	void CCharacterData::data(std::wstring e) {}
 
 	uint32_t CCharacterData::length() { return 0; }
 	void CCharacterData::length(uint32_t len) {}
 
-	std::wstring CCharacterData::SubstringData(uint32_t offset, uint32_t count) { return nullptr; }
+	std::wstring CCharacterData::SubstringData(uint32_t offset, uint32_t count) { return {}; }
 
 	void CCharacterData::AppendData(std::wstring data) {}
 	void CCharacterData::InsertData(uint32_t offset, std::wstring data) {}
@@ -24,9 +24,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CCharacterData::nodeType() { return XML_DOM_TEXT_NODE; }
 
-	std::wstring CCharacterData::nodeName() { return nullptr; }
+	std::wstring CCharacterData::nodeName() { return {}; }
 
-	std::wstring CCharacterData::baseURI() { return nullptr; }
+	std::wstring CCharacterData::baseURI() { return {}; }
 
 	bool CCharacterData::isConnected() { return false; }
 
@@ -48,10 +48,10 @@ namespace CHV4DXML
 	INode CCharacterData::previousSibling() { return nullptr; }
 	INode CCharacterData::nextSibling() { return nullptr; }
 
-	std::wstring CCharacterData::nodeValue() { return nullptr; }
+	std::wstring CCharacterData::nodeValue() { return {}; }
 	void CCharacterData::nodeValue(std::wstring val) {}
 
-	std::wstring CCharacterData::textContent() { return nullptr; }
+	std::wstring CCharacterData::textContent() { return {}; }
 	void CCharacterData::textContent(std::wstring text) {}
 
 	void CCharacterData::Normalize() {}
@@ -66,9 +66,9 @@ namespace CHV4DXML
 
 	bool CCharacterData::Contains(INode other) { return false; }
 
-	std::wstring CCharacterData::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CCharacterData::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CCharacterData::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CCharacterData::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CCharacterData::IsDefaultNamespace(std::wstring nspace) { return false; }
 

@@ -6,11 +6,9 @@
 
 #include <vector>
 
-export module CHV4DARCHIVE:CHV4DRESOURCE;
+export module CHV4DKERNEL:CHV4DRESOURCE;
 
-import CHV4DTBASIC;
-
-export namespace CHV4DARCHIVE
+export namespace CHV4DKERNEL
 {
 	typedef enum ARCHIVE_ERROR {
 		ARCHIVE_ERROR_FAILED			= 0,

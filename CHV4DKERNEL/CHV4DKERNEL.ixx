@@ -2,7 +2,7 @@ module;
 
 
 
-export module CHV4DARCHIVE;
+export module CHV4DKERNEL;
 
 export import :CHV4DFORWARD;
 export import :CHV4DRESOURCE;

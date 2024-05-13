@@ -21,9 +21,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CShadowRoot::nodeType() { return XML_DOM_DOCUMENT_NODE; }
 
-	std::wstring CShadowRoot::nodeName() { return nullptr; }
+	std::wstring CShadowRoot::nodeName() { return {}; }
 
-	std::wstring CShadowRoot::baseURI() { return nullptr; }
+	std::wstring CShadowRoot::baseURI() { return {}; }
 
 	bool CShadowRoot::isConnected() { return false; }
 
@@ -45,10 +45,10 @@ namespace CHV4DXML
 	INode CShadowRoot::previousSibling() { return nullptr; }
 	INode CShadowRoot::nextSibling() { return nullptr; }
 
-	std::wstring CShadowRoot::nodeValue() { return nullptr; }
+	std::wstring CShadowRoot::nodeValue() { return {}; }
 	void CShadowRoot::nodeValue(std::wstring val) {}
 
-	std::wstring CShadowRoot::textContent() { return nullptr; }
+	std::wstring CShadowRoot::textContent() { return {}; }
 	void CShadowRoot::textContent(std::wstring text) {}
 
 	void CShadowRoot::Normalize() {}
@@ -63,9 +63,9 @@ namespace CHV4DXML
 
 	bool CShadowRoot::Contains(INode other) { return false; }
 
-	std::wstring CShadowRoot::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CShadowRoot::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CShadowRoot::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CShadowRoot::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CShadowRoot::IsDefaultNamespace(std::wstring nspace) { return false; }
 

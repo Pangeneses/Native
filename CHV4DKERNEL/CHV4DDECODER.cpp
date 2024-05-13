@@ -13,12 +13,12 @@ module;
 
 #include <stdexcept> 
 
-module CHV4DARCHIVE:CHV4DDECODER;
+module CHV4DKERNEL:CHV4DDECODER;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-namespace CHV4DARCHIVE
+namespace CHV4DKERNEL
 {
 	CHV4DDECODER::CHV4DDECODER()
 	{		

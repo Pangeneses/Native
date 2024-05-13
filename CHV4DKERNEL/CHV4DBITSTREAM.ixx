@@ -7,14 +7,13 @@ module;
 
 #include <deque>
 
-export module CHV4DARCHIVE:CHV4DBITSTREAM;
+export module CHV4DKERNEL:CHV4DBITSTREAM;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import CHV4DTENSOR;
 
-export namespace CHV4DARCHIVE
+export namespace CHV4DKERNEL
 {
 	class CHV4DBITSTREAM
 	{

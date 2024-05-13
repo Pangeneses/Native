@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="i. CHV4DKERNEL">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="iii. CHV4DRESOURCE">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ii. CHV4DFORWARD">
+      <UniqueIdentifier>{fe87c3d1-ac18-487a-ab3f-415fba220c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DSET">
+      <UniqueIdentifier>{5c461091-0902-4939-a006-8ba8ff0e5781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DSET\00. BitStream">
+      <UniqueIdentifier>{967ebf4a-84af-4919-8738-32237714bacc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vi. CHV4DCRYPT">
+      <UniqueIdentifier>{f6069b72-dd8e-4bdd-add6-9cce36d65888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DDATA">
+      <UniqueIdentifier>{4c2fbf77-cbf6-413b-a7e2-f69ec51838f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DDATA\01. CHV4DDEFLATE">
+      <UniqueIdentifier>{14a819e0-b1b1-45f5-ad30-e1bc703a0144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DDATA\01. CHV4DDEFLATE\C. DECODER">
+      <UniqueIdentifier>{cccb76ac-2cc1-4f36-b887-b2945a9e77db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DDATA\01. CHV4DDEFLATE\A. ENCODER">
+      <UniqueIdentifier>{46fad8a3-e467-4bf0-9eb0-d7170aa930ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DDATA\00. CHV4DRAW">
+      <UniqueIdentifier>{61b387f2-4c2b-4d89-9a40-df108f18e84d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vii. CHV4DSOLVE">
+      <UniqueIdentifier>{c33bf88e-64b1-4b36-8052-771aaadb3b7e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CHV4DKERNEL.ixx">
+      <Filter>i. CHV4DKERNEL</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFORWARD.ixx">
+      <Filter>ii. CHV4DFORWARD</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DRESOURCE.ixx">
+      <Filter>iii. CHV4DRESOURCE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DBITSTREAM.ixx">
+      <Filter>iv. CHV4DSET\00. BitStream</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DBITSTREAM.cpp">
+      <Filter>iv. CHV4DSET\00. BitStream</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DENCODER.ixx">
+      <Filter>v. CHV4DDATA\01. CHV4DDEFLATE\A. ENCODER</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DENCODER.cpp">
+      <Filter>v. CHV4DDATA\01. CHV4DDEFLATE\A. ENCODER</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DDECODER.cpp">
+      <Filter>v. CHV4DDATA\01. CHV4DDEFLATE\C. DECODER</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DDECODER.ixx">
+      <Filter>v. CHV4DDATA\01. CHV4DDEFLATE\C. DECODER</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

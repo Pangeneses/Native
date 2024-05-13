@@ -11,9 +11,9 @@ namespace CHV4DXML
 {
 	XML_DOM_NODE_TYPE CDocumentFragment::nodeType() { return XML_DOM_DOCUMENT_FRAGMENT_NODE; }
 
-	std::wstring CDocumentFragment::nodeName() { return nullptr; }
+	std::wstring CDocumentFragment::nodeName() { return {}; }
 
-	std::wstring CDocumentFragment::baseURI() { return nullptr; }
+	std::wstring CDocumentFragment::baseURI() { return {}; }
 
 	bool CDocumentFragment::isConnected() { return false; }
 
@@ -35,10 +35,10 @@ namespace CHV4DXML
 	INode CDocumentFragment::previousSibling() { return nullptr; }
 	INode CDocumentFragment::nextSibling() { return nullptr; }
 
-	std::wstring CDocumentFragment::nodeValue() { return nullptr; }
+	std::wstring CDocumentFragment::nodeValue() { return {}; }
 	void CDocumentFragment::nodeValue(std::wstring val) {}
 
-	std::wstring CDocumentFragment::textContent() { return nullptr; }
+	std::wstring CDocumentFragment::textContent() { return {}; }
 	void CDocumentFragment::textContent(std::wstring text) {}
 
 	void CDocumentFragment::Normalize() {}
@@ -53,9 +53,9 @@ namespace CHV4DXML
 
 	bool CDocumentFragment::Contains(INode other) { return false; }
 
-	std::wstring CDocumentFragment::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CDocumentFragment::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CDocumentFragment::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CDocumentFragment::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CDocumentFragment::IsDefaultNamespace(std::wstring nspace) { return false; }
 

@@ -11,14 +11,14 @@ module;
 
 #include <stdexcept> 
 
-export module CHV4DARCHIVE:CHV4DDECODER;
+export module CHV4DKERNEL:CHV4DDECODER;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 import :CHV4DBITSTREAM;
 
-export namespace CHV4DARCHIVE
+export namespace CHV4DKERNEL
 {
 	typedef std::function<ARCHIVE_ERROR(std::shared_ptr<CHV4DBITSTREAM> BitStream)> BlockSink;
 

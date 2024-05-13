@@ -13,15 +13,15 @@ namespace CHV4DXML
 
 	IText CText::splitText(uint32_t offset) { return nullptr; }
 
-	std::wstring CText::wholeText() { return nullptr; }
+	std::wstring CText::wholeText() { return {}; }
 
-	std::wstring CText::data() { return nullptr; }
+	std::wstring CText::data() { return {}; }
 	void CText::data(std::wstring e) {}
 
 	uint32_t CText::length() { return 0; }
 	void CText::length(uint32_t len) {}
 
-	std::wstring CText::SubstringData(uint32_t offset, uint32_t count) { return nullptr; }
+	std::wstring CText::SubstringData(uint32_t offset, uint32_t count) { return {}; }
 
 	void CText::AppendData(std::wstring data) {}
 	void CText::InsertData(uint32_t offset, std::wstring data) {}
@@ -30,9 +30,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CText::nodeType() { return XML_DOM_TEXT_NODE; }
 
-	std::wstring CText::nodeName() { return nullptr; }
+	std::wstring CText::nodeName() { return {}; }
 
-	std::wstring CText::baseURI() { return nullptr; }
+	std::wstring CText::baseURI() { return {}; }
 
 	bool CText::isConnected() { return false; }
 
@@ -54,10 +54,10 @@ namespace CHV4DXML
 	INode CText::previousSibling() { return nullptr; }
 	INode CText::nextSibling() { return nullptr; }
 
-	std::wstring CText::nodeValue() { return nullptr; }
+	std::wstring CText::nodeValue() { return {}; }
 	void CText::nodeValue(std::wstring val) {}
 
-	std::wstring CText::textContent() { return nullptr; }
+	std::wstring CText::textContent() { return {}; }
 	void CText::textContent(std::wstring text) {}
 
 	void CText::Normalize() {}
@@ -72,9 +72,9 @@ namespace CHV4DXML
 
 	bool CText::Contains(INode other) { return false; }
 
-	std::wstring CText::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CText::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CText::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CText::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CText::IsDefaultNamespace(std::wstring nspace) { return false; }
 

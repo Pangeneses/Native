@@ -12,7 +12,7 @@ namespace CHV4DXML
 	std::wstring CDOMSerializer::SerializeToString(INode root)
 	{
 
-		return nullptr;
+		return {};
 
 	}
 

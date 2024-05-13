@@ -10,19 +10,19 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring CElement::nspaceURI() { return nullptr; }
-	std::wstring CElement::prefix() { return nullptr; }
-	std::wstring CElement::localName() { return nullptr; }
-	std::wstring CElement::tagName() { return nullptr; }
+	std::wstring CElement::nspaceURI() { return {}; }
+	std::wstring CElement::prefix() { return {}; }
+	std::wstring CElement::localName() { return {}; }
+	std::wstring CElement::tagName() { return {}; }
 
-	std::wstring CElement::eid() { return nullptr; }
+	std::wstring CElement::eid() { return {}; }
 
-	std::wstring CElement::className() { return nullptr; }
+	std::wstring CElement::className() { return {}; }
 	void CElement::className(std::wstring name) {}
 
-	IDOMTokenList CElement::classList() { return nullptr; }
+	IDOMTokenList CElement::classList() { return {}; }
 
-	std::wstring CElement::slot() { return nullptr; }
+	std::wstring CElement::slot() { return {}; }
 	void CElement::slot(std::wstring in) {}
 
 	bool CElement::HasAttributes() { return false; }
@@ -31,8 +31,8 @@ namespace CHV4DXML
 
 	std::vector<std::wstring> CElement::GetAttributeNames() { return std::vector<std::wstring>{}; }
 
-	std::wstring CElement::GetAttribute(std::wstring qualifiedName) { return nullptr; }
-	std::wstring CElement::GetAttributeNS(std::wstring nspace, std::wstring localName) { return nullptr; }
+	std::wstring CElement::GetAttribute(std::wstring qualifiedName) { return {}; }
+	std::wstring CElement::GetAttributeNS(std::wstring nspace, std::wstring localName) { return {}; }
 
 	void CElement::SetAttribute(std::wstring qualifiedName, std::wstring value) {}
 	void CElement::SetAttributeNS(std::wstring nspace, std::wstring qualifiedName, std::wstring value) {}
@@ -70,9 +70,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CElement::nodeType() { return XML_DOM_ELEMENT_NODE; }
 
-	std::wstring CElement::nodeName() { return nullptr; }
+	std::wstring CElement::nodeName() { return {}; }
 
-	std::wstring CElement::baseURI() { return nullptr; }
+	std::wstring CElement::baseURI() { return {}; }
 
 	bool CElement::isConnected() { return false; }
 
@@ -94,10 +94,10 @@ namespace CHV4DXML
 	INode CElement::previousSibling() { return nullptr; }
 	INode CElement::nextSibling() { return nullptr; }
 
-	std::wstring CElement::nodeValue() { return nullptr; }
+	std::wstring CElement::nodeValue() { return {}; }
 	void CElement::nodeValue(std::wstring val) {}
 
-	std::wstring CElement::textContent() { return nullptr; }
+	std::wstring CElement::textContent() { return {}; }
 	void CElement::textContent(std::wstring text) {}
 
 	void CElement::Normalize() {}
@@ -112,9 +112,9 @@ namespace CHV4DXML
 
 	bool CElement::Contains(INode other) { return false; }
 
-	std::wstring CElement::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CElement::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CElement::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CElement::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CElement::IsDefaultNamespace(std::wstring nspace) { return false; }
 

@@ -10,7 +10,7 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring name() { return nullptr; }
+	std::wstring name() { return {}; }
 	void name(std::wstring e) {}
 
 	std::vector<INode> assignedNodes() { return std::vector<INode>{}; }
@@ -21,19 +21,19 @@ namespace CHV4DXML
 
 	void Assign(std::vector<INode> nodes) {}
 
-	std::wstring CHTMLSlotElement::nspaceURI() { return nullptr; }
-	std::wstring CHTMLSlotElement::prefix() { return nullptr; }
-	std::wstring CHTMLSlotElement::localName() { return nullptr; }
-	std::wstring CHTMLSlotElement::tagName() { return nullptr; }
+	std::wstring CHTMLSlotElement::nspaceURI() { return {}; }
+	std::wstring CHTMLSlotElement::prefix() { return {}; }
+	std::wstring CHTMLSlotElement::localName() { return {}; }
+	std::wstring CHTMLSlotElement::tagName() { return {}; }
 
-	std::wstring CHTMLSlotElement::eid() { return nullptr; }
+	std::wstring CHTMLSlotElement::eid() { return {}; }
 
-	std::wstring CHTMLSlotElement::className() { return nullptr; }
+	std::wstring CHTMLSlotElement::className() { return {}; }
 	void CHTMLSlotElement::className(std::wstring name) {}
 
 	IDOMTokenList CHTMLSlotElement::classList() { return nullptr; }
 
-	std::wstring CHTMLSlotElement::slot() { return nullptr; }
+	std::wstring CHTMLSlotElement::slot() { return {}; }
 	void CHTMLSlotElement::slot(std::wstring in) {}
 
 	bool CHTMLSlotElement::HasAttributes() { return false; }
@@ -42,8 +42,8 @@ namespace CHV4DXML
 
 	std::vector<std::wstring> CHTMLSlotElement::GetAttributeNames() { return std::vector<std::wstring>{}; }
 
-	std::wstring CHTMLSlotElement::GetAttribute(std::wstring qualifiedName) { return nullptr; }
-	std::wstring CHTMLSlotElement::GetAttributeNS(std::wstring nspace, std::wstring localName) { return nullptr; }
+	std::wstring CHTMLSlotElement::GetAttribute(std::wstring qualifiedName) { return {}; }
+	std::wstring CHTMLSlotElement::GetAttributeNS(std::wstring nspace, std::wstring localName) { return {}; }
 
 	void CHTMLSlotElement::SetAttribute(std::wstring qualifiedName, std::wstring value) {}
 	void CHTMLSlotElement::SetAttributeNS(std::wstring nspace, std::wstring qualifiedName, std::wstring value) {}
@@ -81,9 +81,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CHTMLSlotElement::nodeType() { return XML_DOM_ELEMENT_NODE; }
 
-	std::wstring CHTMLSlotElement::nodeName() { return nullptr; }
+	std::wstring CHTMLSlotElement::nodeName() { return {}; }
 
-	std::wstring CHTMLSlotElement::baseURI() { return nullptr; }
+	std::wstring CHTMLSlotElement::baseURI() { return {}; }
 
 	bool CHTMLSlotElement::isConnected() { return false; }
 
@@ -105,10 +105,10 @@ namespace CHV4DXML
 	INode CHTMLSlotElement::previousSibling() { return nullptr; }
 	INode CHTMLSlotElement::nextSibling() { return nullptr; }
 
-	std::wstring CHTMLSlotElement::nodeValue() { return nullptr; }
+	std::wstring CHTMLSlotElement::nodeValue() { return {}; }
 	void CHTMLSlotElement::nodeValue(std::wstring val) {}
 
-	std::wstring CHTMLSlotElement::textContent() { return nullptr; }
+	std::wstring CHTMLSlotElement::textContent() { return {}; }
 	void CHTMLSlotElement::textContent(std::wstring text) {}
 
 	void CHTMLSlotElement::Normalize() {}
@@ -123,9 +123,9 @@ namespace CHV4DXML
 
 	bool CHTMLSlotElement::Contains(INode other) { return false; }
 
-	std::wstring CHTMLSlotElement::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CHTMLSlotElement::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CHTMLSlotElement::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CHTMLSlotElement::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CHTMLSlotElement::IsDefaultNamespace(std::wstring nspace) { return false; }
 

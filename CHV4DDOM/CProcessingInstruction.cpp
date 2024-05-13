@@ -9,15 +9,15 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring CProcessingInstruction::target() { return nullptr; }
+	std::wstring CProcessingInstruction::target() { return {}; }
 
-	std::wstring CProcessingInstruction::data() { return nullptr; }
+	std::wstring CProcessingInstruction::data() { return {}; }
 	void CProcessingInstruction::data(std::wstring e) {}
 
 	uint32_t CProcessingInstruction::length() { return 0; }
 	void CProcessingInstruction::length(uint32_t len) {}
 
-	std::wstring CProcessingInstruction::SubstringData(uint32_t offset, uint32_t count) { return nullptr; }
+	std::wstring CProcessingInstruction::SubstringData(uint32_t offset, uint32_t count) { return {}; }
 
 	void CProcessingInstruction::AppendData(std::wstring data) {}
 	void CProcessingInstruction::InsertData(uint32_t offset, std::wstring data) {}
@@ -26,9 +26,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CProcessingInstruction::nodeType() { return XML_DOM_PROCESSING_INSTRUCTION_NODE; }
 
-	std::wstring CProcessingInstruction::nodeName() { return nullptr; }
+	std::wstring CProcessingInstruction::nodeName() { return {}; }
 
-	std::wstring CProcessingInstruction::baseURI() { return nullptr; }
+	std::wstring CProcessingInstruction::baseURI() { return {}; }
 
 	bool CProcessingInstruction::isConnected() { return false; }
 
@@ -50,10 +50,10 @@ namespace CHV4DXML
 	INode CProcessingInstruction::previousSibling() { return nullptr; }
 	INode CProcessingInstruction::nextSibling() { return nullptr; }
 
-	std::wstring CProcessingInstruction::nodeValue() { return nullptr; }
+	std::wstring CProcessingInstruction::nodeValue() { return {}; }
 	void CProcessingInstruction::nodeValue(std::wstring val) {}
 
-	std::wstring CProcessingInstruction::textContent() { return nullptr; }
+	std::wstring CProcessingInstruction::textContent() { return {}; }
 	void CProcessingInstruction::textContent(std::wstring text) {}
 
 	void CProcessingInstruction::Normalize() {}
@@ -68,9 +68,9 @@ namespace CHV4DXML
 
 	bool CProcessingInstruction::Contains(INode other) { return false; }
 
-	std::wstring CProcessingInstruction::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CProcessingInstruction::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CProcessingInstruction::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CProcessingInstruction::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CProcessingInstruction::IsDefaultNamespace(std::wstring nspace) { return false; }
 

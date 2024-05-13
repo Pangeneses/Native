@@ -9,13 +9,13 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DXML
 {
-	std::wstring CComment::data() { return nullptr; }
+	std::wstring CComment::data() { return {}; }
 	void CComment::data(std::wstring e) {}
 
 	uint32_t CComment::length() { return 0; }
 	void CComment::length(uint32_t len) {}
 
-	std::wstring CComment::SubstringData(uint32_t offset, uint32_t count) { return nullptr; }
+	std::wstring CComment::SubstringData(uint32_t offset, uint32_t count) { return {}; }
 
 	void CComment::AppendData(std::wstring data) {}
 	void CComment::InsertData(uint32_t offset, std::wstring data) {}
@@ -24,9 +24,9 @@ namespace CHV4DXML
 
 	XML_DOM_NODE_TYPE CComment::nodeType() { return XML_DOM_COMMENT_NODE; }
 
-	std::wstring CComment::nodeName() { return nullptr; }
+	std::wstring CComment::nodeName() { return {}; }
 
-	std::wstring CComment::baseURI() { return nullptr; }
+	std::wstring CComment::baseURI() { return {}; }
 
 	bool CComment::isConnected() { return false; }
 
@@ -48,10 +48,10 @@ namespace CHV4DXML
 	INode CComment::previousSibling() { return nullptr; }
 	INode CComment::nextSibling() { return nullptr; }
 
-	std::wstring CComment::nodeValue() { return nullptr; }
+	std::wstring CComment::nodeValue() { return {}; }
 	void CComment::nodeValue(std::wstring val) {}
 
-	std::wstring CComment::textContent() { return nullptr; }
+	std::wstring CComment::textContent() { return {}; }
 	void CComment::textContent(std::wstring text) {}
 
 	void CComment::Normalize() {}
@@ -66,9 +66,9 @@ namespace CHV4DXML
 
 	bool CComment::Contains(INode other) { return false; }
 
-	std::wstring CComment::LookupPrefix(std::wstring nspace) { return nullptr; }
+	std::wstring CComment::LookupPrefix(std::wstring nspace) { return {}; }
 
-	std::wstring CComment::LookupNamespaceURI(std::wstring prefix) { return nullptr; }
+	std::wstring CComment::LookupNamespaceURI(std::wstring prefix) { return {}; }
 
 	bool CComment::IsDefaultNamespace(std::wstring nspace) { return false; }
 

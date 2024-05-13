@@ -44,7 +44,7 @@ namespace CHV4DXML
 
 	bool CRange::IntersectsNode(INode node) { return false; }
 
-	std::wstring CRange::stringifier() { return nullptr; }
+	std::wstring CRange::stringifier() { return {}; }
 
 	INode CRange::startContainer() { return nullptr; }
 
