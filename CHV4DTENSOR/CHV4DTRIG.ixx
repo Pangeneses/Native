@@ -4,9 +4,9 @@ module;
 
 export module CHV4DTENSOR:CHV4DTRIG;
 
-export namespace Algebra
+export namespace CHV4DMATH
 {
-
+	float CHV4DSIN(float const& x);
 
 
 

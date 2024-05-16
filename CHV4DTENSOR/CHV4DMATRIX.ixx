@@ -4,9 +4,9 @@ module;
 
 export module CHV4DTENSOR:CHV4DMATRIX;
 
-import :CHV4DNUMBER;
+import :CHV4DREAL;
 
-export namespace Matrix
+export namespace CHV4DMATH
 {
 	class CHV4DFLOAT2X2
 	{
@@ -119,10 +119,10 @@ export namespace Matrix
 
 	};
 
-	const Matrix::CHV4DFLOAT4X4 HV4DIDENTITY{
-		  Matrix::CHV4DFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f },
-		  Matrix::CHV4DFLOAT4{ 0.0f, 1.0f, 0.0f, 0.0f },
-		  Matrix::CHV4DFLOAT4{ 0.0f, 0.0f, 1.0f, 0.0f },
-		  Matrix::CHV4DFLOAT4{ 0.0f, 0.0f, 0.0f, 1.0f } };
+	const CHV4DFLOAT4X4 HV4DIDENTITY{
+		  CHV4DFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f },
+		  CHV4DFLOAT4{ 0.0f, 1.0f, 0.0f, 0.0f },
+		  CHV4DFLOAT4{ 0.0f, 0.0f, 1.0f, 0.0f },
+		  CHV4DFLOAT4{ 0.0f, 0.0f, 0.0f, 1.0f } };
 
 }

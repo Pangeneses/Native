@@ -4,7 +4,7 @@ module;
 
 export module CHV4DTENSOR:CHV4DALGEBRA;
 
-export namespace Algebra
+export namespace CHV4DMATH
 {
 
 
