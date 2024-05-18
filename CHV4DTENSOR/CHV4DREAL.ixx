@@ -6,7 +6,7 @@ export module CHV4DTENSOR:CHV4DREAL;
 
 import :CHV4DCMATH;
 
-export namespace CHV4DMATH
+export namespace CHV4DTENSOR
 {
 	class CHV4DFLOAT
 	{

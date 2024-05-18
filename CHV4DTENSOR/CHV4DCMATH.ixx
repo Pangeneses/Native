@@ -6,7 +6,7 @@ export module CHV4DTENSOR:CHV4DCMATH;
 
 import :CHV4DPRECISION;
 
-export namespace CHV4DMATH
+export namespace CHV4DTENSOR
 {
 	float iIPow(int64_t const& var, size_t const& pow);
 	float fIPow(float const& var, size_t const& pow);

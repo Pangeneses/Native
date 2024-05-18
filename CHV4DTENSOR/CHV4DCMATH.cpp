@@ -7,15 +7,13 @@ export module CHV4DTENSOR:CHV4DCMATH;
 import :CHV4DPRECISION;
 import :CHV4DINTEGER;
 
-export namespace CHV4DMATH
+export namespace CHV4DTENSOR
 {
-	uint64_t fIPow(uint64_t const& var, size_t const& pow)
+	uint64_t iIPow(uint64_t const& var, size_t const& pow)
 	{
 		if (pow == 0) return 1.0f;
 
 		if (pow != 0 && var == 0.0f) return 0.0f;
-
-		if (pow < 0) throw std::out_of_range{ "Integer conversion. Use float for negative powers." };
 
 		float inPlace{ 1.0f };
 

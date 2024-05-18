@@ -6,7 +6,7 @@ export module CHV4DTENSOR:CHV4DMATH;
 
 import :CHV4DREAL;
 
-export namespace CHV4DMATH
+export namespace CHV4DTENSOR
 {
 	CHV4DFLOAT Absolute(CHV4DFLOAT x) { return x < 0.0f ? x() * -1.0f : x; }
 

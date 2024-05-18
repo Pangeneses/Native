@@ -4,7 +4,7 @@ module;
 
 export module CHV4DTENSOR:CHV4DTRIG;
 
-export namespace CHV4DMATH
+export namespace CHV4DTENSOR
 {
 	float CHV4DSIN(float const& x);
 

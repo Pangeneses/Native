@@ -7,7 +7,7 @@ module;
 export module CHV4DTENSOR:CHV4DPRECISION;
 
 
-export namespace CHV4DMATH
+export namespace CHV4DTENSOR
 {
 	inline bool const Sign(float x)	{ return (x < 0.0f) ? true : false; }
 	inline bool const Sign(double x) { return (x < 0.0) ? true : false; }
