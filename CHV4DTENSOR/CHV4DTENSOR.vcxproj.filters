@@ -31,9 +31,6 @@
     <ClCompile Include="CHV4DCMATH.ixx">
       <Filter>v. CHV4DALGEBRA\0. CHV4DCMATH</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DCMATH.cpp">
-      <Filter>v. CHV4DALGEBRA\0. CHV4DCMATH</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DPRECISION.ixx">
       <Filter>iv. CHV4DNUMBER\0. CHV4DPRECISION</Filter>
     </ClCompile>

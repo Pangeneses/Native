@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="CHV4DALGEBRA.ixx" />
     <ClCompile Include="CHV4DPRECISION.ixx" />
-    <ClCompile Include="CHV4DCMATH.cpp" />
     <ClCompile Include="CHV4DCMATH.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />
     <ClCompile Include="CHV4DINTEGER.ixx" />

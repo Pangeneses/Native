@@ -34,7 +34,7 @@ export namespace CHV4DTENSOR
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
-			if (val <= 255) return val;
+			if (val <= 255) return static_cast<uint8_t>(val);
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
@@ -42,7 +42,7 @@ export namespace CHV4DTENSOR
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
-			if (val <= 65535) return val;
+			if (val <= 65535) return static_cast<uint16_t>(val);
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
@@ -50,7 +50,7 @@ export namespace CHV4DTENSOR
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
-			if (val <= 4294967295) return val;
+			if (val <= 4294967295) return static_cast<uint32_t>(val);
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
@@ -58,7 +58,7 @@ export namespace CHV4DTENSOR
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
-			if (val <= 18446744073709551615) return val;
+			if (val <= 18446744073709551615) return static_cast<uint64_t>(val);
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
@@ -66,13 +66,13 @@ export namespace CHV4DTENSOR
 		{
 			if (!sign)
 			{
-				if (val <= 127) return val;
+				if (val <= 127) return static_cast<int8_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 			else if (sign)
 			{
-				if (val <= 127) return -val;
+				if (val <= 127) return -static_cast<int8_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
@@ -81,13 +81,13 @@ export namespace CHV4DTENSOR
 		{
 			if (!sign)
 			{
-				if (val <= 32767) return val;
+				if (val <= 32767) return static_cast<int16_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 			else if (sign)
 			{
-				if (val <= 32767) return -val;
+				if (val <= 32767) return -static_cast<int16_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
@@ -96,13 +96,13 @@ export namespace CHV4DTENSOR
 		{
 			if (!sign)
 			{
-				if (val <= 2147483647) return val;
+				if (val <= 2147483647) return static_cast<int32_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 			else if (sign)
 			{
-				if (val <= 2147483647) return -val;
+				if (val <= 2147483647) return -static_cast<int32_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
@@ -111,13 +111,13 @@ export namespace CHV4DTENSOR
 		{
 			if (!sign)
 			{
-				if (val <= 9223372036854775807) return val;
+				if (val <= 9223372036854775807) return static_cast<int64_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 			else if (sign)
 			{
-				if (val <= 9223372036854775807) return -val;
+				if (val <= 9223372036854775807) return -static_cast<int64_t>(val);
 
 				else throw std::overflow_error{ "Integer overrun." };
 			}
@@ -250,19 +250,19 @@ export namespace CHV4DTENSOR
 		}
 		template<> float operator/ < float > (MaxInteger const& x)
 		{
-			float z = this->val / x.val;
+			float z = static_cast<float>(this->val) / static_cast<float>(x.val);
 
 			return (!sign != !x.sign) ? -z : z;
 		}
 		template<> double operator/ < double > (MaxInteger const& x)
 		{
-			double z = this->val / x.val;
+			double z = static_cast<double>(this->val) / static_cast<double>(x.val);
 
 			return (!sign != !x.sign) ? -z : z;
 		}
 		template<> long double operator/ < long double > (MaxInteger const& x)
 		{
-			long double z = this->val / x.val;
+			long double z = static_cast<long double>(this->val) / static_cast<long double>(x.val);
 
 			return (!sign != !x.sign) ? -z : z;
 		}
@@ -330,7 +330,7 @@ export namespace CHV4DTENSOR
 			{
 				try
 				{
-					z = z.operator*< MaxInteger >(this);
+					z = z.operator*< MaxInteger >(*this);
 				}
 				catch (std::overflow_error error)
 				{
@@ -386,7 +386,60 @@ export namespace CHV4DTENSOR
 			return ret;
 		}
 
-	public:
+		bool operator==(MaxInteger const& x) const 
+		{ 
+			return (val == x.val) && (sign == x.sign) ? true : false; 
+		}
+		bool operator<(MaxInteger const& x) const 
+		{
+			if ((val == x.val) && (sign == x.sign)) return false;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return true;
+
+			else if ((val > x.val) && (sign && x.sign)) return true;
+
+			else if (!sign && x.sign) return true;
+
+			else if (sign && !x.sign) return false;
+		}
+		bool operator>(MaxInteger const& x) const 
+		{
+			if ((val == x.val) && (sign == x.sign)) return false;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return false;
+
+			else if ((val > x.val) && (sign && x.sign)) return false;
+
+			else if (!sign && x.sign) return false;
+
+			else if (sign && !x.sign) return true;
+		}
+		bool operator<=(MaxInteger const& x) const 
+		{
+			if ((val == x.val) && (sign == x.sign)) return true;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return true;
+
+			else if ((val > x.val) && (sign && x.sign)) return true;
+
+			else if (!sign && x.sign) return true;
+
+			else if (sign && !x.sign) return false;
+		}
+		bool operator>=(MaxInteger const& x) const 
+		{
+			if ((val == x.val) && (sign == x.sign)) return true;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return false;
+
+			else if ((val > x.val) && (sign && x.sign)) return false;
+
+			else if (!sign && x.sign) return false;
+
+			else if (sign && !x.sign) return true;
+		}
+
+	private:
 		bool sign{ false };
 
 		uint64_t val{ 0 };
