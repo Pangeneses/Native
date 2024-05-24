@@ -33,7 +33,7 @@ export namespace CHV4DTENSOR
 
 			unsigned char fpexp = (data[0] << 1) | (data[1] >> 7);
 
-			exponent = static_cast<uint16_t>(fpexp);
+			exponent = static_cast<uint16_t>(fpexp + (2047ui16 - 127ui16));
 
 			uint32_t fpsignificand = 0x008FFFFF & *reinterpret_cast<uint32_t*>(data);
 
@@ -43,6 +43,8 @@ export namespace CHV4DTENSOR
 			std::swap(data[1], data[2]);
 
 			significand = static_cast<uint64_t>(*reinterpret_cast<uint32_t*>(data));
+
+			significand = significand << 44;
 		}
 		MaxPrecision(double const& x) 
 		{
@@ -70,6 +72,8 @@ export namespace CHV4DTENSOR
 			std::swap(data[3], data[4]);
 
 			significand = *reinterpret_cast<uint64_t*>(data);
+
+			significand = significand << 12;
 		}
 
 	public:
@@ -91,7 +95,7 @@ export namespace CHV4DTENSOR
 
 			unsigned char fpexp = (data[0] << 1) | (data[1] >> 7);
 
-			exponent = static_cast<uint16_t>(fpexp);
+			exponent = static_cast<uint16_t>(fpexp + (2047ui16 - 127ui16));
 
 			uint32_t fpsignificand = 0x008FFFFF & *reinterpret_cast<uint32_t*>(data);
 
@@ -101,6 +105,8 @@ export namespace CHV4DTENSOR
 			std::swap(data[1], data[2]);
 
 			significand = static_cast<uint64_t>(*reinterpret_cast<uint32_t*>(data));
+
+			significand = significand << 44;
 		}
 		void operator=(double const& x)
 		{
@@ -128,6 +134,8 @@ export namespace CHV4DTENSOR
 			std::swap(data[3], data[4]);
 
 			significand = *reinterpret_cast<uint64_t*>(data);
+
+			significand = significand << 12;
 		}
 
 		template<typename T>
@@ -150,9 +158,11 @@ export namespace CHV4DTENSOR
 			}
 
 			{
-				if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
+				if ((exponent - (2047ui16 - 127ui16)) > 255ui16) throw std::overflow_error{ "Precision overrun" };
 
 				unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
+
+				fpexp = fpexp - (2047ui16 - 127ui16);
 
 				data[0] = data[0] | fpexp >> 1;
 
@@ -160,7 +170,7 @@ export namespace CHV4DTENSOR
 			}
 
 			{
-				if (significand > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
+				if ((significand >> 44) > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
 
 				unsigned char* fpsignificand = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&significand));
 
@@ -209,30 +219,138 @@ export namespace CHV4DTENSOR
 			return *reinterpret_cast<double*>(data);
 		}
 
-		void operator+(MaxPrecision const& x) const
+		MaxPrecision operator+(MaxPrecision const& x) const
 		{
+			MaxPrecision A{ *this }, B{ x };
 
+			if (A.exponent > B.exponent)
+			{
+				B.significand = B.significand >> (A.exponent - B.exponent);
+
+				if (!((A.significand >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (B.significand >> 12))) && A.exponent == 2047)
+				{
+					throw std::overflow_error{ "Addition overflow." };
+				}
+
+				if(!A.sign && !B.sign) A.significand += B.significand;
+				else if (!A.sign && B.sign) A.significand -= B.significand;
+				else if (A.sign && !B.sign) A.significand -= B.significand;
+				else if (A.sign && B.sign) A.significand += B.significand;
+
+				return A;
+			}
+			else if (A.exponent < B.exponent)
+			{
+				A.significand = A.significand >> (B.exponent - A.exponent);
+
+				if (!((B.significand >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.significand >> 12))) && B.exponent == 2047)
+				{
+					throw std::overflow_error{ "Addition overflow." };
+				}
+				
+				if(!A.sign && !B.sign) B.significand += A.significand;
+				else if (!A.sign && B.sign) B.significand -= A.significand;
+				else if (A.sign && !B.sign) B.significand -= A.significand;
+				else if (A.sign && B.sign) B.significand += A.significand;
+
+				return B;
+			}
+			else
+			{
+				if (!((B.significand >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.significand >> 12))) && B.exponent == 2047)
+				{
+					throw std::overflow_error{ "Addition overflow." };
+				}
+
+				if (!A.sign && !B.sign) B.significand += A.significand;
+				else if (!A.sign && B.sign) B.significand -= A.significand;
+				else if (A.sign && !B.sign) B.significand -= A.significand;
+				else if (A.sign && B.sign) B.significand += A.significand;
+
+				return B;
+			}
 		}
-		void operator+(float const& x) const
+		float operator+(float const& x) const
 		{
+			MaxPrecision A{ x };
 
+			try
+			{
+				A = this->operator+(A);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+
+			return A.operator() < float > ();
 		}
-		void operator+(double const& x) const
+		double operator+(double const& x) const
 		{
+			MaxPrecision A{ x };
 
+			try
+			{
+				A = this->operator+(A);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+
+			return A.operator() < double > ();
 		}
 
-		void operator-(MaxPrecision const& x) const
+		MaxPrecision operator-(MaxPrecision const& x) const
 		{
+			MaxPrecision A{ x };
 
+			if (A.sign) A.sign = false; else A.sign = true;
+
+			try
+			{
+				A = this->operator+(A);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+
+			return A;
 		}
-		void operator-(float const& x) const
+		float operator-(float const& x) const
 		{
+			MaxPrecision A{ x };
 
+			if (A.sign) A.sign = false; else A.sign = true;
+
+			try
+			{
+				A = this->operator+(A);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+
+			return A.operator() < float > ();
 		}
-		void operator-(double const& x) const
+		double operator-(double const& x) const
 		{
+			MaxPrecision A{ x };
 
+			if (A.sign) A.sign = false; else A.sign = true;
+
+			try
+			{
+				A = this->operator+(A);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+
+			return A.operator() < double > ();
 		}
 
 		void operator*(MaxPrecision const& x) const
