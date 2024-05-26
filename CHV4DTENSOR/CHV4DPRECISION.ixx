@@ -1,6 +1,6 @@
 module;
 
-#include <stdfloat>
+#include <xmmintrin.h>
 
 #include <stdexcept>
 
@@ -19,7 +19,7 @@ export namespace CHV4DTENSOR
 		{
 			sign = x.sign;
 
-			significand = x.significand;
+			mantissa = x.mantissa;
 
 			exponent = x.exponent;
 		}
@@ -29,22 +29,17 @@ export namespace CHV4DTENSOR
 
 			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
 
-			sign = ((data[0] & 0b10000000) == true) ? true : false;
+			sign = ((data[3] & 0b10000000) == true) ? true : false;
 
-			unsigned char fpexp = (data[0] << 1) | (data[1] >> 7);
+			unsigned char exp = (data[3] << 1) | (data[2] >> 7);
 
-			exponent = static_cast<uint16_t>(fpexp + (2047ui16 - 127ui16));
+			exponent = static_cast<uint16_t>(exp + (2047ui16 - 127ui16));
 
-			uint32_t fpsignificand = 0x008FFFFF & *reinterpret_cast<uint32_t*>(data);
+			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(data);
 
-			data = reinterpret_cast<unsigned char*>(&fpsignificand);
+			mantissa = static_cast<uint64_t>(sig);
 
-			std::swap(data[0], data[3]);
-			std::swap(data[1], data[2]);
-
-			significand = static_cast<uint64_t>(*reinterpret_cast<uint32_t*>(data));
-
-			significand = significand << 44;
+			mantissa = mantissa << 44;
 		}
 		MaxPrecision(double const& x) 
 		{
@@ -52,28 +47,19 @@ export namespace CHV4DTENSOR
 
 			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
 
-			sign = ((data[0] & 0b10000000) == true) ? true : false;
+			sign = ((data[7] & 0b10000000) == true) ? true : false;
 
-			unsigned char fpexp[2];
+			unsigned char exp[2];
 			
-			fpexp[0] = (data[0] << 4) | (data[1] >> 4);
+			exp[0] = (data[7] << 4) | (data[6] >> 4);
 
-			fpexp[1] = (data[0] << 4) | (data[1] >> 4);
+			exp[1] = (data[7] >> 4) & 0b00000111;
 
-			exponent = *reinterpret_cast<uint16_t*>(fpexp);
+			exponent = *reinterpret_cast<uint16_t*>(exp);
 
-			uint64_t fpsignificand = 0x008FFFFFFFFFFFFF & *reinterpret_cast<uint64_t*>(data);
+			mantissa = 0xFFFFFFFFFFFF0F00 & *reinterpret_cast<uint64_t*>(data);
 
-			data = reinterpret_cast<unsigned char*>(&fpsignificand);
-
-			std::swap(data[0], data[7]);
-			std::swap(data[1], data[6]);
-			std::swap(data[2], data[5]);
-			std::swap(data[3], data[4]);
-
-			significand = *reinterpret_cast<uint64_t*>(data);
-
-			significand = significand << 12;
+			mantissa = mantissa << 12;
 		}
 
 	public:
@@ -81,7 +67,7 @@ export namespace CHV4DTENSOR
 		{
 			sign = x.sign;
 
-			significand = x.significand;
+			mantissa = x.mantissa;
 
 			exponent = x.exponent;
 		}
@@ -91,22 +77,17 @@ export namespace CHV4DTENSOR
 
 			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
 
-			sign = ((data[0] & 0b10000000) == true) ? true : false;
+			sign = ((data[3] & 0b10000000) == true) ? true : false;
 
-			unsigned char fpexp = (data[0] << 1) | (data[1] >> 7);
+			unsigned char exp = (data[3] << 1) | (data[2] >> 7);
 
-			exponent = static_cast<uint16_t>(fpexp + (2047ui16 - 127ui16));
+			exponent = static_cast<uint16_t>(exp + (2047ui16 - 127ui16));
 
-			uint32_t fpsignificand = 0x008FFFFF & *reinterpret_cast<uint32_t*>(data);
+			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(data);
 
-			data = reinterpret_cast<unsigned char*>(&fpsignificand);
+			mantissa = static_cast<uint64_t>(sig);
 
-			std::swap(data[0], data[3]);
-			std::swap(data[1], data[2]);
-
-			significand = static_cast<uint64_t>(*reinterpret_cast<uint32_t*>(data));
-
-			significand = significand << 44;
+			mantissa = mantissa << 44;
 		}
 		void operator=(double const& x)
 		{
@@ -114,28 +95,19 @@ export namespace CHV4DTENSOR
 
 			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
 
-			sign = ((data[0] & 0b10000000) == true) ? true : false;
+			sign = ((data[7] & 0b10000000) == true) ? true : false;
 
-			unsigned char fpexp[2];
+			unsigned char exp[2];
 
-			fpexp[0] = (data[0] << 4) | (data[1] >> 4);
+			exp[0] = (data[7] << 4) | (data[6] >> 4);
 
-			fpexp[1] = (data[0] << 4) | (data[1] >> 4);
+			exp[1] = (data[7] >> 4) & 0b00000111;
 
-			exponent = *reinterpret_cast<uint16_t*>(fpexp);
+			exponent = *reinterpret_cast<uint16_t*>(exp);
 
-			uint64_t fpsignificand = 0x008FFFFFFFFFFFFF & *reinterpret_cast<uint64_t*>(data);
+			mantissa = 0xFFFFFFFFFFFF0F00 & *reinterpret_cast<uint64_t*>(data);
 
-			data = reinterpret_cast<unsigned char*>(&fpsignificand);
-
-			std::swap(data[0], data[7]);
-			std::swap(data[1], data[6]);
-			std::swap(data[2], data[5]);
-			std::swap(data[3], data[4]);
-
-			significand = *reinterpret_cast<uint64_t*>(data);
-
-			significand = significand << 12;
+			mantissa = mantissa << 12;
 		}
 
 		template<typename T>
@@ -154,29 +126,29 @@ export namespace CHV4DTENSOR
 			unsigned char data[4]{ 0 };
 
 			{
-				sign ? data[0] | 0b10000000 : data[0] | 0;
+				sign ? data[3] | 0b10000000 : data[3] | 0;
 			}
 
 			{
-				if ((exponent - (2047ui16 - 127ui16)) > 255ui16) throw std::overflow_error{ "Precision overrun" };
+				if (exponent > 2047ui16) throw std::runtime_error{ "Exponent error." };
 
-				unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
+				if (exponent < (1023ui16 - 127ui16)) throw std::overflow_error{ "Precision overrun" };
 
-				fpexp = fpexp - (2047ui16 - 127ui16);
+				uint16_t exp = (exponent + 127ui16) - 1023ui16;
 
-				data[0] = data[0] | fpexp >> 1;
+				if (exp > 255ui16) throw std::overflow_error{ "Precision overrun" };
 
-				data[1] = 0 | fpexp << 7;
+				data[3] = data[3] | ((*reinterpret_cast<unsigned char*>(&exp)) >> 1);
+
+				data[2] = (*reinterpret_cast<unsigned char*>(&exp)) << 7;
 			}
 
 			{
-				if ((significand >> 44) > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
+				uint64_t fraction = mantissa;
 
-				unsigned char* fpsignificand = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&significand));
-
-				data[3] = fpsignificand[0];
-				data[2] = fpsignificand[1];
-				data[1] = data[1] | (fpsignificand[2] & 0b01111111);
+				data[2] |= (reinterpret_cast<unsigned char*>(&fraction)[2] & 0b01111111);
+				data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
+				data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
 			}
 
 			return *reinterpret_cast<float*>(data);
@@ -187,33 +159,31 @@ export namespace CHV4DTENSOR
 			unsigned char data[8]{ 0 };
 
 			{
-				sign ? data[0] | 0b10000000 : data[0] | 0;
+				sign ? data[7] | 0b10000000 : data[7] | 0;
 			}
 
 			{
-				if (exponent > 2047ui16) throw std::overflow_error{ "Precision overrun" };
+				if (exponent > 2047ui16) throw std::runtime_error{ "Exponent error." };
 
-				unsigned char* fpexp = reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
+				uint16_t exp = exponent;
 
-				data[0] = data[0] | fpexp[1] >> 1;
+				data[7] |= (reinterpret_cast<unsigned char*>(&exp)[1] & 0b00000111) << 4;
 
-				data[1] = 0 | fpexp[1] << 7;
-
-				data[1] = data[1] | ((fpexp[0] >> 1) & 0b01110000);
+				data[7] |= (reinterpret_cast<unsigned char*>(&exp)[0] >> 4);
+				
+				data[6] | (reinterpret_cast<unsigned char*>(&exp)[0] << 4);
 			}
 
 			{
-				if (significand > 4503599627370495ui64) throw std::overflow_error{ "Precision overrun" };
+				uint64_t fraction = mantissa;
 
-				unsigned char* fpsignificand = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&significand));
-
-				data[7] = fpsignificand[0];
-				data[6] = fpsignificand[1];
-				data[5] = fpsignificand[2];
-				data[4] = fpsignificand[3];
-				data[3] = fpsignificand[4];
-				data[2] = fpsignificand[5];
-				data[1] = data[1] | (fpsignificand[6] & 0b00001111);
+				data[6] |= (reinterpret_cast<unsigned char*>(&fraction)[6] & 0b00001111);
+				data[5] = reinterpret_cast<unsigned char*>(&fraction)[5];
+				data[4] = reinterpret_cast<unsigned char*>(&fraction)[4];
+				data[3] = reinterpret_cast<unsigned char*>(&fraction)[3];
+				data[2] = reinterpret_cast<unsigned char*>(&fraction)[2];
+				data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
+				data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
 			}
 
 			return *reinterpret_cast<double*>(data);
@@ -225,47 +195,47 @@ export namespace CHV4DTENSOR
 
 			if (A.exponent > B.exponent)
 			{
-				B.significand = B.significand >> (A.exponent - B.exponent);
+				B.mantissa = B.mantissa >> (A.exponent - B.exponent);
 
-				if (!((A.significand >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (B.significand >> 12))) && A.exponent == 2047)
+				if (!((A.mantissa >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (B.mantissa >> 12))) && A.exponent == 2047)
 				{
 					throw std::overflow_error{ "Addition overflow." };
 				}
 
-				if(!A.sign && !B.sign) A.significand += B.significand;
-				else if (!A.sign && B.sign) A.significand -= B.significand;
-				else if (A.sign && !B.sign) A.significand -= B.significand;
-				else if (A.sign && B.sign) A.significand += B.significand;
+				if(!A.sign && !B.sign) A.mantissa += B.mantissa;
+				else if (!A.sign && B.sign) A.mantissa -= B.mantissa;
+				else if (A.sign && !B.sign) A.mantissa -= B.mantissa;
+				else if (A.sign && B.sign) A.mantissa += B.mantissa;
 
 				return A;
 			}
 			else if (A.exponent < B.exponent)
 			{
-				A.significand = A.significand >> (B.exponent - A.exponent);
+				A.mantissa = A.mantissa >> (B.exponent - A.exponent);
 
-				if (!((B.significand >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.significand >> 12))) && B.exponent == 2047)
+				if (!((B.mantissa >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.mantissa >> 12))) && B.exponent == 2047)
 				{
 					throw std::overflow_error{ "Addition overflow." };
 				}
 				
-				if(!A.sign && !B.sign) B.significand += A.significand;
-				else if (!A.sign && B.sign) B.significand -= A.significand;
-				else if (A.sign && !B.sign) B.significand -= A.significand;
-				else if (A.sign && B.sign) B.significand += A.significand;
+				if(!A.sign && !B.sign) B.mantissa += A.mantissa;
+				else if (!A.sign && B.sign) B.mantissa -= A.mantissa;
+				else if (A.sign && !B.sign) B.mantissa -= A.mantissa;
+				else if (A.sign && B.sign) B.mantissa += A.mantissa;
 
 				return B;
 			}
 			else
 			{
-				if (!((B.significand >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.significand >> 12))) && B.exponent == 2047)
+				if (!((B.mantissa >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.mantissa >> 12))) && B.exponent == 2047)
 				{
 					throw std::overflow_error{ "Addition overflow." };
 				}
 
-				if (!A.sign && !B.sign) B.significand += A.significand;
-				else if (!A.sign && B.sign) B.significand -= A.significand;
-				else if (A.sign && !B.sign) B.significand -= A.significand;
-				else if (A.sign && B.sign) B.significand += A.significand;
+				if (!A.sign && !B.sign) B.mantissa += A.mantissa;
+				else if (!A.sign && B.sign) B.mantissa -= A.mantissa;
+				else if (A.sign && !B.sign) B.mantissa -= A.mantissa;
+				else if (A.sign && B.sign) B.mantissa += A.mantissa;
 
 				return B;
 			}
@@ -353,6 +323,34 @@ export namespace CHV4DTENSOR
 			return A.operator() < double > ();
 		}
 
+		MaxPrecision operator/(MaxPrecision const& x) const
+		{
+			if (x.mantissa == 0 && x.exponent == 127) throw std::runtime_error{ "Division by zero." };
+
+			if (mantissa == 0 && exponent == 127) return MaxPrecision{ 0 };
+
+			MaxPrecision B{ x }, Ret{ 0.0 };
+
+			Ret.sign = (!sign != !B.sign) ? true : false;
+
+			MaxPrecision buffer{ static_cast<double>((mantissa >> 12 & 0x0010000000000000) / (B.mantissa & 0x0010000000000000)) };
+
+			Ret.exponent += buffer.exponent
+
+			Ret.mantissa = () & 0x000FFFFFFFFFFFFF;
+
+
+			
+		}
+		float operator/(float const& x) const
+		{
+
+		}
+		double operator/(double const& x) const
+		{
+
+		}
+
 		void operator*(MaxPrecision const& x) const
 		{
 
@@ -362,19 +360,6 @@ export namespace CHV4DTENSOR
 
 		}
 		void operator*(double const& x) const
-		{
-
-		}
-
-		void operator/(MaxPrecision const& x) const
-		{
-
-		}
-		void operator/(float const& x) const
-		{
-
-		}
-		void operator/(double const& x) const
 		{
 
 		}
@@ -460,11 +445,11 @@ export namespace CHV4DTENSOR
 	public:
 		bool Sign() const { return sign ? true : false; }
 
-		bool Infinity() const { return (exponent == 65535ui16) && (significand != 0ui64) ? true : false; }
+		bool Infinity() const { return (exponent == 65535ui16) && (mantissa != 0ui64) ? true : false; }
 
 		size_t Exponent() const { return exponent; }
 
-		size_t Significand() const { return significand; }
+		size_t Mantissa() const { return mantissa; }
 
 		template<typename T>
 		T Value() const
@@ -538,13 +523,13 @@ export namespace CHV4DTENSOR
 			}
 
 			{
-				if (significand > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
+				if (mantissa > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
 
-				unsigned char* fpsignificand = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&significand));
+				unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
 
-				data[3] = fpsignificand[0];
-				data[2] = fpsignificand[1];
-				data[1] = data[1] | (fpsignificand[2] & 0b01111111);
+				data[3] = fpmantissa[0];
+				data[2] = fpmantissa[1];
+				data[1] = data[1] | (fpmantissa[2] & 0b01111111);
 			}
 
 			return *reinterpret_cast<float*>(data);
@@ -567,17 +552,17 @@ export namespace CHV4DTENSOR
 			}
 
 			{
-				if (significand > 4503599627370495ui64) throw std::overflow_error{ "Precision overrun" };
+				if (mantissa > 4503599627370495ui64) throw std::overflow_error{ "Precision overrun" };
 
-				unsigned char* fpsignificand = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&significand));
+				unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
 
-				data[7] = fpsignificand[0];
-				data[6] = fpsignificand[1];
-				data[5] = fpsignificand[2];
-				data[4] = fpsignificand[3];
-				data[3] = fpsignificand[4];
-				data[2] = fpsignificand[5];
-				data[1] = data[1] | (fpsignificand[6] & 0b00001111);
+				data[7] = fpmantissa[0];
+				data[6] = fpmantissa[1];
+				data[5] = fpmantissa[2];
+				data[4] = fpmantissa[3];
+				data[3] = fpmantissa[4];
+				data[2] = fpmantissa[5];
+				data[1] = data[1] | (fpmantissa[6] & 0b00001111);
 			}
 
 			return *reinterpret_cast<double*>(data);
@@ -597,136 +582,136 @@ export namespace CHV4DTENSOR
 
 			if (trunced.exponent > 1023ui16)
 			{
-				trunced.significand = trunced.significand << trunced.exponent - 1023;
+				trunced.mantissa = trunced.mantissa << trunced.exponent - 1023;
 			}
 			else if (trunced.exponent < 1023ui16)
 			{
-				trunced.significand = trunced.significand >> 1023 - trunced.exponent;
+				trunced.mantissa = trunced.mantissa >> 1023 - trunced.exponent;
 			}
 
 			switch (sigBits)
 			{
-			case 0:	trunced.significand = trunced.significand & 0x00000000000000; break;
-			case 1:	trunced.significand = trunced.significand & 0x70000000000000; break;
-			case 2:	trunced.significand = trunced.significand & 0xB0000000000000; break;
-			case 3:	trunced.significand = trunced.significand & 0xE0000000000000; break;
-			case 4:	trunced.significand = trunced.significand & 0xF0000000000000; break;
-			case 5:	trunced.significand = trunced.significand & 0xF7000000000000; break;
-			case 6:	trunced.significand = trunced.significand & 0xFB000000000000; break;
-			case 7:	trunced.significand = trunced.significand & 0xFE000000000000; break;
-			case 8:	trunced.significand = trunced.significand & 0xFF000000000000; break;
-			case 9:	trunced.significand = trunced.significand & 0xFF700000000000; break;
-			case 10: trunced.significand = trunced.significand & 0xFFB00000000000; break;
-			case 11: trunced.significand = trunced.significand & 0xFFE00000000000; break;
-			case 12: trunced.significand = trunced.significand & 0xFFF00000000000; break;
-			case 13: trunced.significand = trunced.significand & 0xFFF70000000000; break;
-			case 14: trunced.significand = trunced.significand & 0xFFFB0000000000; break;
-			case 15: trunced.significand = trunced.significand & 0xFFFE0000000000; break;
-			case 16: trunced.significand = trunced.significand & 0xFFFF0000000000; break;
-			case 17: trunced.significand = trunced.significand & 0xFFFF7000000000; break;
-			case 18: trunced.significand = trunced.significand & 0xFFFFB000000000; break;
-			case 19: trunced.significand = trunced.significand & 0xFFFFE000000000; break;
-			case 20: trunced.significand = trunced.significand & 0xFFFFF000000000; break;
-			case 21: trunced.significand = trunced.significand & 0xFFFFF700000000; break;
-			case 22: trunced.significand = trunced.significand & 0xFFFFFB00000000; break;
-			case 23: trunced.significand = trunced.significand & 0xFFFFFE00000000; break;
-			case 24: trunced.significand = trunced.significand & 0xFFFFFF0000000000; break;
-			case 25: trunced.significand = trunced.significand & 0xFFFFFF7000000000; break;
-			case 26: trunced.significand = trunced.significand & 0xFFFFFFB000000000; break;
-			case 27: trunced.significand = trunced.significand & 0xFFFFFFE000000000; break;
-			case 28: trunced.significand = trunced.significand & 0xFFFFFFF000000000; break;
-			case 29: trunced.significand = trunced.significand & 0xFFFFFFF700000000; break;
-			case 30: trunced.significand = trunced.significand & 0xFFFFFFFB00000000; break;
-			case 31: trunced.significand = trunced.significand & 0xFFFFFFFE00000000; break;
-			case 32: trunced.significand = trunced.significand & 0xFFFFFFFF00000000; break;
-			case 33: trunced.significand = trunced.significand & 0xFFFFFFFF70000000; break;
-			case 34: trunced.significand = trunced.significand & 0xFFFFFFFFB0000000; break;
-			case 35: trunced.significand = trunced.significand & 0xFFFFFFFFE0000000; break;
-			case 36: trunced.significand = trunced.significand & 0xFFFFFFFFF0000000; break;
-			case 37: trunced.significand = trunced.significand & 0xFFFFFFFFF7000000; break;
-			case 38: trunced.significand = trunced.significand & 0xFFFFFFFFFB000000; break;
-			case 39: trunced.significand = trunced.significand & 0xFFFFFFFFFE000000; break;
-			case 40: trunced.significand = trunced.significand & 0xFFFFFFFFFF000000; break;
-			case 41: trunced.significand = trunced.significand & 0xFFFFFFFFFF700000; break;
-			case 42: trunced.significand = trunced.significand & 0xFFFFFFFFFFB00000; break;
-			case 43: trunced.significand = trunced.significand & 0xFFFFFFFFFFE00000; break;
-			case 44: trunced.significand = trunced.significand & 0xFFFFFFFFFFF00000; break;
-			case 45: trunced.significand = trunced.significand & 0xFFFFFFFFFFF70000; break;
-			case 46: trunced.significand = trunced.significand & 0xFFFFFFFFFFFB0000; break;
-			case 47: trunced.significand = trunced.significand & 0xFFFFFFFFFFFE0000; break;
-			case 48: trunced.significand = trunced.significand & 0xFFFFFFFFFFFF0000; break;
-			case 49: trunced.significand = trunced.significand & 0xFFFFFFFFFFFF7000; break;
-			case 50: trunced.significand = trunced.significand & 0xFFFFFFFFFFFFB000; break;
-			case 51: trunced.significand = trunced.significand & 0xFFFFFFFFFFFFE000; break;
-			case 52: trunced.significand = trunced.significand & 0xFFFFFFFFFFFFF000; break;
+			case 0:	trunced.mantissa = trunced.mantissa & 0x00000000000000; break;
+			case 1:	trunced.mantissa = trunced.mantissa & 0x70000000000000; break;
+			case 2:	trunced.mantissa = trunced.mantissa & 0xB0000000000000; break;
+			case 3:	trunced.mantissa = trunced.mantissa & 0xE0000000000000; break;
+			case 4:	trunced.mantissa = trunced.mantissa & 0xF0000000000000; break;
+			case 5:	trunced.mantissa = trunced.mantissa & 0xF7000000000000; break;
+			case 6:	trunced.mantissa = trunced.mantissa & 0xFB000000000000; break;
+			case 7:	trunced.mantissa = trunced.mantissa & 0xFE000000000000; break;
+			case 8:	trunced.mantissa = trunced.mantissa & 0xFF000000000000; break;
+			case 9:	trunced.mantissa = trunced.mantissa & 0xFF700000000000; break;
+			case 10: trunced.mantissa = trunced.mantissa & 0xFFB00000000000; break;
+			case 11: trunced.mantissa = trunced.mantissa & 0xFFE00000000000; break;
+			case 12: trunced.mantissa = trunced.mantissa & 0xFFF00000000000; break;
+			case 13: trunced.mantissa = trunced.mantissa & 0xFFF70000000000; break;
+			case 14: trunced.mantissa = trunced.mantissa & 0xFFFB0000000000; break;
+			case 15: trunced.mantissa = trunced.mantissa & 0xFFFE0000000000; break;
+			case 16: trunced.mantissa = trunced.mantissa & 0xFFFF0000000000; break;
+			case 17: trunced.mantissa = trunced.mantissa & 0xFFFF7000000000; break;
+			case 18: trunced.mantissa = trunced.mantissa & 0xFFFFB000000000; break;
+			case 19: trunced.mantissa = trunced.mantissa & 0xFFFFE000000000; break;
+			case 20: trunced.mantissa = trunced.mantissa & 0xFFFFF000000000; break;
+			case 21: trunced.mantissa = trunced.mantissa & 0xFFFFF700000000; break;
+			case 22: trunced.mantissa = trunced.mantissa & 0xFFFFFB00000000; break;
+			case 23: trunced.mantissa = trunced.mantissa & 0xFFFFFE00000000; break;
+			case 24: trunced.mantissa = trunced.mantissa & 0xFFFFFF0000000000; break;
+			case 25: trunced.mantissa = trunced.mantissa & 0xFFFFFF7000000000; break;
+			case 26: trunced.mantissa = trunced.mantissa & 0xFFFFFFB000000000; break;
+			case 27: trunced.mantissa = trunced.mantissa & 0xFFFFFFE000000000; break;
+			case 28: trunced.mantissa = trunced.mantissa & 0xFFFFFFF000000000; break;
+			case 29: trunced.mantissa = trunced.mantissa & 0xFFFFFFF700000000; break;
+			case 30: trunced.mantissa = trunced.mantissa & 0xFFFFFFFB00000000; break;
+			case 31: trunced.mantissa = trunced.mantissa & 0xFFFFFFFE00000000; break;
+			case 32: trunced.mantissa = trunced.mantissa & 0xFFFFFFFF00000000; break;
+			case 33: trunced.mantissa = trunced.mantissa & 0xFFFFFFFF70000000; break;
+			case 34: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFB0000000; break;
+			case 35: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFE0000000; break;
+			case 36: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFF0000000; break;
+			case 37: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFF7000000; break;
+			case 38: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFB000000; break;
+			case 39: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFE000000; break;
+			case 40: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFF000000; break;
+			case 41: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFF700000; break;
+			case 42: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFB00000; break;
+			case 43: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFE00000; break;
+			case 44: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFF00000; break;
+			case 45: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFF70000; break;
+			case 46: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFB0000; break;
+			case 47: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFE0000; break;
+			case 48: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFF0000; break;
+			case 49: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFF7000; break;
+			case 50: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFFB000; break;
+			case 51: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFFE000; break;
+			case 52: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFFF000; break;
 			default: break;
 			}
 
 			if (trunced.exponent > 1023ui16)
 			{
-				trunced.significand = trunced.significand >> trunced.exponent - 1023ui16;
+				trunced.mantissa = trunced.mantissa >> trunced.exponent - 1023ui16;
 
 				switch (trunced.exponent)
 				{
-				case 1023: trunced.significand = trunced.significand | (significand & 0x0000000000000000); break;
-				case 1024: trunced.significand = trunced.significand | (significand & 0x7000000000000000); break;
-				case 1025: trunced.significand = trunced.significand | (significand & 0xB000000000000000); break;
-				case 1026: trunced.significand = trunced.significand | (significand & 0xE000000000000000); break;
-				case 1027: trunced.significand = trunced.significand | (significand & 0xF000000000000000); break;
-				case 1028: trunced.significand = trunced.significand | (significand & 0xF700000000000000); break;
-				case 1029: trunced.significand = trunced.significand | (significand & 0xFB00000000000000); break;
-				case 1030: trunced.significand = trunced.significand | (significand & 0xFE00000000000000); break;
-				case 1031: trunced.significand = trunced.significand | (significand & 0xFF00000000000000); break;
-				case 1032: trunced.significand = trunced.significand | (significand & 0xFF70000000000000); break;
-				case 1033: trunced.significand = trunced.significand | (significand & 0xFFB0000000000000); break;
-				case 1034: trunced.significand = trunced.significand | (significand & 0xFFE0000000000000); break;
-				case 1035: trunced.significand = trunced.significand | (significand & 0xFFF0000000000000); break;
-				case 1036: trunced.significand = trunced.significand | (significand & 0xFFF7000000000000); break;
-				case 1037: trunced.significand = trunced.significand | (significand & 0xFFFB000000000000); break;
-				case 1038: trunced.significand = trunced.significand | (significand & 0xFFFE000000000000); break;
-				case 1039: trunced.significand = trunced.significand | (significand & 0xFFFF000000000000); break;
-				case 1040: trunced.significand = trunced.significand | (significand & 0xFFFF700000000000); break;
-				case 1041: trunced.significand = trunced.significand | (significand & 0xFFFFB00000000000); break;
-				case 1042: trunced.significand = trunced.significand | (significand & 0xFFFFE00000000000); break;
-				case 1043: trunced.significand = trunced.significand | (significand & 0xFFFFF00000000000); break;
-				case 1044: trunced.significand = trunced.significand | (significand & 0xFFFFF70000000000); break;
-				case 1045: trunced.significand = trunced.significand | (significand & 0xFFFFFB0000000000); break;
-				case 1046: trunced.significand = trunced.significand | (significand & 0xFFFFFE0000000000); break;
-				case 1047: trunced.significand = trunced.significand | (significand & 0xFFFFFF0000000000); break;
-				case 1048: trunced.significand = trunced.significand | (significand & 0xFFFFFF7000000000); break;
-				case 1049: trunced.significand = trunced.significand | (significand & 0xFFFFFFB000000000); break;
-				case 1050: trunced.significand = trunced.significand | (significand & 0xFFFFFFE000000000); break;
-				case 1051: trunced.significand = trunced.significand | (significand & 0xFFFFFFF000000000); break;
-				case 1052: trunced.significand = trunced.significand | (significand & 0xFFFFFFF700000000); break;
-				case 1053: trunced.significand = trunced.significand | (significand & 0xFFFFFFFB00000000); break;
-				case 1054: trunced.significand = trunced.significand | (significand & 0xFFFFFFFE00000000); break;
-				case 1055: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF00000000); break;
-				case 1056: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF70000000); break;
-				case 1057: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFB0000000); break;
-				case 1058: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFE0000000); break;
-				case 1059: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF0000000); break;
-				case 1060: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF7000000); break;
-				case 1061: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFB000000); break;
-				case 1062: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFE000000); break;
-				case 1063: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF000000); break;
-				case 1064: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF700000); break;
-				case 1065: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFB00000); break;
-				case 1066: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFE00000); break;
-				case 1067: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF00000); break;
-				case 1068: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF70000); break;
-				case 1069: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFB0000); break;
-				case 1070: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFE0000); break;
-				case 1071: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF0000); break;
-				case 1072: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF7000); break;
-				case 1073: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFB000); break;
-				case 1074: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFE000); break;
-				case 1075: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFF000); break;
-				default: trunced.significand = 0; break;
+				case 1023: trunced.mantissa = trunced.mantissa | (mantissa & 0x0000000000000000); break;
+				case 1024: trunced.mantissa = trunced.mantissa | (mantissa & 0x7000000000000000); break;
+				case 1025: trunced.mantissa = trunced.mantissa | (mantissa & 0xB000000000000000); break;
+				case 1026: trunced.mantissa = trunced.mantissa | (mantissa & 0xE000000000000000); break;
+				case 1027: trunced.mantissa = trunced.mantissa | (mantissa & 0xF000000000000000); break;
+				case 1028: trunced.mantissa = trunced.mantissa | (mantissa & 0xF700000000000000); break;
+				case 1029: trunced.mantissa = trunced.mantissa | (mantissa & 0xFB00000000000000); break;
+				case 1030: trunced.mantissa = trunced.mantissa | (mantissa & 0xFE00000000000000); break;
+				case 1031: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF00000000000000); break;
+				case 1032: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF70000000000000); break;
+				case 1033: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFB0000000000000); break;
+				case 1034: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFE0000000000000); break;
+				case 1035: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF0000000000000); break;
+				case 1036: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF7000000000000); break;
+				case 1037: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFB000000000000); break;
+				case 1038: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFE000000000000); break;
+				case 1039: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF000000000000); break;
+				case 1040: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF700000000000); break;
+				case 1041: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFB00000000000); break;
+				case 1042: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFE00000000000); break;
+				case 1043: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF00000000000); break;
+				case 1044: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF70000000000); break;
+				case 1045: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFB0000000000); break;
+				case 1046: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFE0000000000); break;
+				case 1047: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF0000000000); break;
+				case 1048: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF7000000000); break;
+				case 1049: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFB000000000); break;
+				case 1050: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFE000000000); break;
+				case 1051: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF000000000); break;
+				case 1052: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF700000000); break;
+				case 1053: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFB00000000); break;
+				case 1054: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFE00000000); break;
+				case 1055: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF00000000); break;
+				case 1056: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF70000000); break;
+				case 1057: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFB0000000); break;
+				case 1058: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFE0000000); break;
+				case 1059: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF0000000); break;
+				case 1060: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF7000000); break;
+				case 1061: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFB000000); break;
+				case 1062: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFE000000); break;
+				case 1063: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF000000); break;
+				case 1064: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF700000); break;
+				case 1065: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFB00000); break;
+				case 1066: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFE00000); break;
+				case 1067: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF00000); break;
+				case 1068: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF70000); break;
+				case 1069: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFB0000); break;
+				case 1070: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFE0000); break;
+				case 1071: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF0000); break;
+				case 1072: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF7000); break;
+				case 1073: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFB000); break;
+				case 1074: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFE000); break;
+				case 1075: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFF000); break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 			else if (trunced.exponent < 127ui16)
 			{
-				trunced.significand = trunced.significand << 127ui16 - trunced.exponent;
+				trunced.mantissa = trunced.mantissa << 127ui16 - trunced.exponent;
 			}
 
 			return trunced;
@@ -740,78 +725,78 @@ export namespace CHV4DTENSOR
 
 			if (trunced.exponent > 127ui16)
 			{
-				trunced.significand = trunced.significand << trunced.exponent - 127ui16;
+				trunced.mantissa = trunced.mantissa << trunced.exponent - 127ui16;
 			}
 			else if (trunced.exponent < 127ui16)
 			{
-				trunced.significand = trunced.significand >> 127ui16 - trunced.exponent;
+				trunced.mantissa = trunced.mantissa >> 127ui16 - trunced.exponent;
 			}
 
 			switch (sigBits)
 			{
-			case 0:	trunced.significand = trunced.significand & 0x0000000000000000; break;
-			case 1:	trunced.significand = trunced.significand & 0x7000000000000000; break;
-			case 2:	trunced.significand = trunced.significand & 0xB000000000000000; break;
-			case 3:	trunced.significand = trunced.significand & 0xE000000000000000; break;
-			case 4:	trunced.significand = trunced.significand & 0xF000000000000000; break;
-			case 5:	trunced.significand = trunced.significand & 0xF700000000000000; break;
-			case 6:	trunced.significand = trunced.significand & 0xFB00000000000000; break;
-			case 7:	trunced.significand = trunced.significand & 0xFE00000000000000; break;
-			case 8:	trunced.significand = trunced.significand & 0xFF00000000000000; break;
-			case 9:	trunced.significand = trunced.significand & 0xFF70000000000000; break;
-			case 10: trunced.significand = trunced.significand & 0xFFB0000000000000; break;
-			case 11: trunced.significand = trunced.significand & 0xFFE0000000000000; break;
-			case 12: trunced.significand = trunced.significand & 0xFFF0000000000000; break;
-			case 13: trunced.significand = trunced.significand & 0xFFF7000000000000; break;
-			case 14: trunced.significand = trunced.significand & 0xFFFB000000000000; break;
-			case 15: trunced.significand = trunced.significand & 0xFFFE000000000000; break;
-			case 16: trunced.significand = trunced.significand & 0xFFFF000000000000; break;
-			case 17: trunced.significand = trunced.significand & 0xFFFF700000000000; break;
-			case 18: trunced.significand = trunced.significand & 0xFFFFB00000000000; break;
-			case 19: trunced.significand = trunced.significand & 0xFFFFE00000000000; break;
-			case 20: trunced.significand = trunced.significand & 0xFFFFF00000000000; break;
-			case 21: trunced.significand = trunced.significand & 0xFFFFF70000000000; break;
-			case 22: trunced.significand = trunced.significand & 0xFFFFFB0000000000; break;
-			case 23: trunced.significand = trunced.significand & 0xFFFFFE0000000000; break;
+			case 0:	trunced.mantissa = trunced.mantissa & 0x0000000000000000; break;
+			case 1:	trunced.mantissa = trunced.mantissa & 0x7000000000000000; break;
+			case 2:	trunced.mantissa = trunced.mantissa & 0xB000000000000000; break;
+			case 3:	trunced.mantissa = trunced.mantissa & 0xE000000000000000; break;
+			case 4:	trunced.mantissa = trunced.mantissa & 0xF000000000000000; break;
+			case 5:	trunced.mantissa = trunced.mantissa & 0xF700000000000000; break;
+			case 6:	trunced.mantissa = trunced.mantissa & 0xFB00000000000000; break;
+			case 7:	trunced.mantissa = trunced.mantissa & 0xFE00000000000000; break;
+			case 8:	trunced.mantissa = trunced.mantissa & 0xFF00000000000000; break;
+			case 9:	trunced.mantissa = trunced.mantissa & 0xFF70000000000000; break;
+			case 10: trunced.mantissa = trunced.mantissa & 0xFFB0000000000000; break;
+			case 11: trunced.mantissa = trunced.mantissa & 0xFFE0000000000000; break;
+			case 12: trunced.mantissa = trunced.mantissa & 0xFFF0000000000000; break;
+			case 13: trunced.mantissa = trunced.mantissa & 0xFFF7000000000000; break;
+			case 14: trunced.mantissa = trunced.mantissa & 0xFFFB000000000000; break;
+			case 15: trunced.mantissa = trunced.mantissa & 0xFFFE000000000000; break;
+			case 16: trunced.mantissa = trunced.mantissa & 0xFFFF000000000000; break;
+			case 17: trunced.mantissa = trunced.mantissa & 0xFFFF700000000000; break;
+			case 18: trunced.mantissa = trunced.mantissa & 0xFFFFB00000000000; break;
+			case 19: trunced.mantissa = trunced.mantissa & 0xFFFFE00000000000; break;
+			case 20: trunced.mantissa = trunced.mantissa & 0xFFFFF00000000000; break;
+			case 21: trunced.mantissa = trunced.mantissa & 0xFFFFF70000000000; break;
+			case 22: trunced.mantissa = trunced.mantissa & 0xFFFFFB0000000000; break;
+			case 23: trunced.mantissa = trunced.mantissa & 0xFFFFFE0000000000; break;
 			default: break;
 			}
 
 			if (trunced.exponent > 127ui16)
 			{
-				trunced.significand = trunced.significand >> trunced.exponent - 127ui16;
+				trunced.mantissa = trunced.mantissa >> trunced.exponent - 127ui16;
 
 				switch (trunced.exponent)
 				{
-				case 127: trunced.significand = trunced.significand | (significand & 0x0000000000000000); break;
-				case 128: trunced.significand = trunced.significand | (significand & 0x7000000000000000); break;
-				case 129: trunced.significand = trunced.significand | (significand & 0xB000000000000000); break;
-				case 130: trunced.significand = trunced.significand | (significand & 0xE000000000000000); break;
-				case 131: trunced.significand = trunced.significand | (significand & 0xF000000000000000); break;
-				case 132: trunced.significand = trunced.significand | (significand & 0xF700000000000000); break;
-				case 133: trunced.significand = trunced.significand | (significand & 0xFB00000000000000); break;
-				case 134: trunced.significand = trunced.significand | (significand & 0xFE00000000000000); break;
-				case 135: trunced.significand = trunced.significand | (significand & 0xFF00000000000000); break;
-				case 136: trunced.significand = trunced.significand | (significand & 0xFF70000000000000); break;
-				case 137: trunced.significand = trunced.significand | (significand & 0xFFB0000000000000); break;
-				case 138: trunced.significand = trunced.significand | (significand & 0xFFE0000000000000); break;
-				case 139: trunced.significand = trunced.significand | (significand & 0xFFF0000000000000); break;
-				case 140: trunced.significand = trunced.significand | (significand & 0xFFF7000000000000); break;
-				case 141: trunced.significand = trunced.significand | (significand & 0xFFFB000000000000); break;
-				case 142: trunced.significand = trunced.significand | (significand & 0xFFFE000000000000); break;
-				case 143: trunced.significand = trunced.significand | (significand & 0xFFFF000000000000); break;
-				case 144: trunced.significand = trunced.significand | (significand & 0xFFFF700000000000); break;
-				case 145: trunced.significand = trunced.significand | (significand & 0xFFFFB00000000000); break;
-				case 146: trunced.significand = trunced.significand | (significand & 0xFFFFE00000000000); break;
-				case 147: trunced.significand = trunced.significand | (significand & 0xFFFFF00000000000); break;
-				case 148: trunced.significand = trunced.significand | (significand & 0xFFFFF70000000000); break;
-				case 149: trunced.significand = trunced.significand | (significand & 0xFFFFFB0000000000); break;
-				case 150: trunced.significand = trunced.significand | (significand & 0xFFFFFE0000000000); break;
-				default: trunced.significand = 0; break;
+				case 127: trunced.mantissa = trunced.mantissa | (mantissa & 0x0000000000000000); break;
+				case 128: trunced.mantissa = trunced.mantissa | (mantissa & 0x7000000000000000); break;
+				case 129: trunced.mantissa = trunced.mantissa | (mantissa & 0xB000000000000000); break;
+				case 130: trunced.mantissa = trunced.mantissa | (mantissa & 0xE000000000000000); break;
+				case 131: trunced.mantissa = trunced.mantissa | (mantissa & 0xF000000000000000); break;
+				case 132: trunced.mantissa = trunced.mantissa | (mantissa & 0xF700000000000000); break;
+				case 133: trunced.mantissa = trunced.mantissa | (mantissa & 0xFB00000000000000); break;
+				case 134: trunced.mantissa = trunced.mantissa | (mantissa & 0xFE00000000000000); break;
+				case 135: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF00000000000000); break;
+				case 136: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF70000000000000); break;
+				case 137: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFB0000000000000); break;
+				case 138: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFE0000000000000); break;
+				case 139: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF0000000000000); break;
+				case 140: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF7000000000000); break;
+				case 141: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFB000000000000); break;
+				case 142: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFE000000000000); break;
+				case 143: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF000000000000); break;
+				case 144: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF700000000000); break;
+				case 145: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFB00000000000); break;
+				case 146: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFE00000000000); break;
+				case 147: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF00000000000); break;
+				case 148: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF70000000000); break;
+				case 149: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFB0000000000); break;
+				case 150: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFE0000000000); break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 			else if (trunced.exponent < 127ui16)
 			{
-				trunced.significand = trunced.significand << 127ui16 - trunced.exponent;
+				trunced.mantissa = trunced.mantissa << 127ui16 - trunced.exponent;
 			}
 
 			float ret{ 0.0f };
@@ -836,136 +821,136 @@ export namespace CHV4DTENSOR
 
 			if (trunced.exponent > 1023ui16)
 			{
-				trunced.significand = trunced.significand << trunced.exponent - 1023ui16;
+				trunced.mantissa = trunced.mantissa << trunced.exponent - 1023ui16;
 			}
 			else if (trunced.exponent < 1023ui16)
 			{
-				trunced.significand = trunced.significand >> 1023ui16 - trunced.exponent;
+				trunced.mantissa = trunced.mantissa >> 1023ui16 - trunced.exponent;
 			}
 
 			switch (sigBits)
 			{
-			case 0:	trunced.significand = trunced.significand & 0x00000000000000; break;
-			case 1:	trunced.significand = trunced.significand & 0x70000000000000; break;
-			case 2:	trunced.significand = trunced.significand & 0xB0000000000000; break;
-			case 3:	trunced.significand = trunced.significand & 0xE0000000000000; break;
-			case 4:	trunced.significand = trunced.significand & 0xF0000000000000; break;
-			case 5:	trunced.significand = trunced.significand & 0xF7000000000000; break;
-			case 6:	trunced.significand = trunced.significand & 0xFB000000000000; break;
-			case 7:	trunced.significand = trunced.significand & 0xFE000000000000; break;
-			case 8:	trunced.significand = trunced.significand & 0xFF000000000000; break;
-			case 9:	trunced.significand = trunced.significand & 0xFF700000000000; break;
-			case 10: trunced.significand = trunced.significand & 0xFFB00000000000; break;
-			case 11: trunced.significand = trunced.significand & 0xFFE00000000000; break;
-			case 12: trunced.significand = trunced.significand & 0xFFF00000000000; break;
-			case 13: trunced.significand = trunced.significand & 0xFFF70000000000; break;
-			case 14: trunced.significand = trunced.significand & 0xFFFB0000000000; break;
-			case 15: trunced.significand = trunced.significand & 0xFFFE0000000000; break;
-			case 16: trunced.significand = trunced.significand & 0xFFFF0000000000; break;
-			case 17: trunced.significand = trunced.significand & 0xFFFF7000000000; break;
-			case 18: trunced.significand = trunced.significand & 0xFFFFB000000000; break;
-			case 19: trunced.significand = trunced.significand & 0xFFFFE000000000; break;
-			case 20: trunced.significand = trunced.significand & 0xFFFFF000000000; break;
-			case 21: trunced.significand = trunced.significand & 0xFFFFF700000000; break;
-			case 22: trunced.significand = trunced.significand & 0xFFFFFB00000000; break;
-			case 23: trunced.significand = trunced.significand & 0xFFFFFE00000000; break;
-			case 24: trunced.significand = trunced.significand & 0xFFFFFF0000000000; break;
-			case 25: trunced.significand = trunced.significand & 0xFFFFFF7000000000; break;
-			case 26: trunced.significand = trunced.significand & 0xFFFFFFB000000000; break;
-			case 27: trunced.significand = trunced.significand & 0xFFFFFFE000000000; break;
-			case 28: trunced.significand = trunced.significand & 0xFFFFFFF000000000; break;
-			case 29: trunced.significand = trunced.significand & 0xFFFFFFF700000000; break;
-			case 30: trunced.significand = trunced.significand & 0xFFFFFFFB00000000; break;
-			case 31: trunced.significand = trunced.significand & 0xFFFFFFFE00000000; break;
-			case 32: trunced.significand = trunced.significand & 0xFFFFFFFF00000000; break;
-			case 33: trunced.significand = trunced.significand & 0xFFFFFFFF70000000; break;
-			case 34: trunced.significand = trunced.significand & 0xFFFFFFFFB0000000; break;
-			case 35: trunced.significand = trunced.significand & 0xFFFFFFFFE0000000; break;
-			case 36: trunced.significand = trunced.significand & 0xFFFFFFFFF0000000; break;
-			case 37: trunced.significand = trunced.significand & 0xFFFFFFFFF7000000; break;
-			case 38: trunced.significand = trunced.significand & 0xFFFFFFFFFB000000; break;
-			case 39: trunced.significand = trunced.significand & 0xFFFFFFFFFE000000; break;
-			case 40: trunced.significand = trunced.significand & 0xFFFFFFFFFF000000; break;
-			case 41: trunced.significand = trunced.significand & 0xFFFFFFFFFF700000; break;
-			case 42: trunced.significand = trunced.significand & 0xFFFFFFFFFFB00000; break;
-			case 43: trunced.significand = trunced.significand & 0xFFFFFFFFFFE00000; break;
-			case 44: trunced.significand = trunced.significand & 0xFFFFFFFFFFF00000; break;
-			case 45: trunced.significand = trunced.significand & 0xFFFFFFFFFFF70000; break;
-			case 46: trunced.significand = trunced.significand & 0xFFFFFFFFFFFB0000; break;
-			case 47: trunced.significand = trunced.significand & 0xFFFFFFFFFFFE0000; break;
-			case 48: trunced.significand = trunced.significand & 0xFFFFFFFFFFFF0000; break;
-			case 49: trunced.significand = trunced.significand & 0xFFFFFFFFFFFF7000; break;
-			case 50: trunced.significand = trunced.significand & 0xFFFFFFFFFFFFB000; break;
-			case 51: trunced.significand = trunced.significand & 0xFFFFFFFFFFFFE000; break;
-			case 52: trunced.significand = trunced.significand & 0xFFFFFFFFFFFFF000; break;
+			case 0:	trunced.mantissa = trunced.mantissa & 0x00000000000000; break;
+			case 1:	trunced.mantissa = trunced.mantissa & 0x70000000000000; break;
+			case 2:	trunced.mantissa = trunced.mantissa & 0xB0000000000000; break;
+			case 3:	trunced.mantissa = trunced.mantissa & 0xE0000000000000; break;
+			case 4:	trunced.mantissa = trunced.mantissa & 0xF0000000000000; break;
+			case 5:	trunced.mantissa = trunced.mantissa & 0xF7000000000000; break;
+			case 6:	trunced.mantissa = trunced.mantissa & 0xFB000000000000; break;
+			case 7:	trunced.mantissa = trunced.mantissa & 0xFE000000000000; break;
+			case 8:	trunced.mantissa = trunced.mantissa & 0xFF000000000000; break;
+			case 9:	trunced.mantissa = trunced.mantissa & 0xFF700000000000; break;
+			case 10: trunced.mantissa = trunced.mantissa & 0xFFB00000000000; break;
+			case 11: trunced.mantissa = trunced.mantissa & 0xFFE00000000000; break;
+			case 12: trunced.mantissa = trunced.mantissa & 0xFFF00000000000; break;
+			case 13: trunced.mantissa = trunced.mantissa & 0xFFF70000000000; break;
+			case 14: trunced.mantissa = trunced.mantissa & 0xFFFB0000000000; break;
+			case 15: trunced.mantissa = trunced.mantissa & 0xFFFE0000000000; break;
+			case 16: trunced.mantissa = trunced.mantissa & 0xFFFF0000000000; break;
+			case 17: trunced.mantissa = trunced.mantissa & 0xFFFF7000000000; break;
+			case 18: trunced.mantissa = trunced.mantissa & 0xFFFFB000000000; break;
+			case 19: trunced.mantissa = trunced.mantissa & 0xFFFFE000000000; break;
+			case 20: trunced.mantissa = trunced.mantissa & 0xFFFFF000000000; break;
+			case 21: trunced.mantissa = trunced.mantissa & 0xFFFFF700000000; break;
+			case 22: trunced.mantissa = trunced.mantissa & 0xFFFFFB00000000; break;
+			case 23: trunced.mantissa = trunced.mantissa & 0xFFFFFE00000000; break;
+			case 24: trunced.mantissa = trunced.mantissa & 0xFFFFFF0000000000; break;
+			case 25: trunced.mantissa = trunced.mantissa & 0xFFFFFF7000000000; break;
+			case 26: trunced.mantissa = trunced.mantissa & 0xFFFFFFB000000000; break;
+			case 27: trunced.mantissa = trunced.mantissa & 0xFFFFFFE000000000; break;
+			case 28: trunced.mantissa = trunced.mantissa & 0xFFFFFFF000000000; break;
+			case 29: trunced.mantissa = trunced.mantissa & 0xFFFFFFF700000000; break;
+			case 30: trunced.mantissa = trunced.mantissa & 0xFFFFFFFB00000000; break;
+			case 31: trunced.mantissa = trunced.mantissa & 0xFFFFFFFE00000000; break;
+			case 32: trunced.mantissa = trunced.mantissa & 0xFFFFFFFF00000000; break;
+			case 33: trunced.mantissa = trunced.mantissa & 0xFFFFFFFF70000000; break;
+			case 34: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFB0000000; break;
+			case 35: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFE0000000; break;
+			case 36: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFF0000000; break;
+			case 37: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFF7000000; break;
+			case 38: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFB000000; break;
+			case 39: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFE000000; break;
+			case 40: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFF000000; break;
+			case 41: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFF700000; break;
+			case 42: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFB00000; break;
+			case 43: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFE00000; break;
+			case 44: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFF00000; break;
+			case 45: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFF70000; break;
+			case 46: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFB0000; break;
+			case 47: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFE0000; break;
+			case 48: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFF0000; break;
+			case 49: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFF7000; break;
+			case 50: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFFB000; break;
+			case 51: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFFE000; break;
+			case 52: trunced.mantissa = trunced.mantissa & 0xFFFFFFFFFFFFF000; break;
 			default: break;
 			}
 
 			if (trunced.exponent > 1023ui16)
 			{
-				trunced.significand = trunced.significand >> trunced.exponent - 1023ui16;
+				trunced.mantissa = trunced.mantissa >> trunced.exponent - 1023ui16;
 
 				switch (trunced.exponent)
 				{
-				case 1023: trunced.significand = trunced.significand | (significand & 0x0000000000000000); break;
-				case 1024: trunced.significand = trunced.significand | (significand & 0x7000000000000000); break;
-				case 1025: trunced.significand = trunced.significand | (significand & 0xB000000000000000); break;
-				case 1026: trunced.significand = trunced.significand | (significand & 0xE000000000000000); break;
-				case 1027: trunced.significand = trunced.significand | (significand & 0xF000000000000000); break;
-				case 1028: trunced.significand = trunced.significand | (significand & 0xF700000000000000); break;
-				case 1029: trunced.significand = trunced.significand | (significand & 0xFB00000000000000); break;
-				case 1030: trunced.significand = trunced.significand | (significand & 0xFE00000000000000); break;
-				case 1031: trunced.significand = trunced.significand | (significand & 0xFF00000000000000); break;
-				case 1032: trunced.significand = trunced.significand | (significand & 0xFF70000000000000); break;
-				case 1033: trunced.significand = trunced.significand | (significand & 0xFFB0000000000000); break;
-				case 1034: trunced.significand = trunced.significand | (significand & 0xFFE0000000000000); break;
-				case 1035: trunced.significand = trunced.significand | (significand & 0xFFF0000000000000); break;
-				case 1036: trunced.significand = trunced.significand | (significand & 0xFFF7000000000000); break;
-				case 1037: trunced.significand = trunced.significand | (significand & 0xFFFB000000000000); break;
-				case 1038: trunced.significand = trunced.significand | (significand & 0xFFFE000000000000); break;
-				case 1039: trunced.significand = trunced.significand | (significand & 0xFFFF000000000000); break;
-				case 1040: trunced.significand = trunced.significand | (significand & 0xFFFF700000000000); break;
-				case 1041: trunced.significand = trunced.significand | (significand & 0xFFFFB00000000000); break;
-				case 1042: trunced.significand = trunced.significand | (significand & 0xFFFFE00000000000); break;
-				case 1043: trunced.significand = trunced.significand | (significand & 0xFFFFF00000000000); break;
-				case 1044: trunced.significand = trunced.significand | (significand & 0xFFFFF70000000000); break;
-				case 1045: trunced.significand = trunced.significand | (significand & 0xFFFFFB0000000000); break;
-				case 1046: trunced.significand = trunced.significand | (significand & 0xFFFFFE0000000000); break;
-				case 1047: trunced.significand = trunced.significand | (significand & 0xFFFFFF0000000000); break;
-				case 1048: trunced.significand = trunced.significand | (significand & 0xFFFFFF7000000000); break;
-				case 1049: trunced.significand = trunced.significand | (significand & 0xFFFFFFB000000000); break;
-				case 1050: trunced.significand = trunced.significand | (significand & 0xFFFFFFE000000000); break;
-				case 1051: trunced.significand = trunced.significand | (significand & 0xFFFFFFF000000000); break;
-				case 1052: trunced.significand = trunced.significand | (significand & 0xFFFFFFF700000000); break;
-				case 1053: trunced.significand = trunced.significand | (significand & 0xFFFFFFFB00000000); break;
-				case 1054: trunced.significand = trunced.significand | (significand & 0xFFFFFFFE00000000); break;
-				case 1055: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF00000000); break;
-				case 1056: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF70000000); break;
-				case 1057: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFB0000000); break;
-				case 1058: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFE0000000); break;
-				case 1059: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF0000000); break;
-				case 1060: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF7000000); break;
-				case 1061: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFB000000); break;
-				case 1062: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFE000000); break;
-				case 1063: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF000000); break;
-				case 1064: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF700000); break;
-				case 1065: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFB00000); break;
-				case 1066: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFE00000); break;
-				case 1067: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF00000); break;
-				case 1068: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF70000); break;
-				case 1069: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFB0000); break;
-				case 1070: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFE0000); break;
-				case 1071: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF0000); break;
-				case 1072: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF7000); break;
-				case 1073: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFB000); break;
-				case 1074: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFE000); break;
-				case 1075: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFF000); break;
-				default: trunced.significand = 0; break;
+				case 1023: trunced.mantissa = trunced.mantissa | (mantissa & 0x0000000000000000); break;
+				case 1024: trunced.mantissa = trunced.mantissa | (mantissa & 0x7000000000000000); break;
+				case 1025: trunced.mantissa = trunced.mantissa | (mantissa & 0xB000000000000000); break;
+				case 1026: trunced.mantissa = trunced.mantissa | (mantissa & 0xE000000000000000); break;
+				case 1027: trunced.mantissa = trunced.mantissa | (mantissa & 0xF000000000000000); break;
+				case 1028: trunced.mantissa = trunced.mantissa | (mantissa & 0xF700000000000000); break;
+				case 1029: trunced.mantissa = trunced.mantissa | (mantissa & 0xFB00000000000000); break;
+				case 1030: trunced.mantissa = trunced.mantissa | (mantissa & 0xFE00000000000000); break;
+				case 1031: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF00000000000000); break;
+				case 1032: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF70000000000000); break;
+				case 1033: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFB0000000000000); break;
+				case 1034: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFE0000000000000); break;
+				case 1035: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF0000000000000); break;
+				case 1036: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF7000000000000); break;
+				case 1037: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFB000000000000); break;
+				case 1038: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFE000000000000); break;
+				case 1039: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF000000000000); break;
+				case 1040: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF700000000000); break;
+				case 1041: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFB00000000000); break;
+				case 1042: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFE00000000000); break;
+				case 1043: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF00000000000); break;
+				case 1044: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF70000000000); break;
+				case 1045: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFB0000000000); break;
+				case 1046: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFE0000000000); break;
+				case 1047: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF0000000000); break;
+				case 1048: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF7000000000); break;
+				case 1049: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFB000000000); break;
+				case 1050: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFE000000000); break;
+				case 1051: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF000000000); break;
+				case 1052: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF700000000); break;
+				case 1053: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFB00000000); break;
+				case 1054: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFE00000000); break;
+				case 1055: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF00000000); break;
+				case 1056: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF70000000); break;
+				case 1057: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFB0000000); break;
+				case 1058: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFE0000000); break;
+				case 1059: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF0000000); break;
+				case 1060: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF7000000); break;
+				case 1061: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFB000000); break;
+				case 1062: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFE000000); break;
+				case 1063: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF000000); break;
+				case 1064: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF700000); break;
+				case 1065: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFB00000); break;
+				case 1066: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFE00000); break;
+				case 1067: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF00000); break;
+				case 1068: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF70000); break;
+				case 1069: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFB0000); break;
+				case 1070: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFE0000); break;
+				case 1071: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF0000); break;
+				case 1072: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF7000); break;
+				case 1073: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFB000); break;
+				case 1074: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFE000); break;
+				case 1075: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFF000); break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 			else if (trunced.exponent < 1023ui16)
 			{
-				trunced.significand = trunced.significand << 1023ui16 - trunced.exponent;
+				trunced.mantissa = trunced.mantissa << 1023ui16 - trunced.exponent;
 			}
 
 			double ret{ 0.0 };
@@ -996,60 +981,60 @@ export namespace CHV4DTENSOR
 			{
 				switch (trunced.exponent)
 				{
-				case 1023: trunced.significand = significand & 0x0000000000000000; break;
-				case 1024: trunced.significand = significand & 0x7000000000000000; break;
-				case 1025: trunced.significand = significand & 0xB000000000000000; break;
-				case 1026: trunced.significand = significand & 0xE000000000000000; break;
-				case 1027: trunced.significand = significand & 0xF000000000000000; break;
-				case 1028: trunced.significand = significand & 0xF700000000000000; break;
-				case 1029: trunced.significand = significand & 0xFB00000000000000; break;
-				case 1030: trunced.significand = significand & 0xFE00000000000000; break;
-				case 1031: trunced.significand = significand & 0xFF00000000000000; break;
-				case 1032: trunced.significand = significand & 0xFF70000000000000; break;
-				case 1033: trunced.significand = significand & 0xFFB0000000000000; break;
-				case 1034: trunced.significand = significand & 0xFFE0000000000000; break;
-				case 1035: trunced.significand = significand & 0xFFF0000000000000; break;
-				case 1036: trunced.significand = significand & 0xFFF7000000000000; break;
-				case 1037: trunced.significand = significand & 0xFFFB000000000000; break;
-				case 1038: trunced.significand = significand & 0xFFFE000000000000; break;
-				case 1039: trunced.significand = significand & 0xFFFF000000000000; break;
-				case 1040: trunced.significand = significand & 0xFFFF700000000000; break;
-				case 1041: trunced.significand = significand & 0xFFFFB00000000000; break;
-				case 1042: trunced.significand = significand & 0xFFFFE00000000000; break;
-				case 1043: trunced.significand = significand & 0xFFFFF00000000000; break;
-				case 1044: trunced.significand = significand & 0xFFFFF70000000000; break;
-				case 1045: trunced.significand = significand & 0xFFFFFB0000000000; break;
-				case 1046: trunced.significand = significand & 0xFFFFFE0000000000; break;
-				case 1047: trunced.significand = significand & 0xFFFFFF0000000000; break;
-				case 1048: trunced.significand = significand & 0xFFFFFF7000000000; break;
-				case 1049: trunced.significand = significand & 0xFFFFFFB000000000; break;
-				case 1050: trunced.significand = significand & 0xFFFFFFE000000000; break;
-				case 1051: trunced.significand = significand & 0xFFFFFFF000000000; break;
-				case 1052: trunced.significand = significand & 0xFFFFFFF700000000; break;
-				case 1053: trunced.significand = significand & 0xFFFFFFFB00000000; break;
-				case 1054: trunced.significand = significand & 0xFFFFFFFE00000000; break;
-				case 1055: trunced.significand = significand & 0xFFFFFFFF00000000; break;
-				case 1056: trunced.significand = significand & 0xFFFFFFFF70000000; break;
-				case 1057: trunced.significand = significand & 0xFFFFFFFFB0000000; break;
-				case 1058: trunced.significand = significand & 0xFFFFFFFFE0000000; break;
-				case 1059: trunced.significand = significand & 0xFFFFFFFFF0000000; break;
-				case 1060: trunced.significand = significand & 0xFFFFFFFFF7000000; break;
-				case 1061: trunced.significand = significand & 0xFFFFFFFFFB000000; break;
-				case 1062: trunced.significand = significand & 0xFFFFFFFFFE000000; break;
-				case 1063: trunced.significand = significand & 0xFFFFFFFFFF000000; break;
-				case 1064: trunced.significand = significand & 0xFFFFFFFFFF700000; break;
-				case 1065: trunced.significand = significand & 0xFFFFFFFFFFB00000; break;
-				case 1066: trunced.significand = significand & 0xFFFFFFFFFFE00000; break;
-				case 1067: trunced.significand = significand & 0xFFFFFFFFFFF00000; break;
-				case 1068: trunced.significand = significand & 0xFFFFFFFFFFF70000; break;
-				case 1069: trunced.significand = significand & 0xFFFFFFFFFFFB0000; break;
-				case 1070: trunced.significand = significand & 0xFFFFFFFFFFFE0000; break;
-				case 1071: trunced.significand = significand & 0xFFFFFFFFFFFF0000; break;
-				case 1072: trunced.significand = significand & 0xFFFFFFFFFFFF7000; break;
-				case 1073: trunced.significand = significand & 0xFFFFFFFFFFFFB000; break;
-				case 1074: trunced.significand = significand & 0xFFFFFFFFFFFFE000; break;
-				case 1075: trunced.significand = significand & 0xFFFFFFFFFFFFF000; break;
-				default: trunced.significand = 0; break;
+				case 1023: trunced.mantissa = mantissa & 0x0000000000000000; break;
+				case 1024: trunced.mantissa = mantissa & 0x7000000000000000; break;
+				case 1025: trunced.mantissa = mantissa & 0xB000000000000000; break;
+				case 1026: trunced.mantissa = mantissa & 0xE000000000000000; break;
+				case 1027: trunced.mantissa = mantissa & 0xF000000000000000; break;
+				case 1028: trunced.mantissa = mantissa & 0xF700000000000000; break;
+				case 1029: trunced.mantissa = mantissa & 0xFB00000000000000; break;
+				case 1030: trunced.mantissa = mantissa & 0xFE00000000000000; break;
+				case 1031: trunced.mantissa = mantissa & 0xFF00000000000000; break;
+				case 1032: trunced.mantissa = mantissa & 0xFF70000000000000; break;
+				case 1033: trunced.mantissa = mantissa & 0xFFB0000000000000; break;
+				case 1034: trunced.mantissa = mantissa & 0xFFE0000000000000; break;
+				case 1035: trunced.mantissa = mantissa & 0xFFF0000000000000; break;
+				case 1036: trunced.mantissa = mantissa & 0xFFF7000000000000; break;
+				case 1037: trunced.mantissa = mantissa & 0xFFFB000000000000; break;
+				case 1038: trunced.mantissa = mantissa & 0xFFFE000000000000; break;
+				case 1039: trunced.mantissa = mantissa & 0xFFFF000000000000; break;
+				case 1040: trunced.mantissa = mantissa & 0xFFFF700000000000; break;
+				case 1041: trunced.mantissa = mantissa & 0xFFFFB00000000000; break;
+				case 1042: trunced.mantissa = mantissa & 0xFFFFE00000000000; break;
+				case 1043: trunced.mantissa = mantissa & 0xFFFFF00000000000; break;
+				case 1044: trunced.mantissa = mantissa & 0xFFFFF70000000000; break;
+				case 1045: trunced.mantissa = mantissa & 0xFFFFFB0000000000; break;
+				case 1046: trunced.mantissa = mantissa & 0xFFFFFE0000000000; break;
+				case 1047: trunced.mantissa = mantissa & 0xFFFFFF0000000000; break;
+				case 1048: trunced.mantissa = mantissa & 0xFFFFFF7000000000; break;
+				case 1049: trunced.mantissa = mantissa & 0xFFFFFFB000000000; break;
+				case 1050: trunced.mantissa = mantissa & 0xFFFFFFE000000000; break;
+				case 1051: trunced.mantissa = mantissa & 0xFFFFFFF000000000; break;
+				case 1052: trunced.mantissa = mantissa & 0xFFFFFFF700000000; break;
+				case 1053: trunced.mantissa = mantissa & 0xFFFFFFFB00000000; break;
+				case 1054: trunced.mantissa = mantissa & 0xFFFFFFFE00000000; break;
+				case 1055: trunced.mantissa = mantissa & 0xFFFFFFFF00000000; break;
+				case 1056: trunced.mantissa = mantissa & 0xFFFFFFFF70000000; break;
+				case 1057: trunced.mantissa = mantissa & 0xFFFFFFFFB0000000; break;
+				case 1058: trunced.mantissa = mantissa & 0xFFFFFFFFE0000000; break;
+				case 1059: trunced.mantissa = mantissa & 0xFFFFFFFFF0000000; break;
+				case 1060: trunced.mantissa = mantissa & 0xFFFFFFFFF7000000; break;
+				case 1061: trunced.mantissa = mantissa & 0xFFFFFFFFFB000000; break;
+				case 1062: trunced.mantissa = mantissa & 0xFFFFFFFFFE000000; break;
+				case 1063: trunced.mantissa = mantissa & 0xFFFFFFFFFF000000; break;
+				case 1064: trunced.mantissa = mantissa & 0xFFFFFFFFFF700000; break;
+				case 1065: trunced.mantissa = mantissa & 0xFFFFFFFFFFB00000; break;
+				case 1066: trunced.mantissa = mantissa & 0xFFFFFFFFFFE00000; break;
+				case 1067: trunced.mantissa = mantissa & 0xFFFFFFFFFFF00000; break;
+				case 1068: trunced.mantissa = mantissa & 0xFFFFFFFFFFF70000; break;
+				case 1069: trunced.mantissa = mantissa & 0xFFFFFFFFFFFB0000; break;
+				case 1070: trunced.mantissa = mantissa & 0xFFFFFFFFFFFE0000; break;
+				case 1071: trunced.mantissa = mantissa & 0xFFFFFFFFFFFF0000; break;
+				case 1072: trunced.mantissa = mantissa & 0xFFFFFFFFFFFF7000; break;
+				case 1073: trunced.mantissa = mantissa & 0xFFFFFFFFFFFFB000; break;
+				case 1074: trunced.mantissa = mantissa & 0xFFFFFFFFFFFFE000; break;
+				case 1075: trunced.mantissa = mantissa & 0xFFFFFFFFFFFFF000; break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 
@@ -1064,31 +1049,31 @@ export namespace CHV4DTENSOR
 			{
 				switch (trunced.exponent)
 				{
-				case 127: trunced.significand = significand & 0x0000000000000000; break;
-				case 128: trunced.significand = significand & 0x7000000000000000; break;
-				case 129: trunced.significand = significand & 0xB000000000000000; break;
-				case 130: trunced.significand = significand & 0xE000000000000000; break;
-				case 131: trunced.significand = significand & 0xF000000000000000; break;
-				case 132: trunced.significand = significand & 0xF700000000000000; break;
-				case 133: trunced.significand = significand & 0xFB00000000000000; break;
-				case 134: trunced.significand = significand & 0xFE00000000000000; break;
-				case 135: trunced.significand = significand & 0xFF00000000000000; break;
-				case 136: trunced.significand = significand & 0xFF70000000000000; break;
-				case 137: trunced.significand = significand & 0xFFB0000000000000; break;
-				case 138: trunced.significand = significand & 0xFFE0000000000000; break;
-				case 139: trunced.significand = significand & 0xFFF0000000000000; break;
-				case 140: trunced.significand = significand & 0xFFF7000000000000; break;
-				case 141: trunced.significand = significand & 0xFFFB000000000000; break;
-				case 142: trunced.significand = significand & 0xFFFE000000000000; break;
-				case 143: trunced.significand = significand & 0xFFFF000000000000; break;
-				case 144: trunced.significand = significand & 0xFFFF700000000000; break;
-				case 145: trunced.significand = significand & 0xFFFFB00000000000; break;
-				case 146: trunced.significand = significand & 0xFFFFE00000000000; break;
-				case 147: trunced.significand = significand & 0xFFFFF00000000000; break;
-				case 148: trunced.significand = significand & 0xFFFFF70000000000; break;
-				case 149: trunced.significand = significand & 0xFFFFFB0000000000; break;
-				case 150: trunced.significand = significand & 0xFFFFFE0000000000; break;
-				default: trunced.significand = 0; break;
+				case 127: trunced.mantissa = mantissa & 0x0000000000000000; break;
+				case 128: trunced.mantissa = mantissa & 0x7000000000000000; break;
+				case 129: trunced.mantissa = mantissa & 0xB000000000000000; break;
+				case 130: trunced.mantissa = mantissa & 0xE000000000000000; break;
+				case 131: trunced.mantissa = mantissa & 0xF000000000000000; break;
+				case 132: trunced.mantissa = mantissa & 0xF700000000000000; break;
+				case 133: trunced.mantissa = mantissa & 0xFB00000000000000; break;
+				case 134: trunced.mantissa = mantissa & 0xFE00000000000000; break;
+				case 135: trunced.mantissa = mantissa & 0xFF00000000000000; break;
+				case 136: trunced.mantissa = mantissa & 0xFF70000000000000; break;
+				case 137: trunced.mantissa = mantissa & 0xFFB0000000000000; break;
+				case 138: trunced.mantissa = mantissa & 0xFFE0000000000000; break;
+				case 139: trunced.mantissa = mantissa & 0xFFF0000000000000; break;
+				case 140: trunced.mantissa = mantissa & 0xFFF7000000000000; break;
+				case 141: trunced.mantissa = mantissa & 0xFFFB000000000000; break;
+				case 142: trunced.mantissa = mantissa & 0xFFFE000000000000; break;
+				case 143: trunced.mantissa = mantissa & 0xFFFF000000000000; break;
+				case 144: trunced.mantissa = mantissa & 0xFFFF700000000000; break;
+				case 145: trunced.mantissa = mantissa & 0xFFFFB00000000000; break;
+				case 146: trunced.mantissa = mantissa & 0xFFFFE00000000000; break;
+				case 147: trunced.mantissa = mantissa & 0xFFFFF00000000000; break;
+				case 148: trunced.mantissa = mantissa & 0xFFFFF70000000000; break;
+				case 149: trunced.mantissa = mantissa & 0xFFFFFB0000000000; break;
+				case 150: trunced.mantissa = mantissa & 0xFFFFFE0000000000; break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 
@@ -1114,60 +1099,60 @@ export namespace CHV4DTENSOR
 			{
 				switch (trunced.exponent)
 				{
-				case 1023: trunced.significand = trunced.significand | (significand & 0x0000000000000000); break;
-				case 1024: trunced.significand = trunced.significand | (significand & 0x7000000000000000); break;
-				case 1025: trunced.significand = trunced.significand | (significand & 0xB000000000000000); break;
-				case 1026: trunced.significand = trunced.significand | (significand & 0xE000000000000000); break;
-				case 1027: trunced.significand = trunced.significand | (significand & 0xF000000000000000); break;
-				case 1028: trunced.significand = trunced.significand | (significand & 0xF700000000000000); break;
-				case 1029: trunced.significand = trunced.significand | (significand & 0xFB00000000000000); break;
-				case 1030: trunced.significand = trunced.significand | (significand & 0xFE00000000000000); break;
-				case 1031: trunced.significand = trunced.significand | (significand & 0xFF00000000000000); break;
-				case 1032: trunced.significand = trunced.significand | (significand & 0xFF70000000000000); break;
-				case 1033: trunced.significand = trunced.significand | (significand & 0xFFB0000000000000); break;
-				case 1034: trunced.significand = trunced.significand | (significand & 0xFFE0000000000000); break;
-				case 1035: trunced.significand = trunced.significand | (significand & 0xFFF0000000000000); break;
-				case 1036: trunced.significand = trunced.significand | (significand & 0xFFF7000000000000); break;
-				case 1037: trunced.significand = trunced.significand | (significand & 0xFFFB000000000000); break;
-				case 1038: trunced.significand = trunced.significand | (significand & 0xFFFE000000000000); break;
-				case 1039: trunced.significand = trunced.significand | (significand & 0xFFFF000000000000); break;
-				case 1040: trunced.significand = trunced.significand | (significand & 0xFFFF700000000000); break;
-				case 1041: trunced.significand = trunced.significand | (significand & 0xFFFFB00000000000); break;
-				case 1042: trunced.significand = trunced.significand | (significand & 0xFFFFE00000000000); break;
-				case 1043: trunced.significand = trunced.significand | (significand & 0xFFFFF00000000000); break;
-				case 1044: trunced.significand = trunced.significand | (significand & 0xFFFFF70000000000); break;
-				case 1045: trunced.significand = trunced.significand | (significand & 0xFFFFFB0000000000); break;
-				case 1046: trunced.significand = trunced.significand | (significand & 0xFFFFFE0000000000); break;
-				case 1047: trunced.significand = trunced.significand | (significand & 0xFFFFFF0000000000); break;
-				case 1048: trunced.significand = trunced.significand | (significand & 0xFFFFFF7000000000); break;
-				case 1049: trunced.significand = trunced.significand | (significand & 0xFFFFFFB000000000); break;
-				case 1050: trunced.significand = trunced.significand | (significand & 0xFFFFFFE000000000); break;
-				case 1051: trunced.significand = trunced.significand | (significand & 0xFFFFFFF000000000); break;
-				case 1052: trunced.significand = trunced.significand | (significand & 0xFFFFFFF700000000); break;
-				case 1053: trunced.significand = trunced.significand | (significand & 0xFFFFFFFB00000000); break;
-				case 1054: trunced.significand = trunced.significand | (significand & 0xFFFFFFFE00000000); break;
-				case 1055: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF00000000); break;
-				case 1056: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF70000000); break;
-				case 1057: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFB0000000); break;
-				case 1058: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFE0000000); break;
-				case 1059: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF0000000); break;
-				case 1060: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF7000000); break;
-				case 1061: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFB000000); break;
-				case 1062: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFE000000); break;
-				case 1063: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF000000); break;
-				case 1064: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF700000); break;
-				case 1065: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFB00000); break;
-				case 1066: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFE00000); break;
-				case 1067: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF00000); break;
-				case 1068: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF70000); break;
-				case 1069: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFB0000); break;
-				case 1070: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFE0000); break;
-				case 1071: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF0000); break;
-				case 1072: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF7000); break;
-				case 1073: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFB000); break;
-				case 1074: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFE000); break;
-				case 1075: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFF000); break;
-				default: trunced.significand = 0; break;
+				case 1023: trunced.mantissa = trunced.mantissa | (mantissa & 0x0000000000000000); break;
+				case 1024: trunced.mantissa = trunced.mantissa | (mantissa & 0x7000000000000000); break;
+				case 1025: trunced.mantissa = trunced.mantissa | (mantissa & 0xB000000000000000); break;
+				case 1026: trunced.mantissa = trunced.mantissa | (mantissa & 0xE000000000000000); break;
+				case 1027: trunced.mantissa = trunced.mantissa | (mantissa & 0xF000000000000000); break;
+				case 1028: trunced.mantissa = trunced.mantissa | (mantissa & 0xF700000000000000); break;
+				case 1029: trunced.mantissa = trunced.mantissa | (mantissa & 0xFB00000000000000); break;
+				case 1030: trunced.mantissa = trunced.mantissa | (mantissa & 0xFE00000000000000); break;
+				case 1031: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF00000000000000); break;
+				case 1032: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF70000000000000); break;
+				case 1033: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFB0000000000000); break;
+				case 1034: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFE0000000000000); break;
+				case 1035: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF0000000000000); break;
+				case 1036: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF7000000000000); break;
+				case 1037: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFB000000000000); break;
+				case 1038: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFE000000000000); break;
+				case 1039: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF000000000000); break;
+				case 1040: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF700000000000); break;
+				case 1041: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFB00000000000); break;
+				case 1042: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFE00000000000); break;
+				case 1043: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF00000000000); break;
+				case 1044: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF70000000000); break;
+				case 1045: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFB0000000000); break;
+				case 1046: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFE0000000000); break;
+				case 1047: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF0000000000); break;
+				case 1048: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF7000000000); break;
+				case 1049: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFB000000000); break;
+				case 1050: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFE000000000); break;
+				case 1051: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF000000000); break;
+				case 1052: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF700000000); break;
+				case 1053: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFB00000000); break;
+				case 1054: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFE00000000); break;
+				case 1055: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF00000000); break;
+				case 1056: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF70000000); break;
+				case 1057: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFB0000000); break;
+				case 1058: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFE0000000); break;
+				case 1059: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF0000000); break;
+				case 1060: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF7000000); break;
+				case 1061: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFB000000); break;
+				case 1062: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFE000000); break;
+				case 1063: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF000000); break;
+				case 1064: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF700000); break;
+				case 1065: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFB00000); break;
+				case 1066: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFE00000); break;
+				case 1067: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF00000); break;
+				case 1068: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF70000); break;
+				case 1069: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFB0000); break;
+				case 1070: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFE0000); break;
+				case 1071: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF0000); break;
+				case 1072: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF7000); break;
+				case 1073: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFB000); break;
+				case 1074: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFE000); break;
+				case 1075: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFF000); break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 
@@ -1199,63 +1184,63 @@ export namespace CHV4DTENSOR
 			{
 				switch (trunced.exponent)
 				{
-				case 1023: trunced.significand = significand & 0x0000000000000000; break;
-				case 1024: trunced.significand = significand & 0x7000000000000000; break;
-				case 1025: trunced.significand = significand & 0xB000000000000000; break;
-				case 1026: trunced.significand = significand & 0xE000000000000000; break;
-				case 1027: trunced.significand = significand & 0xF000000000000000; break;
-				case 1028: trunced.significand = significand & 0xF700000000000000; break;
-				case 1029: trunced.significand = significand & 0xFB00000000000000; break;
-				case 1030: trunced.significand = significand & 0xFE00000000000000; break;
-				case 1031: trunced.significand = significand & 0xFF00000000000000; break;
-				case 1032: trunced.significand = significand & 0xFF70000000000000; break;
-				case 1033: trunced.significand = significand & 0xFFB0000000000000; break;
-				case 1034: trunced.significand = significand & 0xFFE0000000000000; break;
-				case 1035: trunced.significand = significand & 0xFFF0000000000000; break;
-				case 1036: trunced.significand = significand & 0xFFF7000000000000; break;
-				case 1037: trunced.significand = significand & 0xFFFB000000000000; break;
-				case 1038: trunced.significand = significand & 0xFFFE000000000000; break;
-				case 1039: trunced.significand = significand & 0xFFFF000000000000; break;
-				case 1040: trunced.significand = significand & 0xFFFF700000000000; break;
-				case 1041: trunced.significand = significand & 0xFFFFB00000000000; break;
-				case 1042: trunced.significand = significand & 0xFFFFE00000000000; break;
-				case 1043: trunced.significand = significand & 0xFFFFF00000000000; break;
-				case 1044: trunced.significand = significand & 0xFFFFF70000000000; break;
-				case 1045: trunced.significand = significand & 0xFFFFFB0000000000; break;
-				case 1046: trunced.significand = significand & 0xFFFFFE0000000000; break;
-				case 1047: trunced.significand = significand & 0xFFFFFF0000000000; break;
-				case 1048: trunced.significand = significand & 0xFFFFFF7000000000; break;
-				case 1049: trunced.significand = significand & 0xFFFFFFB000000000; break;
-				case 1050: trunced.significand = significand & 0xFFFFFFE000000000; break;
-				case 1051: trunced.significand = significand & 0xFFFFFFF000000000; break;
-				case 1052: trunced.significand = significand & 0xFFFFFFF700000000; break;
-				case 1053: trunced.significand = significand & 0xFFFFFFFB00000000; break;
-				case 1054: trunced.significand = significand & 0xFFFFFFFE00000000; break;
-				case 1055: trunced.significand = significand & 0xFFFFFFFF00000000; break;
-				case 1056: trunced.significand = significand & 0xFFFFFFFF70000000; break;
-				case 1057: trunced.significand = significand & 0xFFFFFFFFB0000000; break;
-				case 1058: trunced.significand = significand & 0xFFFFFFFFE0000000; break;
-				case 1059: trunced.significand = significand & 0xFFFFFFFFF0000000; break;
-				case 1060: trunced.significand = significand & 0xFFFFFFFFF7000000; break;
-				case 1061: trunced.significand = significand & 0xFFFFFFFFFB000000; break;
-				case 1062: trunced.significand = significand & 0xFFFFFFFFFE000000; break;
-				case 1063: trunced.significand = significand & 0xFFFFFFFFFF000000; break;
-				case 1064: trunced.significand = significand & 0xFFFFFFFFFF700000; break;
-				case 1065: trunced.significand = significand & 0xFFFFFFFFFFB00000; break;
-				case 1066: trunced.significand = significand & 0xFFFFFFFFFFE00000; break;
-				case 1067: trunced.significand = significand & 0xFFFFFFFFFFF00000; break;
-				case 1068: trunced.significand = significand & 0xFFFFFFFFFFF70000; break;
-				case 1069: trunced.significand = significand & 0xFFFFFFFFFFFB0000; break;
-				case 1070: trunced.significand = significand & 0xFFFFFFFFFFFE0000; break;
-				case 1071: trunced.significand = significand & 0xFFFFFFFFFFFF0000; break;
-				case 1072: trunced.significand = significand & 0xFFFFFFFFFFFF7000; break;
-				case 1073: trunced.significand = significand & 0xFFFFFFFFFFFFB000; break;
-				case 1074: trunced.significand = significand & 0xFFFFFFFFFFFFE000; break;
-				case 1075: trunced.significand = significand & 0xFFFFFFFFFFFFF000; break;
-				default: trunced.significand = 0; break;
+				case 1023: trunced.mantissa = mantissa & 0x0000000000000000; break;
+				case 1024: trunced.mantissa = mantissa & 0x7000000000000000; break;
+				case 1025: trunced.mantissa = mantissa & 0xB000000000000000; break;
+				case 1026: trunced.mantissa = mantissa & 0xE000000000000000; break;
+				case 1027: trunced.mantissa = mantissa & 0xF000000000000000; break;
+				case 1028: trunced.mantissa = mantissa & 0xF700000000000000; break;
+				case 1029: trunced.mantissa = mantissa & 0xFB00000000000000; break;
+				case 1030: trunced.mantissa = mantissa & 0xFE00000000000000; break;
+				case 1031: trunced.mantissa = mantissa & 0xFF00000000000000; break;
+				case 1032: trunced.mantissa = mantissa & 0xFF70000000000000; break;
+				case 1033: trunced.mantissa = mantissa & 0xFFB0000000000000; break;
+				case 1034: trunced.mantissa = mantissa & 0xFFE0000000000000; break;
+				case 1035: trunced.mantissa = mantissa & 0xFFF0000000000000; break;
+				case 1036: trunced.mantissa = mantissa & 0xFFF7000000000000; break;
+				case 1037: trunced.mantissa = mantissa & 0xFFFB000000000000; break;
+				case 1038: trunced.mantissa = mantissa & 0xFFFE000000000000; break;
+				case 1039: trunced.mantissa = mantissa & 0xFFFF000000000000; break;
+				case 1040: trunced.mantissa = mantissa & 0xFFFF700000000000; break;
+				case 1041: trunced.mantissa = mantissa & 0xFFFFB00000000000; break;
+				case 1042: trunced.mantissa = mantissa & 0xFFFFE00000000000; break;
+				case 1043: trunced.mantissa = mantissa & 0xFFFFF00000000000; break;
+				case 1044: trunced.mantissa = mantissa & 0xFFFFF70000000000; break;
+				case 1045: trunced.mantissa = mantissa & 0xFFFFFB0000000000; break;
+				case 1046: trunced.mantissa = mantissa & 0xFFFFFE0000000000; break;
+				case 1047: trunced.mantissa = mantissa & 0xFFFFFF0000000000; break;
+				case 1048: trunced.mantissa = mantissa & 0xFFFFFF7000000000; break;
+				case 1049: trunced.mantissa = mantissa & 0xFFFFFFB000000000; break;
+				case 1050: trunced.mantissa = mantissa & 0xFFFFFFE000000000; break;
+				case 1051: trunced.mantissa = mantissa & 0xFFFFFFF000000000; break;
+				case 1052: trunced.mantissa = mantissa & 0xFFFFFFF700000000; break;
+				case 1053: trunced.mantissa = mantissa & 0xFFFFFFFB00000000; break;
+				case 1054: trunced.mantissa = mantissa & 0xFFFFFFFE00000000; break;
+				case 1055: trunced.mantissa = mantissa & 0xFFFFFFFF00000000; break;
+				case 1056: trunced.mantissa = mantissa & 0xFFFFFFFF70000000; break;
+				case 1057: trunced.mantissa = mantissa & 0xFFFFFFFFB0000000; break;
+				case 1058: trunced.mantissa = mantissa & 0xFFFFFFFFE0000000; break;
+				case 1059: trunced.mantissa = mantissa & 0xFFFFFFFFF0000000; break;
+				case 1060: trunced.mantissa = mantissa & 0xFFFFFFFFF7000000; break;
+				case 1061: trunced.mantissa = mantissa & 0xFFFFFFFFFB000000; break;
+				case 1062: trunced.mantissa = mantissa & 0xFFFFFFFFFE000000; break;
+				case 1063: trunced.mantissa = mantissa & 0xFFFFFFFFFF000000; break;
+				case 1064: trunced.mantissa = mantissa & 0xFFFFFFFFFF700000; break;
+				case 1065: trunced.mantissa = mantissa & 0xFFFFFFFFFFB00000; break;
+				case 1066: trunced.mantissa = mantissa & 0xFFFFFFFFFFE00000; break;
+				case 1067: trunced.mantissa = mantissa & 0xFFFFFFFFFFF00000; break;
+				case 1068: trunced.mantissa = mantissa & 0xFFFFFFFFFFF70000; break;
+				case 1069: trunced.mantissa = mantissa & 0xFFFFFFFFFFFB0000; break;
+				case 1070: trunced.mantissa = mantissa & 0xFFFFFFFFFFFE0000; break;
+				case 1071: trunced.mantissa = mantissa & 0xFFFFFFFFFFFF0000; break;
+				case 1072: trunced.mantissa = mantissa & 0xFFFFFFFFFFFF7000; break;
+				case 1073: trunced.mantissa = mantissa & 0xFFFFFFFFFFFFB000; break;
+				case 1074: trunced.mantissa = mantissa & 0xFFFFFFFFFFFFE000; break;
+				case 1075: trunced.mantissa = mantissa & 0xFFFFFFFFFFFFF000; break;
+				default: trunced.mantissa = 0; break;
 				}
 
-				trunced.significand = trunced.significand >> ;
+				//trunced.mantissa = trunced.mantissa >> ;
 
 
 			}
@@ -1273,31 +1258,31 @@ export namespace CHV4DTENSOR
 			{
 				switch (trunced.exponent)
 				{
-				case 127: trunced.significand = significand & 0x0000000000000000; break;
-				case 128: trunced.significand = significand & 0x7000000000000000; break;
-				case 129: trunced.significand = significand & 0xB000000000000000; break;
-				case 130: trunced.significand = significand & 0xE000000000000000; break;
-				case 131: trunced.significand = significand & 0xF000000000000000; break;
-				case 132: trunced.significand = significand & 0xF700000000000000; break;
-				case 133: trunced.significand = significand & 0xFB00000000000000; break;
-				case 134: trunced.significand = significand & 0xFE00000000000000; break;
-				case 135: trunced.significand = significand & 0xFF00000000000000; break;
-				case 136: trunced.significand = significand & 0xFF70000000000000; break;
-				case 137: trunced.significand = significand & 0xFFB0000000000000; break;
-				case 138: trunced.significand = significand & 0xFFE0000000000000; break;
-				case 139: trunced.significand = significand & 0xFFF0000000000000; break;
-				case 140: trunced.significand = significand & 0xFFF7000000000000; break;
-				case 141: trunced.significand = significand & 0xFFFB000000000000; break;
-				case 142: trunced.significand = significand & 0xFFFE000000000000; break;
-				case 143: trunced.significand = significand & 0xFFFF000000000000; break;
-				case 144: trunced.significand = significand & 0xFFFF700000000000; break;
-				case 145: trunced.significand = significand & 0xFFFFB00000000000; break;
-				case 146: trunced.significand = significand & 0xFFFFE00000000000; break;
-				case 147: trunced.significand = significand & 0xFFFFF00000000000; break;
-				case 148: trunced.significand = significand & 0xFFFFF70000000000; break;
-				case 149: trunced.significand = significand & 0xFFFFFB0000000000; break;
-				case 150: trunced.significand = significand & 0xFFFFFE0000000000; break;
-				default: trunced.significand = 0; break;
+				case 127: trunced.mantissa = mantissa & 0x0000000000000000; break;
+				case 128: trunced.mantissa = mantissa & 0x7000000000000000; break;
+				case 129: trunced.mantissa = mantissa & 0xB000000000000000; break;
+				case 130: trunced.mantissa = mantissa & 0xE000000000000000; break;
+				case 131: trunced.mantissa = mantissa & 0xF000000000000000; break;
+				case 132: trunced.mantissa = mantissa & 0xF700000000000000; break;
+				case 133: trunced.mantissa = mantissa & 0xFB00000000000000; break;
+				case 134: trunced.mantissa = mantissa & 0xFE00000000000000; break;
+				case 135: trunced.mantissa = mantissa & 0xFF00000000000000; break;
+				case 136: trunced.mantissa = mantissa & 0xFF70000000000000; break;
+				case 137: trunced.mantissa = mantissa & 0xFFB0000000000000; break;
+				case 138: trunced.mantissa = mantissa & 0xFFE0000000000000; break;
+				case 139: trunced.mantissa = mantissa & 0xFFF0000000000000; break;
+				case 140: trunced.mantissa = mantissa & 0xFFF7000000000000; break;
+				case 141: trunced.mantissa = mantissa & 0xFFFB000000000000; break;
+				case 142: trunced.mantissa = mantissa & 0xFFFE000000000000; break;
+				case 143: trunced.mantissa = mantissa & 0xFFFF000000000000; break;
+				case 144: trunced.mantissa = mantissa & 0xFFFF700000000000; break;
+				case 145: trunced.mantissa = mantissa & 0xFFFFB00000000000; break;
+				case 146: trunced.mantissa = mantissa & 0xFFFFE00000000000; break;
+				case 147: trunced.mantissa = mantissa & 0xFFFFF00000000000; break;
+				case 148: trunced.mantissa = mantissa & 0xFFFFF70000000000; break;
+				case 149: trunced.mantissa = mantissa & 0xFFFFFB0000000000; break;
+				case 150: trunced.mantissa = mantissa & 0xFFFFFE0000000000; break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 
@@ -1323,60 +1308,60 @@ export namespace CHV4DTENSOR
 			{
 				switch (trunced.exponent)
 				{
-				case 1023: trunced.significand = trunced.significand | (significand & 0x0000000000000000); break;
-				case 1024: trunced.significand = trunced.significand | (significand & 0x7000000000000000); break;
-				case 1025: trunced.significand = trunced.significand | (significand & 0xB000000000000000); break;
-				case 1026: trunced.significand = trunced.significand | (significand & 0xE000000000000000); break;
-				case 1027: trunced.significand = trunced.significand | (significand & 0xF000000000000000); break;
-				case 1028: trunced.significand = trunced.significand | (significand & 0xF700000000000000); break;
-				case 1029: trunced.significand = trunced.significand | (significand & 0xFB00000000000000); break;
-				case 1030: trunced.significand = trunced.significand | (significand & 0xFE00000000000000); break;
-				case 1031: trunced.significand = trunced.significand | (significand & 0xFF00000000000000); break;
-				case 1032: trunced.significand = trunced.significand | (significand & 0xFF70000000000000); break;
-				case 1033: trunced.significand = trunced.significand | (significand & 0xFFB0000000000000); break;
-				case 1034: trunced.significand = trunced.significand | (significand & 0xFFE0000000000000); break;
-				case 1035: trunced.significand = trunced.significand | (significand & 0xFFF0000000000000); break;
-				case 1036: trunced.significand = trunced.significand | (significand & 0xFFF7000000000000); break;
-				case 1037: trunced.significand = trunced.significand | (significand & 0xFFFB000000000000); break;
-				case 1038: trunced.significand = trunced.significand | (significand & 0xFFFE000000000000); break;
-				case 1039: trunced.significand = trunced.significand | (significand & 0xFFFF000000000000); break;
-				case 1040: trunced.significand = trunced.significand | (significand & 0xFFFF700000000000); break;
-				case 1041: trunced.significand = trunced.significand | (significand & 0xFFFFB00000000000); break;
-				case 1042: trunced.significand = trunced.significand | (significand & 0xFFFFE00000000000); break;
-				case 1043: trunced.significand = trunced.significand | (significand & 0xFFFFF00000000000); break;
-				case 1044: trunced.significand = trunced.significand | (significand & 0xFFFFF70000000000); break;
-				case 1045: trunced.significand = trunced.significand | (significand & 0xFFFFFB0000000000); break;
-				case 1046: trunced.significand = trunced.significand | (significand & 0xFFFFFE0000000000); break;
-				case 1047: trunced.significand = trunced.significand | (significand & 0xFFFFFF0000000000); break;
-				case 1048: trunced.significand = trunced.significand | (significand & 0xFFFFFF7000000000); break;
-				case 1049: trunced.significand = trunced.significand | (significand & 0xFFFFFFB000000000); break;
-				case 1050: trunced.significand = trunced.significand | (significand & 0xFFFFFFE000000000); break;
-				case 1051: trunced.significand = trunced.significand | (significand & 0xFFFFFFF000000000); break;
-				case 1052: trunced.significand = trunced.significand | (significand & 0xFFFFFFF700000000); break;
-				case 1053: trunced.significand = trunced.significand | (significand & 0xFFFFFFFB00000000); break;
-				case 1054: trunced.significand = trunced.significand | (significand & 0xFFFFFFFE00000000); break;
-				case 1055: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF00000000); break;
-				case 1056: trunced.significand = trunced.significand | (significand & 0xFFFFFFFF70000000); break;
-				case 1057: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFB0000000); break;
-				case 1058: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFE0000000); break;
-				case 1059: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF0000000); break;
-				case 1060: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFF7000000); break;
-				case 1061: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFB000000); break;
-				case 1062: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFE000000); break;
-				case 1063: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF000000); break;
-				case 1064: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFF700000); break;
-				case 1065: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFB00000); break;
-				case 1066: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFE00000); break;
-				case 1067: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF00000); break;
-				case 1068: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFF70000); break;
-				case 1069: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFB0000); break;
-				case 1070: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFE0000); break;
-				case 1071: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF0000); break;
-				case 1072: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFF7000); break;
-				case 1073: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFB000); break;
-				case 1074: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFE000); break;
-				case 1075: trunced.significand = trunced.significand | (significand & 0xFFFFFFFFFFFFF000); break;
-				default: trunced.significand = 0; break;
+				case 1023: trunced.mantissa = trunced.mantissa | (mantissa & 0x0000000000000000); break;
+				case 1024: trunced.mantissa = trunced.mantissa | (mantissa & 0x7000000000000000); break;
+				case 1025: trunced.mantissa = trunced.mantissa | (mantissa & 0xB000000000000000); break;
+				case 1026: trunced.mantissa = trunced.mantissa | (mantissa & 0xE000000000000000); break;
+				case 1027: trunced.mantissa = trunced.mantissa | (mantissa & 0xF000000000000000); break;
+				case 1028: trunced.mantissa = trunced.mantissa | (mantissa & 0xF700000000000000); break;
+				case 1029: trunced.mantissa = trunced.mantissa | (mantissa & 0xFB00000000000000); break;
+				case 1030: trunced.mantissa = trunced.mantissa | (mantissa & 0xFE00000000000000); break;
+				case 1031: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF00000000000000); break;
+				case 1032: trunced.mantissa = trunced.mantissa | (mantissa & 0xFF70000000000000); break;
+				case 1033: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFB0000000000000); break;
+				case 1034: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFE0000000000000); break;
+				case 1035: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF0000000000000); break;
+				case 1036: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFF7000000000000); break;
+				case 1037: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFB000000000000); break;
+				case 1038: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFE000000000000); break;
+				case 1039: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF000000000000); break;
+				case 1040: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFF700000000000); break;
+				case 1041: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFB00000000000); break;
+				case 1042: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFE00000000000); break;
+				case 1043: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF00000000000); break;
+				case 1044: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFF70000000000); break;
+				case 1045: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFB0000000000); break;
+				case 1046: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFE0000000000); break;
+				case 1047: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF0000000000); break;
+				case 1048: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFF7000000000); break;
+				case 1049: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFB000000000); break;
+				case 1050: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFE000000000); break;
+				case 1051: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF000000000); break;
+				case 1052: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFF700000000); break;
+				case 1053: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFB00000000); break;
+				case 1054: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFE00000000); break;
+				case 1055: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF00000000); break;
+				case 1056: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFF70000000); break;
+				case 1057: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFB0000000); break;
+				case 1058: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFE0000000); break;
+				case 1059: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF0000000); break;
+				case 1060: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFF7000000); break;
+				case 1061: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFB000000); break;
+				case 1062: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFE000000); break;
+				case 1063: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF000000); break;
+				case 1064: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFF700000); break;
+				case 1065: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFB00000); break;
+				case 1066: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFE00000); break;
+				case 1067: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF00000); break;
+				case 1068: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFF70000); break;
+				case 1069: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFB0000); break;
+				case 1070: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFE0000); break;
+				case 1071: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF0000); break;
+				case 1072: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFF7000); break;
+				case 1073: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFB000); break;
+				case 1074: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFE000); break;
+				case 1075: trunced.mantissa = trunced.mantissa | (mantissa & 0xFFFFFFFFFFFFF000); break;
+				default: trunced.mantissa = 0; break;
 				}
 			}
 
@@ -1397,7 +1382,7 @@ export namespace CHV4DTENSOR
 	private:
 		bool sign{ false };
 
-		uint64_t significand{ 0 };
+		uint64_t mantissa{ 0 };
 
 		uint16_t exponent{ 0 };
 
