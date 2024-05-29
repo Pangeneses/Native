@@ -16,7 +16,7 @@ export namespace CHV4DTENSOR
 
 	template<typename T> void assert_integer() { static_assert(false, "Non Integer type."); }
 
-	template<> void assert_integer <MaxInteger>() {}
+	template<> void assert_integer <CHV4DINTEGER>() {}
 
 	template<> void assert_integer <std::uint8_t>() {}
 	template<> void assert_integer <std::uint16_t>() {}

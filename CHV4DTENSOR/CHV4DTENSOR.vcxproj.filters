@@ -10,17 +10,14 @@
     <ClCompile Include="CHV4DRESOURCE.ixx">
       <Filter>iii. CHV4DRESOURCE</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DREAL.ixx">
-      <Filter>iv. CHV4DNUMBER\2. CHV4DREAL</Filter>
+    <ClCompile Include="CHV4DSINGLE.ixx">
+      <Filter>iv. CHV4DNUMBER\1. CHV4DSINGLE</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DALGEBRA.ixx">
-      <Filter>v. CHV4DALGEBRA\3. CHV4DALGEBRA</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DMATH.ixx">
-      <Filter>v. CHV4DALGEBRA\1. CHV4DMATH</Filter>
+      <Filter>v. CHV4DALGEBRA\2. CHV4DALGEBRA</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DTRIG.ixx">
-      <Filter>v. CHV4DALGEBRA\2. CHV4DTRIG</Filter>
+      <Filter>v. CHV4DALGEBRA\1. CHV4DTRIG</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DTRANSFORM.ixx">
       <Filter>vi. CHV4DMATRIX\1. CHV4DTRANSFORM</Filter>
@@ -28,14 +25,17 @@
     <ClCompile Include="CHV4DMATRIX.ixx">
       <Filter>vi. CHV4DMATRIX\0. CHV4DMATRIX</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DCMATH.ixx">
-      <Filter>v. CHV4DALGEBRA\0. CHV4DCMATH</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DPRECISION.ixx">
-      <Filter>iv. CHV4DNUMBER\0. CHV4DPRECISION</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DINTEGER.ixx">
-      <Filter>iv. CHV4DNUMBER\1. CHV4DINTEGER</Filter>
+      <Filter>iv. CHV4DNUMBER\0. CHV4DINTEGER</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DARITMETIC.ixx">
+      <Filter>v. CHV4DALGEBRA\0. CHV4DARITMETIC</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DDOUBLE.ixx">
+      <Filter>iv. CHV4DNUMBER\2. CHV4DDOUBLE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DLDOUBLE.ixx">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DLDOUBLE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,12 +51,6 @@
     <Filter Include="v. CHV4DALGEBRA">
       <UniqueIdentifier>{7623b348-03ea-4b3c-9135-b1ffe28024ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="v. CHV4DALGEBRA\3. CHV4DALGEBRA">
-      <UniqueIdentifier>{f5e70684-74f7-4063-ba0b-7a0d7d7cf570}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="v. CHV4DALGEBRA\0. CHV4DCMATH">
-      <UniqueIdentifier>{d0ecf84a-365c-4dff-afc4-9beb49533ab4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vi. CHV4DMATRIX">
       <UniqueIdentifier>{5c035a8c-8b9f-49ab-bba8-d291b480567f}</UniqueIdentifier>
     </Filter>
@@ -69,20 +63,26 @@
     <Filter Include="iv. CHV4DNUMBER">
       <UniqueIdentifier>{d98eb702-42dc-480e-81a1-146579473b0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="v. CHV4DALGEBRA\1. CHV4DMATH">
-      <UniqueIdentifier>{ff022c98-b7df-42fb-a667-3e74db110edd}</UniqueIdentifier>
+    <Filter Include="v. CHV4DALGEBRA\0. CHV4DARITMETIC">
+      <UniqueIdentifier>{08d73b7f-61b2-4fa2-89eb-6f0c3e694237}</UniqueIdentifier>
     </Filter>
-    <Filter Include="v. CHV4DALGEBRA\2. CHV4DTRIG">
-      <UniqueIdentifier>{ba4437bc-6420-4854-aead-11569f0e9da9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. CHV4DNUMBER\1. CHV4DINTEGER">
+    <Filter Include="iv. CHV4DNUMBER\0. CHV4DINTEGER">
       <UniqueIdentifier>{95990428-d43b-4326-b156-d1db0437e5ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\2. CHV4DREAL">
+    <Filter Include="iv. CHV4DNUMBER\1. CHV4DSINGLE">
       <UniqueIdentifier>{b313d6a4-24af-437b-a113-f906c345f3c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\0. CHV4DPRECISION">
-      <UniqueIdentifier>{5d0b96dd-9591-4cdb-98bb-34050c9372a2}</UniqueIdentifier>
+    <Filter Include="iv. CHV4DNUMBER\2. CHV4DDOUBLE">
+      <UniqueIdentifier>{221bc5c5-63f4-47ae-96bc-349cdefac32b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\3. CHV4DLDOUBLE">
+      <UniqueIdentifier>{4ec95740-5945-4dd8-95d2-9737a8123a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DALGEBRA\1. CHV4DTRIG">
+      <UniqueIdentifier>{ba4437bc-6420-4854-aead-11569f0e9da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="v. CHV4DALGEBRA\2. CHV4DALGEBRA">
+      <UniqueIdentifier>{f5e70684-74f7-4063-ba0b-7a0d7d7cf570}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

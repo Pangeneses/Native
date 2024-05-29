@@ -8,29 +8,41 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
-	class MaxInteger
+	class CHV4DINTEGER
 	{
 	public:
-		MaxInteger() { sign = false; val = 0; }
+		CHV4DINTEGER() { sign = false; val = 0; }
 
-		MaxInteger(MaxInteger const& x) { sign = x.sign; val = x.val; }
+		CHV4DINTEGER(CHV4DINTEGER const& x) { sign = x.sign; val = x.val; }
 
-		MaxInteger(uint8_t  const& x) { sign = false; val = x; }
-		MaxInteger(uint16_t const& x) { sign = false; val = x; }
-		MaxInteger(uint32_t const& x) { sign = false; val = x; }
-		MaxInteger(uint64_t const& x) { sign = false; val = x; }
+		CHV4DINTEGER(uint8_t  const& x) { sign = false; val = x; }
+		CHV4DINTEGER(uint16_t const& x) { sign = false; val = x; }
+		CHV4DINTEGER(uint32_t const& x) { sign = false; val = x; }
+		CHV4DINTEGER(uint64_t const& x) { sign = false; val = x; }
 
-		MaxInteger(int8_t  const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		MaxInteger(int16_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		MaxInteger(int32_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		MaxInteger(int64_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		CHV4DINTEGER(int8_t  const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		CHV4DINTEGER(int16_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		CHV4DINTEGER(int32_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		CHV4DINTEGER(int64_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
 
 	public:
+		void operator=(CHV4DINTEGER const& x) { sign = x.sign; val = x.val; }
+
+		void operator=(uint8_t  const& x) { sign = false; val = x; }
+		void operator=(uint16_t const& x) { sign = false; val = x; }
+		void operator=(uint32_t const& x) { sign = false; val = x; }
+		void operator=(uint64_t const& x) { sign = false; val = x; }
+
+		void operator=(int8_t  const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		void operator=(int16_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		void operator=(int32_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		void operator=(int64_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+
 		template<typename T> T operator()() const
 		{
 			static_assert(false, "Non Integer type.");
 		}
-		template<> uint8_t operator()() const
+		template<> uint8_t operator() < uint8_t > () const
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
@@ -38,7 +50,7 @@ export namespace CHV4DTENSOR
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
-		template<> uint16_t operator()() const
+		template<> uint16_t operator() < uint16_t > () const
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
@@ -46,7 +58,7 @@ export namespace CHV4DTENSOR
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
-		template<> uint32_t operator()() const
+		template<> uint32_t operator() < uint32_t > () const
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
@@ -54,7 +66,7 @@ export namespace CHV4DTENSOR
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
-		template<> uint64_t operator()() const
+		template<> uint64_t operator() < uint64_t > () const
 		{
 			if (sign) throw std::runtime_error{ "Signed Integer." };
 
@@ -62,7 +74,7 @@ export namespace CHV4DTENSOR
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
-		template<> int8_t operator()() const
+		template<> int8_t operator() < int8_t > () const
 		{
 			if (!sign)
 			{
@@ -77,7 +89,7 @@ export namespace CHV4DTENSOR
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 		}
-		template<> int16_t operator()() const
+		template<> int16_t operator() < int16_t > () const
 		{
 			if (!sign)
 			{
@@ -92,7 +104,7 @@ export namespace CHV4DTENSOR
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 		}
-		template<> int32_t operator()() const
+		template<> int32_t operator() < int32_t > () const
 		{
 			if (!sign)
 			{
@@ -107,7 +119,7 @@ export namespace CHV4DTENSOR
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 		}
-		template<> int64_t operator()() const
+		template<> int64_t operator() < int64_t > () const
 		{
 			if (!sign)
 			{
@@ -122,55 +134,41 @@ export namespace CHV4DTENSOR
 				else throw std::overflow_error{ "Integer overrun." };
 			}
 		}
-		template<> MaxInteger operator()() const
+		template<> CHV4DINTEGER operator() < CHV4DINTEGER > () const
 		{
 			return *this;
 		}
 
-		void operator=(MaxInteger const& x) { sign = x.sign; val = x.val; }
-
-		void operator=(uint8_t  const& x) { sign = false; val = x; }
-		void operator=(uint16_t const& x) { sign = false; val = x; }
-		void operator=(uint32_t const& x) { sign = false; val = x; }
-		void operator=(uint64_t const& x) { sign = false; val = x; }
-
-		void operator=(int8_t  const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		void operator=(int16_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		void operator=(int32_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		void operator=(int64_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-
-		MaxInteger operator+(MaxInteger const& x) const
+		CHV4DINTEGER operator+(CHV4DINTEGER const& x) const
 		{
-			if ((x.sign && sign) || (!x.sign && !sign))
-			{
-				if (x.val <= (18446744073709551615 - val)) { MaxInteger z{ val + x.val }; z.sign = x.sign; return z; }
+			CHV4DINTEGER A{ *this }, B{ x };
 
-				else throw std::overflow_error{ "Integer overrun." };
+			if(!A.sign != !B.sign) 
+			{
+				if (A.sign) std::swap(A.val, B.val);
+
+				if(A.val > 9223372036854775808ui64) throw std::overflow_error{ "Signing Integer overrun." };
+
+				if ((A.val + 9223372036854775808i64) < B.val) throw std::overflow_error{ "Integer overrun." };
+
+				A.sign = A.val > B.val ? false : true;
+
+				A.val = A.val > B.val ? A.val - B.val : B.val - A.val;
 			}
 			else
 			{
-				if (x.sign)
-				{
-					if (val > x.val) { MaxInteger z{ val - x.val }; z.sign = false; return z; }
+				if (A.val <= (18446744073709551615 - B.val)) throw std::overflow_error{ "Integer overrun." };
 
-					else { MaxInteger z{ x.val - val }; z.sign = true; return z; }
-				}
-				else if (sign)
-				{
-					if (val > x.val) { MaxInteger z{ val - x.val }; z.sign = false; return z; }
-
-					else { MaxInteger z{ x.val - val }; z.sign = true; return z; }
-				}
+				A.val = A.val + B.val;
 			}
 		}
-
 		template<typename T, typename I>
 		T operator+(I const& x)
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			MaxInteger z{ x };
+			CHV4DINTEGER z{ x };
 
 			try
 			{
@@ -199,23 +197,29 @@ export namespace CHV4DTENSOR
 			return ret;
 		}
 
-		MaxInteger operator-(MaxInteger const& x) const
+		CHV4DINTEGER operator-(CHV4DINTEGER const& x) const
 		{
-			MaxInteger z;
+			CHV4DINTEGER A{ 0ui64 }, B{ x };
 
-			if (val == x.val) { z.val = 0; z.sign = false; return z; }
+			B.sign = B.sign ? false : true;
 
-			else if (val > x.val) { z.val = val - x.val; z.sign = false; return z; }
+			try
+			{
+				A = this->operator+(B);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
 
-			else if (val < x.val) { z.val = x.val - val; z.sign = true; return z; }
+			return A;
 		}
-
 		template<typename T, typename I> T operator-(I const& x)
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			MaxInteger z{ x };
+			CHV4DINTEGER z{ x };
 
 			try
 			{
@@ -244,25 +248,19 @@ export namespace CHV4DTENSOR
 			return ret;
 		}
 
-		template<typename T> T operator/(MaxInteger const& x)
+		template<typename T> T operator/(CHV4DINTEGER const& x)
 		{
 			static_assert(false, "Non Integer type.");
 		}
-		template<> float operator/ < float > (MaxInteger const& x)
+		template<> float operator/ < float > (CHV4DINTEGER const& x)
 		{
 			float z = static_cast<float>(this->val) / static_cast<float>(x.val);
 
 			return (!sign != !x.sign) ? -z : z;
 		}
-		template<> double operator/ < double > (MaxInteger const& x)
+		template<> double operator/ < double > (CHV4DINTEGER const& x)
 		{
 			double z = static_cast<double>(this->val) / static_cast<double>(x.val);
-
-			return (!sign != !x.sign) ? -z : z;
-		}
-		template<> long double operator/ < long double > (MaxInteger const& x)
-		{
-			long double z = static_cast<long double>(this->val) / static_cast<long double>(x.val);
 
 			return (!sign != !x.sign) ? -z : z;
 		}
@@ -274,15 +272,19 @@ export namespace CHV4DTENSOR
 			return this->operator/ < T > ({ x });
 		}
 
+
+
+
+
 		template<typename T, typename I>
 		T operator*(I const& x)
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			MaxInteger z{ x };
+			CHV4DINTEGER z{ x };
 
-			MaxInteger MAX_INT{ 18446744073709551615 };
+			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
 
 			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
 
@@ -311,26 +313,248 @@ export namespace CHV4DTENSOR
 
 		}
 
-		MaxInteger operator^(MaxInteger pow)
+
+
+		template<typename T, typename I>
+		T operator%(I const& x)
+		{
+			assert_integer<T>();
+			assert_integer<I>();
+
+			CHV4DINTEGER z{ x };
+
+			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
+
+			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
+
+			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
+
+			z.val *= val;
+
+			(!sign != !x.sign) ? z.sign = true : z.sign = false;
+
+			T ret;
+
+			try
+			{
+				ret = z.operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
+
+		}
+
+
+
+		template<typename T, typename I>
+		T operator++(I const& x)
+		{
+			assert_integer<T>();
+			assert_integer<I>();
+
+			CHV4DINTEGER z{ x };
+
+			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
+
+			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
+
+			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
+
+			z.val *= val;
+
+			(!sign != !x.sign) ? z.sign = true : z.sign = false;
+
+			T ret;
+
+			try
+			{
+				ret = z.operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
+
+		}
+
+
+
+		template<typename T, typename I>
+		T operator--(I const& x)
+		{
+			assert_integer<T>();
+			assert_integer<I>();
+
+			CHV4DINTEGER z{ x };
+
+			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
+
+			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
+
+			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
+
+			z.val *= val;
+
+			(!sign != !x.sign) ? z.sign = true : z.sign = false;
+
+			T ret;
+
+			try
+			{
+				ret = z.operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
+
+		}
+
+
+
+		void operator+=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator-=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator*=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator/=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator%=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator&=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator|=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator>>=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		void operator<<=(CHV4DINTEGER const& x)
+		{
+
+		}
+
+		bool operator==(CHV4DINTEGER const& x) const
+		{
+			return (val == x.val) && (sign == x.sign) ? true : false;
+		}
+		bool operator!=(CHV4DINTEGER const& x) const
+		{
+			return (val != x.val) || (sign != x.sign) ? true : false;
+		}
+		bool operator<(CHV4DINTEGER const& x) const
+		{
+			if ((val == x.val) && (sign == x.sign)) return false;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return true;
+
+			else if ((val > x.val) && (sign && x.sign)) return true;
+
+			else if (!sign && x.sign) return true;
+
+			else if (sign && !x.sign) return false;
+		}
+		bool operator>(CHV4DINTEGER const& x) const
+		{
+			if ((val == x.val) && (sign == x.sign)) return false;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return false;
+
+			else if ((val > x.val) && (sign && x.sign)) return false;
+
+			else if (!sign && x.sign) return false;
+
+			else if (sign && !x.sign) return true;
+		}
+		bool operator<=(CHV4DINTEGER const& x) const
+		{
+			if ((val == x.val) && (sign == x.sign)) return true;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return true;
+
+			else if ((val > x.val) && (sign && x.sign)) return true;
+
+			else if (!sign && x.sign) return true;
+
+			else if (sign && !x.sign) return false;
+		}
+		bool operator>=(CHV4DINTEGER const& x) const
+		{
+			if ((val == x.val) && (sign == x.sign)) return true;
+
+			else if ((val < x.val) && (!sign && !x.sign)) return false;
+
+			else if ((val > x.val) && (sign && x.sign)) return false;
+
+			else if (!sign && x.sign) return false;
+
+			else if (sign && !x.sign) return true;
+		}
+
+	public:
+		CHV4DINTEGER Pow(CHV4DINTEGER pow)
 		{
 			if (pow.sign) throw std::runtime_error{ "Unsigned powers." };
 
 			if (pow.val == 0)
 			{
-				return MaxInteger{ 1ui64 };
+				return CHV4DINTEGER{ 1ui64 };
 			}
 			else if (pow.val != 0 && val == 0ui64)
 			{
-				return MaxInteger{ 0ui64 };
+				return CHV4DINTEGER{ 0ui64 };
 			}
 
-			MaxInteger z{ *this };
+			CHV4DINTEGER z{ *this };
 
 			for (uint64_t i = 0; i < pow.val; i++)
 			{
 				try
 				{
-					z = z.operator*< MaxInteger >(*this);
+					z = z.operator*< CHV4DINTEGER >(*this);
 				}
 				catch (std::overflow_error error)
 				{
@@ -346,18 +570,18 @@ export namespace CHV4DTENSOR
 
 		}
 		template<typename T, typename I>
-		T operator^(I x)
+		T Pow(I x)
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			MaxInteger pow{ x };
+			CHV4DINTEGER pow{ x };
 
-			MaxInteger res;
+			CHV4DINTEGER res;
 
 			try
 			{
-				res = this->operator^(pow);
+				res = this->Pow(pow);
 			}
 			catch (std::overflow_error error)
 			{
@@ -386,57 +610,218 @@ export namespace CHV4DTENSOR
 			return ret;
 		}
 
-		bool operator==(MaxInteger const& x) const 
-		{ 
-			return (val == x.val) && (sign == x.sign) ? true : false; 
-		}
-		bool operator<(MaxInteger const& x) const 
+		CHV4DINTEGER Root(CHV4DINTEGER pow)
 		{
-			if ((val == x.val) && (sign == x.sign)) return false;
+			if (pow.sign) throw std::runtime_error{ "Unsigned powers." };
 
-			else if ((val < x.val) && (!sign && !x.sign)) return true;
+			if (pow.val == 0)
+			{
+				return CHV4DINTEGER{ 1ui64 };
+			}
+			else if (pow.val != 0 && val == 0ui64)
+			{
+				return CHV4DINTEGER{ 0ui64 };
+			}
 
-			else if ((val > x.val) && (sign && x.sign)) return true;
+			CHV4DINTEGER z{ *this };
 
-			else if (!sign && x.sign) return true;
+			for (uint64_t i = 0; i < pow.val; i++)
+			{
+				try
+				{
+					z = z.operator*< CHV4DINTEGER >(*this);
+				}
+				catch (std::overflow_error error)
+				{
+					throw error;
+				}
+				catch (std::runtime_error error)
+				{
+					throw error;
+				}
+			}
 
-			else if (sign && !x.sign) return false;
+			return z;
+
 		}
-		bool operator>(MaxInteger const& x) const 
+		template<typename T, typename I>
+		T Root(I x)
 		{
-			if ((val == x.val) && (sign == x.sign)) return false;
+			assert_integer<T>();
+			assert_integer<I>();
 
-			else if ((val < x.val) && (!sign && !x.sign)) return false;
+			CHV4DINTEGER pow{ x };
 
-			else if ((val > x.val) && (sign && x.sign)) return false;
+			CHV4DINTEGER res;
 
-			else if (!sign && x.sign) return false;
+			try
+			{
+				res = this->Root(pow);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
 
-			else if (sign && !x.sign) return true;
+			T ret;
+
+			try
+			{
+				ret = res.operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
 		}
-		bool operator<=(MaxInteger const& x) const 
+
+		void ToFrac(float const& p, CHV4DINTEGER& a, CHV4DINTEGER& b)
 		{
-			if ((val == x.val) && (sign == x.sign)) return true;
+			float pow{ p };
 
-			else if ((val < x.val) && (!sign && !x.sign)) return true;
+			if (pow < 0.0f) throw std::out_of_range{ "Invert x to remove negative power." };
 
-			else if ((val > x.val) && (sign && x.sign)) return true;
+			if (pow >= 1.0f)
+			{
+				a = 1;
 
-			else if (!sign && x.sign) return true;
+				b = 1;
 
-			else if (sign && !x.sign) return false;
-		}
-		bool operator>=(MaxInteger const& x) const 
+			}
+			else if (pow > 1.0f)
+			{
+				size_t mag;
+
+				for (mag = 1; (pow / 2.0f) > 1.0; mag++)
+				{
+					pow = pow / 2.0f;
+
+				}
+
+				float scan;
+
+				for (scan = 0.0f; scan < 2147483648.0f; scan += 80000.0f)
+				{
+					float frac = (2147483648.0f + scan) / (2147483648.0f - scan);
+
+					float floor = fTrunc(frac, 1000000.0f);
+
+					float roof = fTrunc(frac, 1000000.0f) + 0.0001f;
+
+					if (floor < pow && pow < roof) break;
+
+				}
+
+				a = (2147483648 + static_cast<uint64_t>(scan));
+
+				b = 2147483648 - static_cast<uint64_t>(scan);
+
+				for (size_t i = 0; i < mag; i++)
+				{
+					a *= FloatToUint32(fIPow(2, i));
+
+					if (i > 2)
+					{
+						if ((i - 1) % 2 == 0)
+						{
+							b /= DoubleToUint64(cIPow(2, i));
+
+						}
+
+					}
+
+				}
+
+			}
+			else if (pow < 1.0f && pow > 0.0f)
+			{
+			}
+			else if (pow == 0.0f)
+			{
+			}
+			else if (pow < 0.0f)
+			{
+			}
+
+		} // 1.xxxxx shift to integer reduce
+		void ToFrac(double const& p, CHV4DINTEGER& a, CHV4DINTEGER& b)
 		{
-			if ((val == x.val) && (sign == x.sign)) return true;
+			float pow{ p };
 
-			else if ((val < x.val) && (!sign && !x.sign)) return false;
+			if (pow < 0.0f) throw std::out_of_range{ "Invert x to remove negative power." };
 
-			else if ((val > x.val) && (sign && x.sign)) return false;
+			if (pow >= 1.0f)
+			{
+				a = 1;
 
-			else if (!sign && x.sign) return false;
+				b = 1;
 
-			else if (sign && !x.sign) return true;
+			}
+			else if (pow > 1.0f)
+			{
+				size_t mag;
+
+				for (mag = 1; (pow / 2.0f) > 1.0; mag++)
+				{
+					pow = pow / 2.0f;
+
+				}
+
+				float scan;
+
+				for (scan = 0.0f; scan < 2147483648.0f; scan += 80000.0f)
+				{
+					float frac = (2147483648.0f + scan) / (2147483648.0f - scan);
+
+					float floor = fTrunc(frac, 1000000.0f);
+
+					float roof = fTrunc(frac, 1000000.0f) + 0.0001f;
+
+					if (floor < pow && pow < roof) break;
+
+				}
+
+				a = (2147483648 + static_cast<uint64_t>(scan));
+
+				b = 2147483648 - static_cast<uint64_t>(scan);
+
+				for (size_t i = 0; i < mag; i++)
+				{
+					a *= FloatToUint32(fIPow(2, i));
+
+					if (i > 2)
+					{
+						if ((i - 1) % 2 == 0)
+						{
+							b /= DoubleToUint64(cIPow(2, i));
+
+						}
+
+					}
+
+				}
+
+			}
+			else if (pow < 1.0f && pow > 0.0f)
+			{
+			}
+			else if (pow == 0.0f)
+			{
+			}
+			else if (pow < 0.0f)
+			{
+			}
+
 		}
 
 	private:

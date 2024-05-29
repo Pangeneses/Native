@@ -1,21 +1,18 @@
 module;
 
-#include <xmmintrin.h>
-
 #include <stdexcept>
 
-export module CHV4DTENSOR:CHV4DPRECISION;
+export module CHV4DTENSOR:CHV4DDOUBLE;
 
-import :CHV4DRESOURCE;
-
-import :CHV4DINTEGER; 
+import :CHV4DCMATH;
 
 export namespace CHV4DTENSOR
 {
-	class MaxPrecision
+
+	class CHV4DF64
 	{
 	public:
-		MaxPrecision(MaxPrecision const& x)	
+		CHV4DF64(CHV4DF64 const& x)
 		{
 			sign = x.sign;
 
@@ -23,25 +20,7 @@ export namespace CHV4DTENSOR
 
 			exponent = x.exponent;
 		}
-		MaxPrecision(float const& x) 
-		{
-			float temp{ x };
-
-			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
-
-			sign = ((data[3] & 0b10000000) == true) ? true : false;
-
-			unsigned char exp = (data[3] << 1) | (data[2] >> 7);
-
-			exponent = static_cast<uint16_t>(exp + (2047ui16 - 127ui16));
-
-			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(data);
-
-			mantissa = static_cast<uint64_t>(sig);
-
-			mantissa = mantissa << 44;
-		}
-		MaxPrecision(double const& x) 
+		CHV4DF64(double const& x)
 		{
 			double temp{ x };
 
@@ -50,7 +29,7 @@ export namespace CHV4DTENSOR
 			sign = ((data[7] & 0b10000000) == true) ? true : false;
 
 			unsigned char exp[2];
-			
+
 			exp[0] = (data[7] << 4) | (data[6] >> 4);
 
 			exp[1] = (data[7] >> 4) & 0b00000111;
@@ -70,24 +49,6 @@ export namespace CHV4DTENSOR
 			mantissa = x.mantissa;
 
 			exponent = x.exponent;
-		}
-		void operator=(float const& x)
-		{
-			float temp{ x };
-
-			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
-
-			sign = ((data[3] & 0b10000000) == true) ? true : false;
-
-			unsigned char exp = (data[3] << 1) | (data[2] >> 7);
-
-			exponent = static_cast<uint16_t>(exp + (2047ui16 - 127ui16));
-
-			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(data);
-
-			mantissa = static_cast<uint64_t>(sig);
-
-			mantissa = mantissa << 44;
 		}
 		void operator=(double const& x)
 		{
@@ -110,13 +71,14 @@ export namespace CHV4DTENSOR
 			mantissa = mantissa << 12;
 		}
 
+
 		template<typename T>
 		T operator()() const
 		{
 			static_assert(false, "Non Precision type.");
 		}
 		template<>
-		MaxPrecision operator() < MaxPrecision > () const
+		CHV4DF32 operator() < CHV4DF32 > () const
 		{
 			return *this;
 		}
@@ -170,7 +132,7 @@ export namespace CHV4DTENSOR
 				data[7] |= (reinterpret_cast<unsigned char*>(&exp)[1] & 0b00000111) << 4;
 
 				data[7] |= (reinterpret_cast<unsigned char*>(&exp)[0] >> 4);
-				
+
 				data[6] | (reinterpret_cast<unsigned char*>(&exp)[0] << 4);
 			}
 
@@ -197,12 +159,14 @@ export namespace CHV4DTENSOR
 			{
 				B.mantissa = B.mantissa >> (A.exponent - B.exponent);
 
-				if (!((A.mantissa >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (B.mantissa >> 12))) && A.exponent == 2047)
+				B.exponent = A.exponent;
+
+				if (A.mantissa > (0xFFFFFFFFFFFFF000 - B.mantissa) && A.exponent == 2047)
 				{
 					throw std::overflow_error{ "Addition overflow." };
 				}
 
-				if(!A.sign && !B.sign) A.mantissa += B.mantissa;
+				if (!A.sign && !B.sign) A.mantissa += B.mantissa;
 				else if (!A.sign && B.sign) A.mantissa -= B.mantissa;
 				else if (A.sign && !B.sign) A.mantissa -= B.mantissa;
 				else if (A.sign && B.sign) A.mantissa += B.mantissa;
@@ -213,21 +177,7 @@ export namespace CHV4DTENSOR
 			{
 				A.mantissa = A.mantissa >> (B.exponent - A.exponent);
 
-				if (!((B.mantissa >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.mantissa >> 12))) && B.exponent == 2047)
-				{
-					throw std::overflow_error{ "Addition overflow." };
-				}
-				
-				if(!A.sign && !B.sign) B.mantissa += A.mantissa;
-				else if (!A.sign && B.sign) B.mantissa -= A.mantissa;
-				else if (A.sign && !B.sign) B.mantissa -= A.mantissa;
-				else if (A.sign && B.sign) B.mantissa += A.mantissa;
-
-				return B;
-			}
-			else
-			{
-				if (!((B.mantissa >> 12) > ((0xFFFFFFFFFFFFF000 >> 12) - (A.mantissa >> 12))) && B.exponent == 2047)
+				if (B.mantissa > (0xFFFFFFFFFFFFF000 - A.mantissa) && B.exponent == 2047)
 				{
 					throw std::overflow_error{ "Addition overflow." };
 				}
@@ -239,36 +189,20 @@ export namespace CHV4DTENSOR
 
 				return B;
 			}
-		}
-		float operator+(float const& x) const
-		{
-			MaxPrecision A{ x };
-
-			try
+			else
 			{
-				A = this->operator+(A);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
+				if (B.mantissa > (0xFFFFFFFFFFFFF000 - A.mantissa) && B.exponent == 2047)
+				{
+					throw std::overflow_error{ "Addition overflow." };
+				}
 
-			return A.operator() < float > ();
-		}
-		double operator+(double const& x) const
-		{
-			MaxPrecision A{ x };
+				if (!A.sign && !B.sign) B.mantissa += A.mantissa;
+				else if (!A.sign && B.sign) B.mantissa -= A.mantissa;
+				else if (A.sign && !B.sign) B.mantissa -= A.mantissa;
+				else if (A.sign && B.sign) B.mantissa += A.mantissa;
 
-			try
-			{
-				A = this->operator+(A);
+				return B;
 			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-
-			return A.operator() < double > ();
 		}
 
 		MaxPrecision operator-(MaxPrecision const& x) const
@@ -288,78 +222,62 @@ export namespace CHV4DTENSOR
 
 			return A;
 		}
-		float operator-(float const& x) const
-		{
-			MaxPrecision A{ x };
-
-			if (A.sign) A.sign = false; else A.sign = true;
-
-			try
-			{
-				A = this->operator+(A);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-
-			return A.operator() < float > ();
-		}
-		double operator-(double const& x) const
-		{
-			MaxPrecision A{ x };
-
-			if (A.sign) A.sign = false; else A.sign = true;
-
-			try
-			{
-				A = this->operator+(A);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-
-			return A.operator() < double > ();
-		}
 
 		MaxPrecision operator/(MaxPrecision const& x) const
 		{
-			if (x.mantissa == 0 && x.exponent == 127) throw std::runtime_error{ "Division by zero." };
+			if (x.mantissa == 0 && x.exponent == 1023ui16) throw std::runtime_error{ "Division by zero." };
 
-			if (mantissa == 0 && exponent == 127) return MaxPrecision{ 0 };
+			if (mantissa == 0 && exponent == 1023ui16) return MaxPrecision{ 0.0 };
 
-			MaxPrecision B{ x }, Ret{ 0.0 };
+			MaxPrecision A{ *this }, B{ x };
 
-			Ret.sign = (!sign != !B.sign) ? true : false;
+			B.sign = (!A.sign != !B.sign) ? true : false;
 
-			MaxPrecision buffer{ static_cast<double>((mantissa >> 12 & 0x0010000000000000) / (B.mantissa & 0x0010000000000000)) };
+			if (A.exponent > 2047ui16 || B.exponent > 2047ui16) throw std::runtime_error{ "Exponent overrun." };
 
-			Ret.exponent += buffer.exponent
+			if ((A.exponent - 1023ui16) - (B.exponent - 1023ui16) < 0)
+			{
+				std::swap(A.exponent, B.exponent);
 
-			Ret.mantissa = () & 0x000FFFFFFFFFFFFF;
+				std::swap(A.mantissa, B.mantissa);
+			}
 
+			B.exponent = A.exponent - B.exponent;
 
-			
-		}
-		float operator/(float const& x) const
-		{
+			if (A.mantissa == 0ui16)
+			{
+				B.mantissa = 0;
+			}
+			else if (B.mantissa == 0)
+			{
+				throw std::runtime_error{ "Division by zero." };
+			}
+			else
+			{
+				A.mantissa |= ((A.mantissa >> 1) | 0x8000000000000000);
+				B.mantissa |= ((B.mantissa >> 1) | 0x8000000000000000);
 
-		}
-		double operator/(double const& x) const
-		{
+				uint64_t Q{ 0 };
 
+				for (size_t i = 0; i < 16; ++i)
+				{
+					if (A.mantissa - B.mantissa >= 0)
+					{
+						A.mantissa -= B.mantissa;
+
+						Q |= 0x0000000000000001;
+					}
+
+					A.mantissa << 1;
+
+					Q = Q << 1;
+				}
+
+				B.mantissa = Q;
+			}
 		}
 
 		void operator*(MaxPrecision const& x) const
-		{
-
-		}
-		void operator*(float const& x) const
-		{
-
-		}
-		void operator*(double const& x) const
 		{
 
 		}
@@ -368,24 +286,8 @@ export namespace CHV4DTENSOR
 		{
 
 		}
-		void operator^(float const& x) const
-		{
-
-		}
-		void operator^(double const& x) const
-		{
-
-		}
 
 		void operator==(MaxPrecision const& x) const
-		{
-
-		}
-		void operator==(float const& x) const
-		{
-
-		}
-		void operator==(double const& x) const
 		{
 
 		}
@@ -394,24 +296,8 @@ export namespace CHV4DTENSOR
 		{
 
 		}
-		void operator>(float const& x) const
-		{
-
-		}
-		void operator>(double const& x) const
-		{
-
-		}
 
 		void operator<(MaxPrecision const& x) const
-		{
-
-		}
-		void operator<(float const& x) const
-		{
-
-		}
-		void operator<(double const& x) const
 		{
 
 		}
@@ -420,24 +306,8 @@ export namespace CHV4DTENSOR
 		{
 
 		}
-		void operator>=(float const& x) const
-		{
-
-		}
-		void operator>=(double const& x) const
-		{
-
-		}
 
 		void operator<=(MaxPrecision const& x) const
-		{
-
-		}
-		void operator<=(float const& x) const
-		{
-
-		}
-		void operator<=(double const& x) const
 		{
 
 		}
@@ -470,7 +340,7 @@ export namespace CHV4DTENSOR
 			{
 				fpvalue = this->operator() < float > ();
 			}
-			catch(std::overflow_error error)
+			catch (std::overflow_error error)
 			{
 				throw error;
 			}
@@ -1387,5 +1257,7 @@ export namespace CHV4DTENSOR
 		uint16_t exponent{ 0 };
 
 	};
+
+
 
 }
