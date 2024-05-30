@@ -4,7 +4,12 @@ module;
 
 export module CHV4DTENSOR:CHV4DMATRIX;
 
-import :CHV4DREAL;
+import :CHV4DFORWARD;
+import :CHV4DRESOURCE;
+
+import :CHV4DSINGLE;
+import :CHV4DDOUBLE;
+import :CHV4DLDOUBLE;
 
 export namespace CHV4DTENSOR
 {

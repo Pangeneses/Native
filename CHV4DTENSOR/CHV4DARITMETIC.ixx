@@ -4,7 +4,11 @@ module;
 
 export module CHV4DTENSOR:CHV4DARITHEMATIC;
 
-import :CHV4DREAL;
+import :CHV4DFORWARD;
+import :CHV4DRESOURCE;
+
+import :CHV4DINTEGER;
+import :CHV4DSINGLE;
 
 export namespace CHV4DTENSOR
 {

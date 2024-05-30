@@ -4,6 +4,7 @@ module;
 
 export module CHV4DTENSOR:CHV4DINTEGER;
 
+import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
@@ -11,170 +12,242 @@ export namespace CHV4DTENSOR
 	class CHV4DINTEGER
 	{
 	public:
-		CHV4DINTEGER() { sign = false; val = 0; }
+		CHV4DINTEGER() { val = 0; }
 
-		CHV4DINTEGER(CHV4DINTEGER const& x) { sign = x.sign; val = x.val; }
+		CHV4DINTEGER(CHV4DINTEGER const& x) { val = x.val; }
 
-		CHV4DINTEGER(uint8_t  const& x) { sign = false; val = x; }
-		CHV4DINTEGER(uint16_t const& x) { sign = false; val = x; }
-		CHV4DINTEGER(uint32_t const& x) { sign = false; val = x; }
-		CHV4DINTEGER(uint64_t const& x) { sign = false; val = x; }
-
-		CHV4DINTEGER(int8_t  const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		CHV4DINTEGER(int16_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		CHV4DINTEGER(int32_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		CHV4DINTEGER(int64_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		CHV4DINTEGER(int8_t  const& x) { val = x; }
+		CHV4DINTEGER(int16_t const& x) { val = x; }
+		CHV4DINTEGER(int32_t const& x) { val = x; }
+		CHV4DINTEGER(int64_t const& x) { val = x; }
 
 	public:
-		void operator=(CHV4DINTEGER const& x) { sign = x.sign; val = x.val; }
+		void operator=(CHV4DINTEGER const& x) { val = x.val; }
 
-		void operator=(uint8_t  const& x) { sign = false; val = x; }
-		void operator=(uint16_t const& x) { sign = false; val = x; }
-		void operator=(uint32_t const& x) { sign = false; val = x; }
-		void operator=(uint64_t const& x) { sign = false; val = x; }
-
-		void operator=(int8_t  const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		void operator=(int16_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		void operator=(int32_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
-		void operator=(int64_t const& x) { x < 0 ? sign = true : sign = false; val = x; }
+		void operator=(int8_t  const& x) { val = x; }
+		void operator=(int16_t const& x) { val = x; }
+		void operator=(int32_t const& x) { val = x; }
+		void operator=(int64_t const& x) { val = x; }
 
 		template<typename T> T operator()() const
 		{
 			static_assert(false, "Non Integer type.");
 		}
-		template<> uint8_t operator() < uint8_t > () const
-		{
-			if (sign) throw std::runtime_error{ "Signed Integer." };
-
-			if (val <= 255) return static_cast<uint8_t>(val);
-
-			else throw std::overflow_error{ "Integer overrun." };
-		}
-		template<> uint16_t operator() < uint16_t > () const
-		{
-			if (sign) throw std::runtime_error{ "Signed Integer." };
-
-			if (val <= 65535) return static_cast<uint16_t>(val);
-
-			else throw std::overflow_error{ "Integer overrun." };
-		}
-		template<> uint32_t operator() < uint32_t > () const
-		{
-			if (sign) throw std::runtime_error{ "Signed Integer." };
-
-			if (val <= 4294967295) return static_cast<uint32_t>(val);
-
-			else throw std::overflow_error{ "Integer overrun." };
-		}
-		template<> uint64_t operator() < uint64_t > () const
-		{
-			if (sign) throw std::runtime_error{ "Signed Integer." };
-
-			if (val <= 18446744073709551615) return static_cast<uint64_t>(val);
-
-			else throw std::overflow_error{ "Integer overrun." };
-		}
 		template<> int8_t operator() < int8_t > () const
 		{
-			if (!sign)
-			{
-				if (val <= 127) return static_cast<int8_t>(val);
+			if (val >= -127i8 && val <= 127i8) return val;
 
-				else throw std::overflow_error{ "Integer overrun." };
-			}
-			else if (sign)
-			{
-				if (val <= 127) return -static_cast<int8_t>(val);
-
-				else throw std::overflow_error{ "Integer overrun." };
-			}
+			else throw std::overflow_error{ "Integer overrun." };
 		}
 		template<> int16_t operator() < int16_t > () const
 		{
-			if (!sign)
-			{
-				if (val <= 32767) return static_cast<int16_t>(val);
+			if (val >= -32767i16 && val <= 32767i16) return val;
 
-				else throw std::overflow_error{ "Integer overrun." };
-			}
-			else if (sign)
-			{
-				if (val <= 32767) return -static_cast<int16_t>(val);
-
-				else throw std::overflow_error{ "Integer overrun." };
-			}
+			else throw std::overflow_error{ "Integer overrun." };
 		}
 		template<> int32_t operator() < int32_t > () const
 		{
-			if (!sign)
-			{
-				if (val <= 2147483647) return static_cast<int32_t>(val);
+			if (val >= -2147483647i32 && val <= 2147483647i32) return val;
 
-				else throw std::overflow_error{ "Integer overrun." };
-			}
-			else if (sign)
-			{
-				if (val <= 2147483647) return -static_cast<int32_t>(val);
-
-				else throw std::overflow_error{ "Integer overrun." };
-			}
+			else throw std::overflow_error{ "Integer overrun." };
 		}
 		template<> int64_t operator() < int64_t > () const
 		{
-			if (!sign)
-			{
-				if (val <= 9223372036854775807) return static_cast<int64_t>(val);
-
-				else throw std::overflow_error{ "Integer overrun." };
-			}
-			else if (sign)
-			{
-				if (val <= 9223372036854775807) return -static_cast<int64_t>(val);
-
-				else throw std::overflow_error{ "Integer overrun." };
-			}
+			return val;
 		}
 		template<> CHV4DINTEGER operator() < CHV4DINTEGER > () const
 		{
 			return *this;
 		}
 
+		CHV4DINTEGER operator++()
+		{
+			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			val = val + 1;
+
+			return val;
+		}
+		template<typename T>
+		T operator++()
+		{
+			assert_integer<T>();
+
+			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			A.val = A.val + 1;
+
+			T ret;
+
+			try
+			{
+				ret = this->operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
+		}
+		CHV4DINTEGER operator++()
+		{
+			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			int64_t Q = val;
+
+			val = val + 1;
+
+			return Q;
+		}
+		template<typename T>
+		T operator++(int)
+		{
+			assert_integer<T>();
+
+			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			T ret;
+
+			try
+			{
+				ret = this->operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			A.val = A.val + 1;
+
+			return ret;
+		}
+
+		CHV4DINTEGER operator--()
+		{
+			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			val = val - 1;
+
+			return val;
+		}
+		template<typename T>
+		T operator--()
+		{
+			assert_integer<T>();
+
+			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			A.val = A.val - 1;
+
+			T ret;
+
+			try
+			{
+				ret = this->operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
+		}
+		CHV4DINTEGER operator++()
+		{
+			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			int64_t Q = val;
+
+			val = val - 1;
+
+			return Q;
+		}
+		template<typename T>
+		T operator--(int)
+		{
+			assert_integer<T>();
+
+			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+
+			T ret;
+
+			try
+			{
+				ret = this->operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			A.val = A.val - 1;
+
+			return ret;
+		}
+
+		CHV4DINTEGER operator+()
+		{
+
+		}
+		template<typename T>
+		T operator+()
+		{
+
+		}
+		CHV4DINTEGER operator-()
+		{
+
+		}
+		template<typename T>
+		T operator-()
+		{
+
+		}
+
 		CHV4DINTEGER operator+(CHV4DINTEGER const& x) const
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			if(!A.sign != !B.sign) 
-			{
-				if (A.sign) std::swap(A.val, B.val);
+			if (A.val > 9223372036854775808i64 - B.val) throw std::overflow_error{ "Integer overrun." };
 
-				if(A.val > 9223372036854775808ui64) throw std::overflow_error{ "Signing Integer overrun." };
+			A.val = A.val + B.val;
 
-				if ((A.val + 9223372036854775808i64) < B.val) throw std::overflow_error{ "Integer overrun." };
-
-				A.sign = A.val > B.val ? false : true;
-
-				A.val = A.val > B.val ? A.val - B.val : B.val - A.val;
-			}
-			else
-			{
-				if (A.val <= (18446744073709551615 - B.val)) throw std::overflow_error{ "Integer overrun." };
-
-				A.val = A.val + B.val;
-			}
+			return A;
 		}
 		template<typename T, typename I>
-		T operator+(I const& x)
+		T operator+(I const& x) const
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			CHV4DINTEGER z{ x };
+			CHV4DINTEGER A{ *this }, B{ x };
 
 			try
 			{
-				z = *this + z;
+				A = A + B;
 			}
 			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
 			{
 				throw error;
 			}
@@ -199,9 +272,9 @@ export namespace CHV4DTENSOR
 
 		CHV4DINTEGER operator-(CHV4DINTEGER const& x) const
 		{
-			CHV4DINTEGER A{ 0ui64 }, B{ x };
+			CHV4DINTEGER A{ *this }, B{ x };
 
-			B.sign = B.sign ? false : true;
+			B.val = -1 * B.val;
 
 			try
 			{
@@ -211,21 +284,29 @@ export namespace CHV4DTENSOR
 			{
 				throw error;
 			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
 
 			return A;
 		}
-		template<typename T, typename I> T operator-(I const& x)
+		template<typename T, typename I> T operator-(I const& x) const
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			CHV4DINTEGER z{ x };
+			CHV4DINTEGER A{ *this }, B{ x };
 
 			try
 			{
-				z = *this - z;
+				A = A - B;
 			}
 			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
 			{
 				throw error;
 			}
@@ -248,57 +329,168 @@ export namespace CHV4DTENSOR
 			return ret;
 		}
 
-		template<typename T> T operator/(CHV4DINTEGER const& x)
+		template<typename T> T operator/(CHV4DINTEGER const& x) const
 		{
 			static_assert(false, "Non Integer type.");
 		}
-		template<> float operator/ < float > (CHV4DINTEGER const& x)
+		template<> float operator/ < float > (CHV4DINTEGER const& x) const
 		{
-			float z = static_cast<float>(this->val) / static_cast<float>(x.val);
+			CHV4DINTEGER A{ *this }, B{ x };
 
-			return (!sign != !x.sign) ? -z : z;
+			float Q = static_cast<float>(A.val) / static_cast<float>(B.val);
+
+			return Q;
 		}
-		template<> double operator/ < double > (CHV4DINTEGER const& x)
+		template<> double operator/ < double > (CHV4DINTEGER const& x) const
 		{
-			double z = static_cast<double>(this->val) / static_cast<double>(x.val);
+			CHV4DINTEGER A{ *this }, B{ x };
 
-			return (!sign != !x.sign) ? -z : z;
+			float Q = static_cast<double>(A.val) / static_cast<double>(B.val);
+
+			return Q;
 		}
-		template<typename T, typename I> T operator/(I const& x)
+		template<typename T, typename I> T operator/(I const& x) const
 		{
 			assert_float<T>();
 			assert_integer<I>();
 
-			return this->operator/ < T > ({ x });
+			CHV4DINTEGER A{ *this }, B{ x };
+
+			T Q;
+
+			try
+			{
+				Q = A.operator/(B);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return Q;
+
 		}
 
+		CHV4DINTEGER operator*(CHV4DINTEGER const& x) const
+		{
+			CHV4DINTEGER A{ *this }, B{ x };
 
+			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
 
+			double reciprocal = MAX_INT.operator/<double, uint64_t>(B.val);
 
+			if (A.val <= reciprocal && A.val >= reciprocal) throw std::overflow_error{ "Integer overrun." };
 
+			A.val = A.val * B.val;
+
+			return A;
+
+		}
 		template<typename T, typename I>
-		T operator*(I const& x)
+		T operator*(I const& x) const
 		{
 			assert_integer<T>();
 			assert_integer<I>();
 
-			CHV4DINTEGER z{ x };
+			CHV4DINTEGER A{ *this }, B{ x };
 
-			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
+			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
 
-			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
+			double reciprocal = MAX_INT.operator/<double, uint64_t>(B.val);
 
-			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
+			if (A.val <= reciprocal && A.val >= reciprocal) throw std::overflow_error{ "Integer overrun." };
 
-			z.val *= val;
-
-			(!sign != !x.sign) ? z.sign = true : z.sign = false;
+			A.val = A.val * B.val;
 
 			T ret;
 
 			try
 			{
-				ret = z.operator() < T > ();
+				ret = A.operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return ret;
+
+		}
+
+		CHV4DINTEGER operator%(CHV4DINTEGER const& x) const
+		{
+			CHV4DINTEGER A{ *this }, B{ x };
+
+			uint64_t Q{ 0 };
+
+			if (A.val == 0) return A;
+
+			A.val = A.val < 0 ? -1 * A.val : A.val;
+			B.val = B.val < 0 ? -1 * B.val : B.val;
+
+			for (size_t i = 0; i < 64; ++i)
+			{
+				if (A.val - B.val >= 0)
+				{
+					A.val = A.val - B.val;
+
+					Q |= 0x0000000000000001;
+				}
+
+				A.val << 1;
+
+				Q = Q << 1;
+			}
+
+			A.val = A.val - (Q * B.val);
+
+			return A;
+
+		}
+		template<typename T, typename I>
+		T operator%(I const& x) const
+		{
+			assert_integer<T>();
+			assert_integer<I>();
+
+			CHV4DINTEGER A{ *this }, B{ x };
+
+			uint64_t Q{ 0 };
+
+			if (A.val == 0) return static_cast<T>(0);
+
+			A.val = A.val < 0 ? -1 * A.val : A.val;
+			B.val = B.val < 0 ? -1 * B.val : B.val;
+
+			for (size_t i = 0; i < 64; ++i)
+			{
+				if (A.val - B.val >= 0)
+				{
+					A.val = A.val - B.val;
+
+					Q |= 0x0000000000000001;
+				}
+
+				A.val << 1;
+
+				Q = Q << 1;
+			}
+
+			A.val = A.val - (Q * B.val);
+
+			T ret;
+
+			try
+			{
+				ret = A.operator() < T > ();
 			}
 			catch (std::overflow_error error)
 			{
@@ -315,136 +507,141 @@ export namespace CHV4DTENSOR
 
 
 
-		template<typename T, typename I>
-		T operator%(I const& x)
+
+		CHV4DINTEGER operator~()
 		{
-			assert_integer<T>();
-			assert_integer<I>();
 
-			CHV4DINTEGER z{ x };
+		}
+		template<typename T>
+		T operator~()
+		{
 
-			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
+		}
+		void operator&(CHV4DINTEGER const& x)
+		{
 
-			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
+		}
+		void operator|(CHV4DINTEGER const& x)
+		{
 
-			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
+		}
+		void operator^(CHV4DINTEGER const& x)
+		{
 
-			z.val *= val;
+		}
+		void operator>>(CHV4DINTEGER const& x)
+		{
 
-			(!sign != !x.sign) ? z.sign = true : z.sign = false;
+		}
+		void operator<<(CHV4DINTEGER const& x)
+		{
 
-			T ret;
+		}
+		CHV4DINTEGER operator!()
+		{
 
-			try
-			{
-				ret = z.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
+		}
+		CHV4DINTEGER operator&&(CHV4DINTEGER const& x)
+		{
 
-			return ret;
+		}
+		void operator||(CHV4DINTEGER const& x)
+		{
 
+		}
+
+		bool operator==(CHV4DINTEGER const& x) const
+		{
+			return val == x.val;
+		}
+		bool operator!=(CHV4DINTEGER const& x) const
+		{
+			return val != x.val;
+		}
+		bool operator<(CHV4DINTEGER const& x) const
+		{
+			return val < x.val;
+		}
+		bool operator>(CHV4DINTEGER const& x) const
+		{
+			return val > x.val;
+		}
+		bool operator<=(CHV4DINTEGER const& x) const
+		{
+			return val <= x.val;
+		}
+		bool operator>=(CHV4DINTEGER const& x) const
+		{
+			return val >= x.val;
+		}
+		bool operator>=(CHV4DINTEGER const& x) const
+		{
+			return val <=> x.val;
 		}
 
 
 
-		template<typename T, typename I>
-		T operator++(I const& x)
-		{
-			assert_integer<T>();
-			assert_integer<I>();
-
-			CHV4DINTEGER z{ x };
-
-			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
-
-			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
-
-			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
-
-			z.val *= val;
-
-			(!sign != !x.sign) ? z.sign = true : z.sign = false;
-
-			T ret;
-
-			try
-			{
-				ret = z.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
-
-		}
-
-
-
-		template<typename T, typename I>
-		T operator--(I const& x)
-		{
-			assert_integer<T>();
-			assert_integer<I>();
-
-			CHV4DINTEGER z{ x };
-
-			CHV4DINTEGER MAX_INT{ 18446744073709551615 };
-
-			long double reciprocal = MAX_INT.operator/ < long double, uint64_t > (z.val);
-
-			if (val <= reciprocal) throw std::overflow_error{ "Integer overrun." };
-
-			z.val *= val;
-
-			(!sign != !x.sign) ? z.sign = true : z.sign = false;
-
-			T ret;
-
-			try
-			{
-				ret = z.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
-
-		}
 
 
 
 		void operator+=(CHV4DINTEGER const& x)
 		{
+			CHV4DINTEGER A{ *this }, B{ x };
 
+			try
+			{
+				A = A.operator+(B);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			*this = A;
 		}
 
 		void operator-=(CHV4DINTEGER const& x)
 		{
+			CHV4DINTEGER A{ *this }, B{ x };
 
+			try
+			{
+				A = A.operator-(B);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			*this = A;
 		}
 
 		void operator*=(CHV4DINTEGER const& x)
 		{
+			CHV4DINTEGER A{ *this }, B{ x };
 
+			try
+			{
+				A = A.operator*(B);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			*this = A;
 		}
 
 		void operator/=(CHV4DINTEGER const& x)
@@ -454,7 +651,22 @@ export namespace CHV4DTENSOR
 
 		void operator%=(CHV4DINTEGER const& x)
 		{
+			CHV4DINTEGER A{ *this }, B{ x };
 
+			try
+			{
+				A = A.operator%(B);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			*this = A;
 		}
 
 		void operator&=(CHV4DINTEGER const& x)
@@ -467,6 +679,10 @@ export namespace CHV4DTENSOR
 
 		}
 
+		void operator^=(CHV4DINTEGER const& x)
+		{
+
+		}
 		void operator>>=(CHV4DINTEGER const& x)
 		{
 
@@ -475,63 +691,6 @@ export namespace CHV4DTENSOR
 		void operator<<=(CHV4DINTEGER const& x)
 		{
 
-		}
-
-		bool operator==(CHV4DINTEGER const& x) const
-		{
-			return (val == x.val) && (sign == x.sign) ? true : false;
-		}
-		bool operator!=(CHV4DINTEGER const& x) const
-		{
-			return (val != x.val) || (sign != x.sign) ? true : false;
-		}
-		bool operator<(CHV4DINTEGER const& x) const
-		{
-			if ((val == x.val) && (sign == x.sign)) return false;
-
-			else if ((val < x.val) && (!sign && !x.sign)) return true;
-
-			else if ((val > x.val) && (sign && x.sign)) return true;
-
-			else if (!sign && x.sign) return true;
-
-			else if (sign && !x.sign) return false;
-		}
-		bool operator>(CHV4DINTEGER const& x) const
-		{
-			if ((val == x.val) && (sign == x.sign)) return false;
-
-			else if ((val < x.val) && (!sign && !x.sign)) return false;
-
-			else if ((val > x.val) && (sign && x.sign)) return false;
-
-			else if (!sign && x.sign) return false;
-
-			else if (sign && !x.sign) return true;
-		}
-		bool operator<=(CHV4DINTEGER const& x) const
-		{
-			if ((val == x.val) && (sign == x.sign)) return true;
-
-			else if ((val < x.val) && (!sign && !x.sign)) return true;
-
-			else if ((val > x.val) && (sign && x.sign)) return true;
-
-			else if (!sign && x.sign) return true;
-
-			else if (sign && !x.sign) return false;
-		}
-		bool operator>=(CHV4DINTEGER const& x) const
-		{
-			if ((val == x.val) && (sign == x.sign)) return true;
-
-			else if ((val < x.val) && (!sign && !x.sign)) return false;
-
-			else if ((val > x.val) && (sign && x.sign)) return false;
-
-			else if (!sign && x.sign) return false;
-
-			else if (sign && !x.sign) return true;
 		}
 
 	public:
@@ -825,9 +984,7 @@ export namespace CHV4DTENSOR
 		}
 
 	private:
-		bool sign{ false };
-
-		uint64_t val{ 0 };
+		int64_t val{ 0 };
 
 	};
 

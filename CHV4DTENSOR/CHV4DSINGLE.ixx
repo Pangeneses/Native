@@ -2,9 +2,10 @@ module;
 
 #include <stdexcept>
 
-export module CHV4DTENSOR:CHV4DREAL;
+export module CHV4DTENSOR:CHV4DSINGLE;
 
-import :CHV4DARITHMATIC;
+import :CHV4DFORWARD;
+import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {

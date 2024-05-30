@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="CHV4DALGEBRA.ixx" />
     <ClCompile Include="CHV4DARITMETIC.ixx" />
+    <ClCompile Include="CHV4DBYTE.ixx" />
     <ClCompile Include="CHV4DDOUBLE.ixx" />
     <ClCompile Include="CHV4DLDOUBLE.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />
