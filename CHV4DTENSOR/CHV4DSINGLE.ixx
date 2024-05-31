@@ -9,6 +9,7 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
+	/*
 	class CHV4DF32
 	{
 	public:
@@ -981,5 +982,5 @@ export namespace CHV4DTENSOR
 		CHV4DF32 data[4];
 
 	};
-
+	*/
 }

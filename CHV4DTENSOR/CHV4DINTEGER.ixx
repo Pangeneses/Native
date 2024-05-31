@@ -7,27 +7,29 @@ export module CHV4DTENSOR:CHV4DINTEGER;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
+import :CHV4DBYTE;
+
 export namespace CHV4DTENSOR
 {
 	class CHV4DINTEGER
 	{
 	public:
-		CHV4DINTEGER() { val = 0; }
+		CHV4DINTEGER() { data = 0; }
 
-		CHV4DINTEGER(CHV4DINTEGER const& x) { val = x.val; }
+		CHV4DINTEGER(CHV4DINTEGER const& x) { data = x.data; }
 
-		CHV4DINTEGER(int8_t  const& x) { val = x; }
-		CHV4DINTEGER(int16_t const& x) { val = x; }
-		CHV4DINTEGER(int32_t const& x) { val = x; }
-		CHV4DINTEGER(int64_t const& x) { val = x; }
+		CHV4DINTEGER(int8_t  const& x) { data = x; }
+		CHV4DINTEGER(int16_t const& x) { data = x; }
+		CHV4DINTEGER(int32_t const& x) { data = x; }
+		CHV4DINTEGER(int64_t const& x) { data = x; }
 
 	public:
-		void operator=(CHV4DINTEGER const& x) { val = x.val; }
+		void operator=(CHV4DINTEGER const& x) { data = x.data; }
 
-		void operator=(int8_t  const& x) { val = x; }
-		void operator=(int16_t const& x) { val = x; }
-		void operator=(int32_t const& x) { val = x; }
-		void operator=(int64_t const& x) { val = x; }
+		void operator=(int8_t  const& x) { data = x; }
+		void operator=(int16_t const& x) { data = x; }
+		void operator=(int32_t const& x) { data = x; }
+		void operator=(int64_t const& x) { data = x; }
 
 		template<typename T> T operator()() const
 		{
@@ -35,25 +37,25 @@ export namespace CHV4DTENSOR
 		}
 		template<> int8_t operator() < int8_t > () const
 		{
-			if (val >= -127i8 && val <= 127i8) return val;
+			if (data >= -127i8 && data <= 127i8) return data;
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
 		template<> int16_t operator() < int16_t > () const
 		{
-			if (val >= -32767i16 && val <= 32767i16) return val;
+			if (data >= -32767i16 && data <= 32767i16) return data;
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
 		template<> int32_t operator() < int32_t > () const
 		{
-			if (val >= -2147483647i32 && val <= 2147483647i32) return val;
+			if (data >= -2147483647i32 && data <= 2147483647i32) return data;
 
 			else throw std::overflow_error{ "Integer overrun." };
 		}
 		template<> int64_t operator() < int64_t > () const
 		{
-			return val;
+			return data;
 		}
 		template<> CHV4DINTEGER operator() < CHV4DINTEGER > () const
 		{
@@ -62,20 +64,20 @@ export namespace CHV4DTENSOR
 
 		CHV4DINTEGER operator++()
 		{
-			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
-			val = val + 1;
+			data = data + 1;
 
-			return val;
+			return data;
 		}
 		template<typename T>
 		T operator++()
 		{
-			assert_integer<T>();
+			assert_integer < T > ();
 
-			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
-			A.val = A.val + 1;
+			A.data = A.data + 1;
 
 			T ret;
 
@@ -96,20 +98,20 @@ export namespace CHV4DTENSOR
 		}
 		CHV4DINTEGER operator++()
 		{
-			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
-			int64_t Q = val;
+			int64_t Q = data;
 
-			val = val + 1;
+			data = data + 1;
 
 			return Q;
 		}
 		template<typename T>
 		T operator++(int)
 		{
-			assert_integer<T>();
+			assert_integer < T > ();
 
-			if (val >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
 			T ret;
 
@@ -126,27 +128,27 @@ export namespace CHV4DTENSOR
 				throw error;
 			}
 
-			A.val = A.val + 1;
+			A.data = A.data + 1;
 
 			return ret;
 		}
 
 		CHV4DINTEGER operator--()
 		{
-			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
-			val = val - 1;
+			data = data - 1;
 
-			return val;
+			return data;
 		}
 		template<typename T>
 		T operator--()
 		{
-			assert_integer<T>();
+			assert_integer < T > ();
 
-			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
-			A.val = A.val - 1;
+			A.data = A.data - 1;
 
 			T ret;
 
@@ -167,20 +169,20 @@ export namespace CHV4DTENSOR
 		}
 		CHV4DINTEGER operator++()
 		{
-			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
-			int64_t Q = val;
+			int64_t Q = data;
 
-			val = val - 1;
+			data = data - 1;
 
 			return Q;
 		}
 		template<typename T>
 		T operator--(int)
 		{
-			assert_integer<T>();
+			assert_integer < T > ();
 
-			if (val >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
 
 			T ret;
 
@@ -197,45 +199,79 @@ export namespace CHV4DTENSOR
 				throw error;
 			}
 
-			A.val = A.val - 1;
+			A.data = A.data - 1;
 
 			return ret;
 		}
 
 		CHV4DINTEGER operator+()
 		{
-
+			return *this;
 		}
 		template<typename T>
 		T operator+()
 		{
+			assert_integer < T > ();
 
+			T ret;
+
+			try
+			{
+				ret = this->operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return static_cast < T > (data);
 		}
 		CHV4DINTEGER operator-()
 		{
-
+			return CHV4DINTEGER{ -1 } * *this;
 		}
 		template<typename T>
 		T operator-()
 		{
+			assert_integer < T > ();
 
+			T ret;
+
+			try
+			{
+				ret = this->operator() < T > ();
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+
+			return static_cast < T > (-1 * data);
 		}
 
 		CHV4DINTEGER operator+(CHV4DINTEGER const& x) const
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			if (A.val > 9223372036854775808i64 - B.val) throw std::overflow_error{ "Integer overrun." };
+			if (A.data > 9223372036854775808i64 - B.data) throw std::overflow_error{ "Integer overrun." };
 
-			A.val = A.val + B.val;
+			A.data = A.data + B.data;
 
 			return A;
 		}
 		template<typename T, typename I>
 		T operator+(I const& x) const
 		{
-			assert_integer<T>();
-			assert_integer<I>();
+			assert_integer < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER A{ *this }, B{ x };
 
@@ -274,7 +310,7 @@ export namespace CHV4DTENSOR
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			B.val = -1 * B.val;
+			B.data = -1 * B.data;
 
 			try
 			{
@@ -293,8 +329,8 @@ export namespace CHV4DTENSOR
 		}
 		template<typename T, typename I> T operator-(I const& x) const
 		{
-			assert_integer<T>();
-			assert_integer<I>();
+			assert_integer < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER A{ *this }, B{ x };
 
@@ -337,7 +373,7 @@ export namespace CHV4DTENSOR
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			float Q = static_cast<float>(A.val) / static_cast<float>(B.val);
+			float Q = static_cast < float > (A.data) / static_cast < float > (B.data);
 
 			return Q;
 		}
@@ -345,14 +381,14 @@ export namespace CHV4DTENSOR
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			float Q = static_cast<double>(A.val) / static_cast<double>(B.val);
+			float Q = static_cast < double > (A.data) / static_cast < double > (B.data);
 
 			return Q;
 		}
 		template<typename T, typename I> T operator/(I const& x) const
 		{
-			assert_float<T>();
-			assert_integer<I>();
+			assert_float < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER A{ *this }, B{ x };
 
@@ -381,11 +417,11 @@ export namespace CHV4DTENSOR
 
 			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
 
-			double reciprocal = MAX_INT.operator/<double, uint64_t>(B.val);
+			double reciprocal = MAX_INT.operator/ < double, uint64_t > (B.data);
 
-			if (A.val <= reciprocal && A.val >= reciprocal) throw std::overflow_error{ "Integer overrun." };
+			if (A.data <= reciprocal && A.data >= reciprocal) throw std::overflow_error{ "Integer overrun." };
 
-			A.val = A.val * B.val;
+			A.data = A.data * B.data;
 
 			return A;
 
@@ -393,18 +429,18 @@ export namespace CHV4DTENSOR
 		template<typename T, typename I>
 		T operator*(I const& x) const
 		{
-			assert_integer<T>();
-			assert_integer<I>();
+			assert_integer < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER A{ *this }, B{ x };
 
 			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
 
-			double reciprocal = MAX_INT.operator/<double, uint64_t>(B.val);
+			double reciprocal = MAX_INT.operator/ < double, uint64_t > (B.data);
 
-			if (A.val <= reciprocal && A.val >= reciprocal) throw std::overflow_error{ "Integer overrun." };
+			if (A.data <= reciprocal && A.data >= reciprocal) throw std::overflow_error{ "Integer overrun." };
 
-			A.val = A.val * B.val;
+			A.data = A.data * B.data;
 
 			T ret;
 
@@ -431,26 +467,26 @@ export namespace CHV4DTENSOR
 
 			uint64_t Q{ 0 };
 
-			if (A.val == 0) return A;
+			if (A.data == 0) return A;
 
-			A.val = A.val < 0 ? -1 * A.val : A.val;
-			B.val = B.val < 0 ? -1 * B.val : B.val;
+			A.data = A.data < 0 ? -1 * A.data : A.data;
+			B.data = B.data < 0 ? -1 * B.data : B.data;
 
 			for (size_t i = 0; i < 64; ++i)
 			{
-				if (A.val - B.val >= 0)
+				if (A.data - B.data >= 0)
 				{
-					A.val = A.val - B.val;
+					A.data = A.data - B.data;
 
 					Q |= 0x0000000000000001;
 				}
 
-				A.val << 1;
+				A.data << 1;
 
 				Q = Q << 1;
 			}
 
-			A.val = A.val - (Q * B.val);
+			A.data = A.data - (Q * B.data);
 
 			return A;
 
@@ -458,33 +494,33 @@ export namespace CHV4DTENSOR
 		template<typename T, typename I>
 		T operator%(I const& x) const
 		{
-			assert_integer<T>();
-			assert_integer<I>();
+			assert_integer < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER A{ *this }, B{ x };
 
 			uint64_t Q{ 0 };
 
-			if (A.val == 0) return static_cast<T>(0);
+			if (A.data == 0) return static_cast < T > (0);
 
-			A.val = A.val < 0 ? -1 * A.val : A.val;
-			B.val = B.val < 0 ? -1 * B.val : B.val;
+			A.data = A.data < 0 ? -1 * A.data : A.data;
+			B.data = B.data < 0 ? -1 * B.data : B.data;
 
 			for (size_t i = 0; i < 64; ++i)
 			{
-				if (A.val - B.val >= 0)
+				if (A.data - B.data >= 0)
 				{
-					A.val = A.val - B.val;
+					A.data = A.data - B.data;
 
 					Q |= 0x0000000000000001;
 				}
 
-				A.val << 1;
+				A.data << 1;
 
 				Q = Q << 1;
 			}
 
-			A.val = A.val - (Q * B.val);
+			A.data = A.data - (Q * B.data);
 
 			T ret;
 
@@ -508,75 +544,70 @@ export namespace CHV4DTENSOR
 
 
 
-		CHV4DINTEGER operator~()
+		CHV4DBYTE<8> operator~() const
+		{
+			return { ToByte(~data) };
+		}
+		CHV4DBYTE<8> operator&(CHV4DBYTE<8> const x) const
+		{
+			return { ToByte(data & x.data) };
+		}
+		CHV4DBYTE<8> operator|(CHV4DBYTE<8> const x) const
 		{
 
 		}
-		template<typename T>
-		T operator~()
+		CHV4DBYTE<8> operator^(CHV4DBYTE<8> const x) const
 		{
 
 		}
-		void operator&(CHV4DINTEGER const& x)
+		CHV4DBYTE<8> operator>>(CHV4DBYTE<8> const x) const
 		{
 
 		}
-		void operator|(CHV4DINTEGER const& x)
+		CHV4DBYTE<8> operator<<(CHV4DBYTE<8> const x) const
 		{
 
 		}
-		void operator^(CHV4DINTEGER const& x)
+		CHV4DINTEGER operator!() const
 		{
 
 		}
-		void operator>>(CHV4DINTEGER const& x)
+		bool operator&&(CHV4DINTEGER const& x) const
 		{
 
 		}
-		void operator<<(CHV4DINTEGER const& x)
-		{
-
-		}
-		CHV4DINTEGER operator!()
-		{
-
-		}
-		CHV4DINTEGER operator&&(CHV4DINTEGER const& x)
-		{
-
-		}
-		void operator||(CHV4DINTEGER const& x)
+		bool operator||(CHV4DINTEGER const& x) const
 		{
 
 		}
 
 		bool operator==(CHV4DINTEGER const& x) const
 		{
-			return val == x.val;
+			return data == x.data;
 		}
 		bool operator!=(CHV4DINTEGER const& x) const
 		{
-			return val != x.val;
+			return data != x.data;
 		}
 		bool operator<(CHV4DINTEGER const& x) const
 		{
-			return val < x.val;
+			return data < x.data;
 		}
 		bool operator>(CHV4DINTEGER const& x) const
 		{
-			return val > x.val;
+			return data > x.data;
 		}
 		bool operator<=(CHV4DINTEGER const& x) const
 		{
-			return val <= x.val;
+			return data <= x.data;
 		}
 		bool operator>=(CHV4DINTEGER const& x) const
 		{
-			return val >= x.val;
+			return data >= x.data;
 		}
 		bool operator>=(CHV4DINTEGER const& x) const
 		{
-			return val <=> x.val;
+			return data <=> x.data;
 		}
 
 
@@ -698,18 +729,18 @@ export namespace CHV4DTENSOR
 		{
 			if (pow.sign) throw std::runtime_error{ "Unsigned powers." };
 
-			if (pow.val == 0)
+			if (pow.data == 0)
 			{
 				return CHV4DINTEGER{ 1ui64 };
 			}
-			else if (pow.val != 0 && val == 0ui64)
+			else if (pow.data != 0 && data == 0ui64)
 			{
 				return CHV4DINTEGER{ 0ui64 };
 			}
 
 			CHV4DINTEGER z{ *this };
 
-			for (uint64_t i = 0; i < pow.val; i++)
+			for (uint64_t i = 0; i < pow.data; i++)
 			{
 				try
 				{
@@ -731,8 +762,8 @@ export namespace CHV4DTENSOR
 		template<typename T, typename I>
 		T Pow(I x)
 		{
-			assert_integer<T>();
-			assert_integer<I>();
+			assert_integer < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER pow{ x };
 
@@ -773,18 +804,18 @@ export namespace CHV4DTENSOR
 		{
 			if (pow.sign) throw std::runtime_error{ "Unsigned powers." };
 
-			if (pow.val == 0)
+			if (pow.data == 0)
 			{
 				return CHV4DINTEGER{ 1ui64 };
 			}
-			else if (pow.val != 0 && val == 0ui64)
+			else if (pow.data != 0 && data == 0ui64)
 			{
 				return CHV4DINTEGER{ 0ui64 };
 			}
 
 			CHV4DINTEGER z{ *this };
 
-			for (uint64_t i = 0; i < pow.val; i++)
+			for (uint64_t i = 0; i < pow.data; i++)
 			{
 				try
 				{
@@ -806,8 +837,8 @@ export namespace CHV4DTENSOR
 		template<typename T, typename I>
 		T Root(I x)
 		{
-			assert_integer<T>();
-			assert_integer<I>();
+			assert_integer < T > ();
+			assert_integer < I > ();
 
 			CHV4DINTEGER pow{ x };
 
@@ -984,7 +1015,7 @@ export namespace CHV4DTENSOR
 		}
 
 	private:
-		int64_t val{ 0 };
+		int64_t data{ 0 };
 
 	};
 

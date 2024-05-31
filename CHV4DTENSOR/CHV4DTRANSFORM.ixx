@@ -15,6 +15,7 @@ import :CHV4DMATRIX;
 
 export namespace CHV4DTENSOR
 {
+	/*
 	CHV4DFLOAT3 const Mul(CHV4DFLOAT3 vector, CHV4DFLOAT3X3 transform)
 	{
 		CHV4DFLOAT3 result{};
@@ -235,5 +236,5 @@ export namespace CHV4DTENSOR
 		};
 
 	}
-
+	*/
 }

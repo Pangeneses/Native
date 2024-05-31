@@ -9,7 +9,7 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
-
+	/*
 	class CHV4DF64
 	{
 	public:
@@ -1260,5 +1260,5 @@ export namespace CHV4DTENSOR
 	};
 
 
-
+	*/
 }

@@ -13,6 +13,7 @@ import :CHV4DLDOUBLE;
 
 export namespace CHV4DTENSOR
 {
+	/*
 	class CHV4DFLOAT2X2
 	{
 	public:
@@ -129,5 +130,5 @@ export namespace CHV4DTENSOR
 		  CHV4DFLOAT4{ 0.0f, 1.0f, 0.0f, 0.0f },
 		  CHV4DFLOAT4{ 0.0f, 0.0f, 1.0f, 0.0f },
 		  CHV4DFLOAT4{ 0.0f, 0.0f, 0.0f, 1.0f } };
-
+		  */
 }

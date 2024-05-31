@@ -9,6 +9,7 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
+	/*
 	class CHV4DF128
 	{
 	public:
@@ -1217,5 +1218,5 @@ export namespace CHV4DTENSOR
 		uint16_t exponent{ 0 };
 
 	};
-
+	*/
 }
