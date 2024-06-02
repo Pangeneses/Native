@@ -2,7 +2,7 @@ module;
 
 #include <stdexcept>
 
-export module CHV4DTENSOR:CHV4DARITHEMATIC;
+export module CHV4DTENSOR:CHV4DARITHMETIC;
 
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
@@ -12,6 +12,7 @@ import :CHV4DSINGLE;
 
 export namespace CHV4DTENSOR
 {
+	/*
 	class fPow;
 	class iPow
 	{
@@ -658,5 +659,5 @@ export namespace CHV4DTENSOR
 
 	}
 
-
-}*/
+	*/
+}

@@ -8,11 +8,22 @@ import :CHV4DFORWARD;
 
 export namespace CHV4DTENSOR
 {
-	template<typename T> void assert_float() { static_assert(false, "Non Float type."); }
+	template<typename T> void assert_char() { static_assert(false, "Non Float type."); }
 
-	template<> void assert_float<float>() {}
-	template<> void assert_float<double>() {}
-	template<> void assert_float<long double>() {}
+	template<> void assert_char<const char>() {}
+	template<> void assert_char<const unsigned char>() {}
+	template<> void assert_char<const char*>() {}
+	template<> void assert_char<const unsigned char*>() {}
+
+	template<typename T> void assert_array() { static_assert(false, "Non Float type."); }
+
+	template<> void assert_array<const char* const>() {}
+
+	template<typename T> void assert_precision() { static_assert(false, "Non Float type."); }
+
+	template<> void assert_precision<float>() {}
+	template<> void assert_precision<double>() {}
+	template<> void assert_precision<long double>() {}
 
 	template<typename T> void assert_integer() { static_assert(false, "Non Integer type."); }
 

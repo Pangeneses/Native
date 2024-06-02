@@ -15,7 +15,7 @@ export namespace CHV4DTENSOR
 	{
 	public:
 		CHV4DINTEGER() { data = 0; }
-
+		/*
 		CHV4DINTEGER(CHV4DINTEGER const& x) { data = x.data; }
 
 		CHV4DINTEGER(int8_t  const& x) { data = x; }
@@ -1013,7 +1013,7 @@ export namespace CHV4DTENSOR
 			}
 
 		}
-
+		*/
 	private:
 		int64_t data{ 0 };
 

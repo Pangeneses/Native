@@ -1,5 +1,7 @@
 module;
 
+#include <vector>
+
 #include <stdexcept>
 
 export module CHV4DTENSOR:CHV4DBYTE;
@@ -9,339 +11,235 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
-	template<size_t i = 1>
+	template<size_t n>
 	class CHV4DBYTE
 	{
 	public:
-		CHV4DBYTE() { std::memset((void*)&data, '\0', i); }
+		CHV4DBYTE() {}
 
-		CHV4DBYTE(CHV4DBYTE const& x) { data = x.data; }
+		CHV4DBYTE(char const (&x)[n])
+		{
+			size_t sz = std::size(x);
 
-		CHV4DBYTE(unsigned char const x[i]) { std::memcpy((void*)data, (const void*)x, i); }
+			if (sz != n) throw std::runtime_error{ "Array overrun." };
+
+			std::memcpy((void*)data, (const void*)x, n);
+		}
+
+		CHV4DBYTE(int8_t const& x)  { if (n != 1) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(int16_t const& x) { if (n != 2) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(int32_t const& x) { if (n != 4) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(int64_t const& x) { if (n != 8) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+
+		CHV4DBYTE(uint8_t const& x)  { if (n != 1) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(uint16_t const& x) { if (n != 2) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(uint32_t const& x) { if (n != 4) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(uint64_t const& x) { if (n != 8) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+
+		CHV4DBYTE(float  const& x) { if (n != 4) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		CHV4DBYTE(double const& x) { if (n != 8) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
 
 	public:
-		void operator=(CHV4DBYTE const& x) { data = x.data; }
-
-		unsigned char* const operator()() const
+		void operator=(char const (&x)[n])
 		{
-			return data;
+			size_t sz = std::size(x);
+
+			if (sz != n) throw std::runtime_error{ "Array overrun." };
+
+			std::memcpy((void*)data, (const void*)x, n);
 		}
 
-		CHV4DBYTE operator++()
+		void operator=(int8_t const& x) { if (n != 1) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(int16_t const& x) { if (n != 2) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(int32_t const& x) { if (n != 4) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(int64_t const& x) { if (n != 8) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+
+		void operator=(uint8_t const& x) { if (n != 1) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(uint16_t const& x) { if (n != 2) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(uint32_t const& x) { if (n != 4) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(uint64_t const& x) { if (n != 8) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+
+		void operator=(float  const& x) { if (n != 4) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+		void operator=(double const& x) { if (n != 8) throw std::runtime_error{ "Array overrun." }; std::memcpy((void*)data, (const void*)&x, n); }
+
+	private:
+		unsigned char* operator()() const {}
+
+	public:
+		unsigned char& operator[](size_t const& i) { return data[i]; }
+
+	private:
+		CHV4DBYTE operator++() { return CHV4DBYTE{}; }
+		CHV4DBYTE operator--() { return CHV4DBYTE{}; }
+
+	private:
+		CHV4DBYTE operator+() { return CHV4DBYTE{}; }
+		CHV4DBYTE operator-() { return CHV4DBYTE{}; }
+
+	private:
+		CHV4DBYTE operator+(CHV4DBYTE const& x) const { return CHV4DBYTE{}; }
+		CHV4DBYTE operator-(CHV4DBYTE const& x) const { return CHV4DBYTE{}; }
+		CHV4DBYTE operator/(CHV4DBYTE const& x) const { return CHV4DBYTE{}; }
+		CHV4DBYTE operator*(CHV4DBYTE const& x) const { return CHV4DBYTE{}; }
+		CHV4DBYTE operator%(CHV4DBYTE const& x) const { return CHV4DBYTE{}; }
+
+	public:
+		CHV4DBYTE<n> operator~() const
 		{
-			if (data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			CHV4DBYTE<n> A;
 
-			data = data + 1;
+			std::memcpy((void*)A.data, (const void*)data, n);
 
-			return data;
+			for (size_t i; i < n; ++i) A.data[i] = ~data[i];
+
+			return A;
 		}
-
-		CHV4DBYTE operator--()
+		CHV4DBYTE<n> operator&(CHV4DBYTE<n> const& x) const
 		{
-			if (data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			CHV4DBYTE<n> A{ *this }, B{ x };
 
-			data = data - 1;
+			for (size_t i; i < n; ++i) A.data[i] = data[i] & B.data[i];
 
-			return data;
+			return A;
 		}
-
-		CHV4DBYTE operator+()
+		CHV4DBYTE<n> operator|(CHV4DBYTE<n> const& x) const
 		{
-			return *this;
+			CHV4DBYTE<n> A{ *this }, B{ x };
+
+			for (size_t i; i < n; ++i) A.data[i] = data[i] | B.data[i];
+
+			return A;
 		}
-		CHV4DBYTE operator-()
+		CHV4DBYTE<n> operator^(CHV4DBYTE<n> const& x) const
 		{
-			return CHV4DINTEGER{ -1 } **this;
+			CHV4DBYTE<n> A{ *this }, B{ x };
+
+			for (size_t i; i < n; ++i) A.data[i] = data[i] ^ B.data[i];
+
+			return A;
 		}
-
-		CHV4DBYTE operator+(CHV4DBYTE const& x) const
+		CHV4DBYTE<n> operator>>(size_t const& shift) const
 		{
-			CHV4DINTEGER A{ *this }, B{ x };
+			CHV4DBYTE<n> A{ *this };
 
-			if (A.data > 9223372036854775808i64 - B.data) throw std::overflow_error{ "Integer overrun." };
+			unsigned char bit{ 0 };
 
-			A.data = A.data + B.data;
+			for (size_t i; i < shift; ++i)
+			{
+				bit = data[i] & 0b00000001;
+
+				bit = bit << 8;
+
+				if(i + 1 != shift) A.data[i + 1] = A.data[i + 1] & 0b10000000;
+
+				A.data[i] = data[i] >> shift;
+
+			}
+
+			return A;
+		}
+		CHV4DBYTE<n> operator<<(size_t const& shift) const
+		{
+			CHV4DBYTE<n> A{ *this };
+
+			unsigned char bit{ 0 };
+
+			for (size_t i = shift; i != 0; --i)
+			{
+				bit = data[i] & 0b100000000;
+
+				bit = bit >> 8;
+
+				if (i - 1 != 0) A.data[i - 1] = A.data[i - 1] & 0b00000001;
+
+				A.data[i] = data[i] << shift;
+
+			}
 
 			return A;
 		}
 
-		CHV4DBYTE operator-(CHV4DBYTE const& x) const
+	private:
+		bool operator&&(CHV4DBYTE<n> const& x) {}
+		bool operator||(CHV4DBYTE<n> const& x) {}
+
+	public:
+		bool operator!() const
 		{
-			CHV4DINTEGER A{ *this }, B{ x };
+			CHV4DBYTE<n> A;
 
-			B.data = -1 * B.data;
+			std::memcpy((void*)A.data, (const void*)data, n);
 
-			try
-			{
-				A = this->operator+(B);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
+			for (size_t i = 0; i < n; ++i) if (data[i] != 0) return false;
 
-			return A;
+			return true;
+		}
+		bool operator==(CHV4DBYTE<n> const& x) const
+		{
+			CHV4DBYTE<n> A, B{ x };
+
+			std::memcpy((void*)A.data, (const void*)data, n);
+
+			for (size_t i = 0; i < n; ++i) if (A.data[i] != B.data[i]) return false;
+
+			return true;
+		}
+		bool operator!=(CHV4DBYTE<n> const& x) const
+		{
+			CHV4DBYTE<n> A{ x };
+
+			if (this->operator==(A)) return false;
+
+			return true;
 		}
 
-		CHV4DBYTE operator/(CHV4DBYTE const& x) const
+	private:
+		bool operator<(CHV4DBYTE<n> const& x) const {}
+		bool operator>(CHV4DBYTE<n> const& x) const {}
+
+	private:
+		bool operator<=(CHV4DBYTE<n> const& x) {}
+		bool operator>=(CHV4DBYTE<n> const& x) {}
+		bool operator<=>(CHV4DBYTE<n> const& x){}
+
+	private:
+		void operator+=(CHV4DBYTE<n> const& x) {}
+		void operator-=(CHV4DBYTE<n> const& x) {}
+		void operator*=(CHV4DBYTE<n> const& x) {}
+		void operator/=(CHV4DBYTE<n> const& x) {}
+		void operator%=(CHV4DBYTE<n> const& x) {}
+
+	public:
+		void operator&=(CHV4DBYTE<n> const& x)
 		{
-			CHV4DINTEGER A{ *this }, B{ x };
+			CHV4DBYTE<n> A{ x };
 
-			float Q = static_cast <float> (A.data) / static_cast <float> (B.data);
-
-			return Q;
+			for (size_t i = 0; i < n; ++i) data[i] = data[i] & A.data[i];
 		}
-
-		CHV4DBYTE operator*(CHV4DBYTE const& x) const
+		void operator|=(CHV4DBYTE<n> const& x)
 		{
-			CHV4DINTEGER A{ *this }, B{ x };
+			CHV4DBYTE<n> A{ x };
 
-			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
-
-			double reciprocal = MAX_INT.operator/ < double, uint64_t > (B.data);
-
-			if (A.data <= reciprocal && A.data >= reciprocal) throw std::overflow_error{ "Integer overrun." };
-
-			A.data = A.data * B.data;
-
-			return A;
-
+			for (size_t i = 0; i < n; ++i) data[i] = data[i] | A.data[i];
 		}
-
-		CHV4DBYTE operator%(CHV4DBYTE const& x) const
+		void operator^=(CHV4DBYTE<n> const& x)
 		{
-			CHV4DINTEGER A{ *this }, B{ x };
+			CHV4DBYTE<n> A{ x };
 
-			uint64_t Q{ 0 };
-
-			if (A.data == 0) return A;
-
-			A.data = A.data < 0 ? -1 * A.data : A.data;
-			B.data = B.data < 0 ? -1 * B.data : B.data;
-
-			for (size_t i = 0; i < 64; ++i)
-			{
-				if (A.data - B.data >= 0)
-				{
-					A.data = A.data - B.data;
-
-					Q |= 0x0000000000000001;
-				}
-
-				A.data << 1;
-
-				Q = Q << 1;
-			}
-
-			A.data = A.data - (Q * B.data);
-
-			return A;
-
+			for (size_t i = 0; i < n; ++i) data[i] = data[i] ^ A.data[i];
 		}
-
-
-		CHV4DBYTE<8> operator~() const
+		void operator>>=(size_t const& shift)
 		{
-			return { ToByte(~data) };
+			for (size_t i = 0; i < n; ++i) data[i] = data[i] >> shift;
 		}
-		CHV4DBYTE<8> operator&(CHV4DBYTE<8> const x) const
+		void operator<<=(size_t const& shift)
 		{
-			return { ToByte(data & x.data) };
-		}
-		CHV4DBYTE<8> operator|(CHV4DBYTE<8> const x) const
-		{
-
-		}
-		CHV4DBYTE<8> operator^(CHV4DBYTE<8> const x) const
-		{
-
-		}
-		CHV4DBYTE<8> operator>>(CHV4DBYTE<8> const x) const
-		{
-
-		}
-		CHV4DBYTE<8> operator<<(CHV4DBYTE<8> const x) const
-		{
-
-		}
-		CHV4DINTEGER operator!() const
-		{
-
-		}
-		bool operator&&(CHV4DINTEGER const& x) const
-		{
-
-		}
-		bool operator||(CHV4DINTEGER const& x) const
-		{
-
-		}
-
-		bool operator==(CHV4DINTEGER const& x) const
-		{
-			return data == x.data;
-		}
-		bool operator!=(CHV4DINTEGER const& x) const
-		{
-			return data != x.data;
-		}
-		bool operator<(CHV4DINTEGER const& x) const
-		{
-			return data < x.data;
-		}
-		bool operator>(CHV4DINTEGER const& x) const
-		{
-			return data > x.data;
-		}
-		bool operator<=(CHV4DINTEGER const& x) const
-		{
-			return data <= x.data;
-		}
-		bool operator>=(CHV4DINTEGER const& x) const
-		{
-			return data >= x.data;
-		}
-		bool operator>=(CHV4DINTEGER const& x) const
-		{
-			return data <=> x.data;
-		}
-
-
-
-
-
-
-		void operator+=(CHV4DINTEGER const& x)
-		{
-			CHV4DINTEGER A{ *this }, B{ x };
-
-			try
-			{
-				A = A.operator+(B);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			*this = A;
-		}
-
-		void operator-=(CHV4DINTEGER const& x)
-		{
-			CHV4DINTEGER A{ *this }, B{ x };
-
-			try
-			{
-				A = A.operator-(B);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			*this = A;
-		}
-
-		void operator*=(CHV4DINTEGER const& x)
-		{
-			CHV4DINTEGER A{ *this }, B{ x };
-
-			try
-			{
-				A = A.operator*(B);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			*this = A;
-		}
-
-		void operator/=(CHV4DINTEGER const& x)
-		{
-
-		}
-
-		void operator%=(CHV4DINTEGER const& x)
-		{
-			CHV4DINTEGER A{ *this }, B{ x };
-
-			try
-			{
-				A = A.operator%(B);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			*this = A;
-		}
-
-		void operator&=(CHV4DINTEGER const& x)
-		{
-
-		}
-
-		void operator|=(CHV4DINTEGER const& x)
-		{
-
-		}
-
-		void operator^=(CHV4DINTEGER const& x)
-		{
-
-		}
-		void operator>>=(CHV4DINTEGER const& x)
-		{
-
-		}
-
-		void operator<<=(CHV4DINTEGER const& x)
-		{
-
+			for (size_t i = 0; i < n; ++i) data[i] = data[i] << shift;
 		}
 
 	public:
-
-	public:
-		unsigned char data[i]; 
-
+		unsigned char data[n];
+		
 	};
-
-	CHV4DBYTE<1> ToByte(int8_t  const& x) { int8_t  A{ x }; return CHV4DBYTE<1>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<2> ToByte(int16_t const& x) { int16_t A{ x }; return CHV4DBYTE<2>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<4> ToByte(int32_t const& x) { int32_t A{ x }; return CHV4DBYTE<4>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<8> ToByte(int64_t const& x) { int64_t A{ x }; return CHV4DBYTE<8>{ reinterpret_cast<unsigned char*>(&A) }; }
-	
-	CHV4DBYTE<1> ToByte(uint8_t  const& x) { uint8_t  A{ x }; return CHV4DBYTE<1>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<2> ToByte(uint16_t const& x) { uint16_t A{ x }; return CHV4DBYTE<2>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<4> ToByte(uint32_t const& x) { uint32_t A{ x }; return CHV4DBYTE<4>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<8> ToByte(uint64_t const& x) { uint64_t A{ x }; return CHV4DBYTE<8>{ reinterpret_cast<unsigned char*>(&A) }; }
-	
-	CHV4DBYTE<4> ToByte(float  const& x) { float A{ x }; return CHV4DBYTE<4>{ reinterpret_cast<unsigned char*>(&A) }; }
-	CHV4DBYTE<8> ToByte(double const& x) { double A{ x }; return CHV4DBYTE<8>{ reinterpret_cast<unsigned char*>(&A) }; }
 
 }

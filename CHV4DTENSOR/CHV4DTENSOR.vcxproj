@@ -20,12 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CHV4DALGEBRA.ixx" />
-    <ClCompile Include="CHV4DARITMETIC.ixx" />
+    <ClCompile Include="CHV4DARITHMETIC.ixx" />
     <ClCompile Include="CHV4DBYTE.ixx" />
     <ClCompile Include="CHV4DDOUBLE.ixx" />
     <ClCompile Include="CHV4DLDOUBLE.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />
     <ClCompile Include="CHV4DINTEGER.ixx" />
+    <ClCompile Include="CHV4DSIMD.ixx" />
     <ClCompile Include="CHV4DTRANSFORM.ixx" />
     <ClCompile Include="CHV4DRESOURCE.ixx" />
     <ClCompile Include="CHV4DTENSOR.ixx" />
