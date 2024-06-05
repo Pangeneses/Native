@@ -25,15 +25,15 @@ export namespace CHV4DTENSOR
 		{
 			float temp{ x };
 
-			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
+			unsigned char* Data = reinterpret_cast<unsigned char*>(&temp);
 
-			sign = ((data[3] & 0b10000000) == true) ? true : false;
+			sign = ((Data[3] & 0b10000000) == true) ? true : false;
 
-			unsigned char exp = (data[3] << 1) | (data[2] >> 7);
+			unsigned char exp = (Data[3] << 1) | (Data[2] >> 7);
 
 			exponent = static_cast<uint16_t>(exp + (2047ui16 - 127ui16));
 
-			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(data);
+			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(Data);
 
 			mantissa = static_cast<uint64_t>(sig);
 
@@ -53,15 +53,15 @@ export namespace CHV4DTENSOR
 		{
 			float temp{ x };
 
-			unsigned char* data = reinterpret_cast<unsigned char*>(&temp);
+			unsigned char* Data = reinterpret_cast<unsigned char*>(&temp);
 
-			sign = ((data[3] & 0b10000000) == true) ? true : false;
+			sign = ((Data[3] & 0b10000000) == true) ? true : false;
 
-			unsigned char exp = (data[3] << 1) | (data[2] >> 7);
+			unsigned char exp = (Data[3] << 1) | (Data[2] >> 7);
 
 			exponent = static_cast<uint16_t>(exp + (2047ui16 - 127ui16));
 
-			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(data);
+			uint32_t sig = 0xFFFF8F00 & *reinterpret_cast<uint32_t*>(Data);
 
 			mantissa = static_cast<uint64_t>(sig);
 
@@ -81,10 +81,10 @@ export namespace CHV4DTENSOR
 		template<>
 		float operator() < float > () const
 		{
-			unsigned char data[4]{ 0 };
+			unsigned char Data[4]{ 0 };
 
 			{
-				sign ? data[3] | 0b10000000 : data[3] | 0;
+				sign ? Data[3] | 0b10000000 : Data[3] | 0;
 			}
 
 			{
@@ -96,20 +96,20 @@ export namespace CHV4DTENSOR
 
 				if (exp > 255ui16) throw std::overflow_error{ "Precision overrun" };
 
-				data[3] = data[3] | ((*reinterpret_cast<unsigned char*>(&exp)) >> 1);
+				Data[3] = Data[3] | ((*reinterpret_cast<unsigned char*>(&exp)) >> 1);
 
-				data[2] = (*reinterpret_cast<unsigned char*>(&exp)) << 7;
+				Data[2] = (*reinterpret_cast<unsigned char*>(&exp)) << 7;
 			}
 
 			{
 				uint64_t fraction = mantissa;
 
-				data[2] |= (reinterpret_cast<unsigned char*>(&fraction)[2] & 0b01111111);
-				data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
-				data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
+				Data[2] |= (reinterpret_cast<unsigned char*>(&fraction)[2] & 0b01111111);
+				Data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
+				Data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
 			}
 
-			return *reinterpret_cast<float*>(data);
+			return *reinterpret_cast<float*>(Data);
 		}
 
 		CHV4DF32 operator+(CHV4DF32 const& x) const
@@ -321,16 +321,16 @@ export namespace CHV4DTENSOR
 		template<>
 		float Abs<float>() const
 		{
-			unsigned char data[4]{ 0 };
+			unsigned char Data[4]{ 0 };
 
 			{
 				if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
 
 				unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
 
-				data[0] = data[0] | fpexp >> 1;
+				Data[0] = Data[0] | fpexp >> 1;
 
-				data[1] = 0 | fpexp << 7;
+				Data[1] = 0 | fpexp << 7;
 			}
 
 			{
@@ -338,12 +338,12 @@ export namespace CHV4DTENSOR
 
 				unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
 
-				data[3] = fpmantissa[0];
-				data[2] = fpmantissa[1];
-				data[1] = data[1] | (fpmantissa[2] & 0b01111111);
+				Data[3] = fpmantissa[0];
+				Data[2] = fpmantissa[1];
+				Data[1] = Data[1] | (fpmantissa[2] & 0b01111111);
 			}
 
-			return *reinterpret_cast<float*>(data);
+			return *reinterpret_cast<float*>(Data);
 		}
 
 		template<typename T>
@@ -864,32 +864,32 @@ export namespace CHV4DTENSOR
 	public:
 		CHV4DF32F32() = default;
 
-		CHV4DF32F32(CHV4DF32 x, CHV4DF32 y) { data[0] = x; data[1] = y; };
+		CHV4DF32F32(CHV4DF32 x, CHV4DF32 y) { Data[0] = x; Data[1] = y; };
 
 		CHV4DF32F32(CHV4DF32F32 const& e) { *this = e; }
 
 	public:
 		inline void operator =(CHV4DF32F32 const& e) { memcpy(this, &e, sizeof(CHV4DF32F32)); }
 
-		inline bool operator ==(CHV4DF32F32 const& e) const { return memcmp(data, e.data, sizeof(CHV4DF32F32)) == 0; }
+		inline bool operator ==(CHV4DF32F32 const& e) const { return memcmp(Data, e.Data, sizeof(CHV4DF32F32)) == 0; }
 
-		inline bool operator !=(CHV4DF32F32 const& e) const { return memcmp(data, e.data, sizeof(CHV4DF32F32)) != 0; }
+		inline bool operator !=(CHV4DF32F32 const& e) const { return memcmp(Data, e.Data, sizeof(CHV4DF32F32)) != 0; }
 
 		inline CHV4DF32F32 const operator ()() const { return *this; }
 
 	public:
-		CHV4DF32 const operator ~() { return static_cast<float>(cLength(data[0](), data[1]())); }
+		CHV4DF32 const operator ~() { return static_cast<float>(cLength(Data[0](), Data[1]())); }
 
-		CHV4DLDOUBLE const operator !() { return cLength(data[0](), data[1]()); }
+		CHV4DLDOUBLE const operator !() { return cLength(Data[0](), Data[1]()); }
 
-		inline CHV4DF32& operator [](size_t const& i) { return data[i]; }
+		inline CHV4DF32& operator [](size_t const& i) { return Data[i]; }
 
-		inline CHV4DF32 const A() { return data[0]; }
+		inline CHV4DF32 const A() { return Data[0]; }
 
-		inline CHV4DF32 const B() { return data[1]; }
+		inline CHV4DF32 const B() { return Data[1]; }
 
 	private:
-		CHV4DF32 data[2];
+		CHV4DF32 Data[2];
 
 	};
 
@@ -900,7 +900,7 @@ export namespace CHV4DTENSOR
 
 		CHV4DF32F32F32(CHV4DF32 x, CHV4DF32 y, CHV4DF32 z)
 		{
-			data[0] = x; data[1] = y; data[2] = z;
+			Data[0] = x; Data[1] = y; Data[2] = z;
 
 		}
 
@@ -913,27 +913,27 @@ export namespace CHV4DTENSOR
 	public:
 		inline void operator =(CHV4DF32F32F32 const& e) { memcpy(this, &e, sizeof(CHV4DF32F32F32)); }
 
-		inline bool operator ==(CHV4DF32F32F32 const& e) const { return memcmp(data, e.data, sizeof(CHV4DF32F32F32)) != 0; }
+		inline bool operator ==(CHV4DF32F32F32 const& e) const { return memcmp(Data, e.Data, sizeof(CHV4DF32F32F32)) != 0; }
 
-		inline bool operator !=(CHV4DF32F32F32 const& e) const { return memcmp(data, e.data, sizeof(CHV4DF32F32F32)) == 0; }
+		inline bool operator !=(CHV4DF32F32F32 const& e) const { return memcmp(Data, e.Data, sizeof(CHV4DF32F32F32)) == 0; }
 
-		inline CHV4DF32F32F32 operator ()() const { return CHV4DF32F32F32{ data[0], data[1], data[2] }; }
+		inline CHV4DF32F32F32 operator ()() const { return CHV4DF32F32F32{ Data[0], Data[1], Data[2] }; }
 
 	public:
-		CHV4DF32 const operator ~() { return static_cast<float>(cLength(data[0](), data[1](), data[3]())); }
+		CHV4DF32 const operator ~() { return static_cast<float>(cLength(Data[0](), Data[1](), Data[3]())); }
 
-		CHV4DDOUBLE const operator !() { return cLength(data[0](), data[1](), data[3]()); }
+		CHV4DDOUBLE const operator !() { return cLength(Data[0](), Data[1](), Data[3]()); }
 
-		inline CHV4DF32& operator [](size_t const& i) { return data[i]; }
+		inline CHV4DF32& operator [](size_t const& i) { return Data[i]; }
 
-		inline CHV4DF32 const A() const { return data[0]; }
+		inline CHV4DF32 const A() const { return Data[0]; }
 
-		inline CHV4DF32 const B() const { return data[1]; }
+		inline CHV4DF32 const B() const { return Data[1]; }
 
-		inline CHV4DF32 const C() const { return data[2]; }
+		inline CHV4DF32 const C() const { return Data[2]; }
 
 	private:
-		CHV4DF32 data[3];
+		CHV4DF32 Data[3];
 
 	};
 
@@ -944,7 +944,7 @@ export namespace CHV4DTENSOR
 
 		CHV4DF32F32F32F32(CHV4DF32 x, CHV4DF32 y, CHV4DF32 z, CHV4DF32 w)
 		{
-			data[0] = x; data[1] = y; data[2] = z; data[3] = w;
+			Data[0] = x; Data[1] = y; Data[2] = z; Data[3] = w;
 
 		}
 
@@ -957,29 +957,29 @@ export namespace CHV4DTENSOR
 	public:
 		inline void operator =(CHV4DF32F32F32F32 const& e) { memcpy(this, &e, sizeof(CHV4DF32F32F32F32)); }
 
-		inline bool operator ==(CHV4DF32F32F32F32 const& e) const { return memcmp(data, e.data, sizeof(CHV4DF32F32F32F32)) != 0; }
+		inline bool operator ==(CHV4DF32F32F32F32 const& e) const { return memcmp(Data, e.Data, sizeof(CHV4DF32F32F32F32)) != 0; }
 
-		inline bool operator !=(CHV4DF32F32F32F32 const& e) const { return memcmp(data, e.data, sizeof(CHV4DF32F32F32F32)) == 0; }
+		inline bool operator !=(CHV4DF32F32F32F32 const& e) const { return memcmp(Data, e.Data, sizeof(CHV4DF32F32F32F32)) == 0; }
 
-		inline CHV4DF32F32F32F32 operator ()() const { return CHV4DF32F32F32F32{ data[0], data[1], data[2], data[4] }; }
+		inline CHV4DF32F32F32F32 operator ()() const { return CHV4DF32F32F32F32{ Data[0], Data[1], Data[2], Data[4] }; }
 
 	public:
-		CHV4DF32 const operator ~() { return static_cast<float>(cLength(data[0](), data[1](), data[3](), data[4]())); }
+		CHV4DF32 const operator ~() { return static_cast<float>(cLength(Data[0](), Data[1](), Data[3](), Data[4]())); }
 
-		CHV4DDOUBLE const operator !() { return cLength(data[0](), data[1](), data[3](), data[4]()); }
+		CHV4DDOUBLE const operator !() { return cLength(Data[0](), Data[1](), Data[3](), Data[4]()); }
 
-		inline CHV4DF32& operator [](size_t const& i) { return data[i]; }
+		inline CHV4DF32& operator [](size_t const& i) { return Data[i]; }
 
-		inline CHV4DF32 const A() const { return data[0]; }
+		inline CHV4DF32 const A() const { return Data[0]; }
 
-		inline CHV4DF32 const B() const { return data[1]; }
+		inline CHV4DF32 const B() const { return Data[1]; }
 
-		inline CHV4DF32 const C() const { return data[2]; }
+		inline CHV4DF32 const C() const { return Data[2]; }
 
-		inline CHV4DF32 const D() const { return data[3]; }
+		inline CHV4DF32 const D() const { return Data[3]; }
 
 	private:
-		CHV4DF32 data[4];
+		CHV4DF32 Data[4];
 
 	};
 	*/

@@ -5,7 +5,8 @@ export module CHV4DTENSOR;
 export import :CHV4DFORWARD;
 export import :CHV4DRESOURCE;
 
-export import :CHV4DBYTE;
+export import :CHV4DBITSTREAM;
+export import :CHV4DBYTESTREAM;
 export import :CHV4DSIMD;
 export import :CHV4DINTEGER;
 export import :CHV4DSINGLE;

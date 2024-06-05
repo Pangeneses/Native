@@ -24,8 +24,6 @@
     <ClCompile Include="CHV4DENCODER.cpp" />
     <ClCompile Include="CHV4DENCODER.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />
-    <ClCompile Include="CHV4DBITSTREAM.cpp" />
-    <ClCompile Include="CHV4DBITSTREAM.ixx" />
     <ClCompile Include="CHV4DRESOURCE.ixx" />
     <ClCompile Include="CHV4DKERNEL.ixx" />
   </ItemGroup>

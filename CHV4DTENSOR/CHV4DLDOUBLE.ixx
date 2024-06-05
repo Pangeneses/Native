@@ -46,10 +46,10 @@ export namespace CHV4DTENSOR
 		template<>
 		float operator() < float > () const
 		{
-			unsigned char data[4]{ 0 };
+			unsigned char Data[4]{ 0 };
 
 			{
-				sign ? data[3] | 0b10000000 : data[3] | 0;
+				sign ? Data[3] | 0b10000000 : Data[3] | 0;
 			}
 
 			{
@@ -61,28 +61,28 @@ export namespace CHV4DTENSOR
 
 				if (exp > 255ui16) throw std::overflow_error{ "Precision overrun" };
 
-				data[3] = data[3] | ((*reinterpret_cast<unsigned char*>(&exp)) >> 1);
+				Data[3] = Data[3] | ((*reinterpret_cast<unsigned char*>(&exp)) >> 1);
 
-				data[2] = (*reinterpret_cast<unsigned char*>(&exp)) << 7;
+				Data[2] = (*reinterpret_cast<unsigned char*>(&exp)) << 7;
 			}
 
 			{
 				uint64_t fraction = mantissa;
 
-				data[2] |= (reinterpret_cast<unsigned char*>(&fraction)[2] & 0b01111111);
-				data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
-				data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
+				Data[2] |= (reinterpret_cast<unsigned char*>(&fraction)[2] & 0b01111111);
+				Data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
+				Data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
 			}
 
-			return *reinterpret_cast<float*>(data);
+			return *reinterpret_cast<float*>(Data);
 		}
 		template<>
 		double operator() < double > () const
 		{
-			unsigned char data[8]{ 0 };
+			unsigned char Data[8]{ 0 };
 
 			{
-				sign ? data[7] | 0b10000000 : data[7] | 0;
+				sign ? Data[7] | 0b10000000 : Data[7] | 0;
 			}
 
 			{
@@ -90,26 +90,26 @@ export namespace CHV4DTENSOR
 
 				uint16_t exp = exponent;
 
-				data[7] |= (reinterpret_cast<unsigned char*>(&exp)[1] & 0b00000111) << 4;
+				Data[7] |= (reinterpret_cast<unsigned char*>(&exp)[1] & 0b00000111) << 4;
 
-				data[7] |= (reinterpret_cast<unsigned char*>(&exp)[0] >> 4);
+				Data[7] |= (reinterpret_cast<unsigned char*>(&exp)[0] >> 4);
 
-				data[6] | (reinterpret_cast<unsigned char*>(&exp)[0] << 4);
+				Data[6] | (reinterpret_cast<unsigned char*>(&exp)[0] << 4);
 			}
 
 			{
 				uint64_t fraction = mantissa;
 
-				data[6] |= (reinterpret_cast<unsigned char*>(&fraction)[6] & 0b00001111);
-				data[5] = reinterpret_cast<unsigned char*>(&fraction)[5];
-				data[4] = reinterpret_cast<unsigned char*>(&fraction)[4];
-				data[3] = reinterpret_cast<unsigned char*>(&fraction)[3];
-				data[2] = reinterpret_cast<unsigned char*>(&fraction)[2];
-				data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
-				data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
+				Data[6] |= (reinterpret_cast<unsigned char*>(&fraction)[6] & 0b00001111);
+				Data[5] = reinterpret_cast<unsigned char*>(&fraction)[5];
+				Data[4] = reinterpret_cast<unsigned char*>(&fraction)[4];
+				Data[3] = reinterpret_cast<unsigned char*>(&fraction)[3];
+				Data[2] = reinterpret_cast<unsigned char*>(&fraction)[2];
+				Data[1] = reinterpret_cast<unsigned char*>(&fraction)[1];
+				Data[0] = reinterpret_cast<unsigned char*>(&fraction)[0];
 			}
 
-			return *reinterpret_cast<double*>(data);
+			return *reinterpret_cast<double*>(Data);
 		}
 
 		MaxPrecision operator+(MaxPrecision const& x) const
@@ -341,16 +341,16 @@ export namespace CHV4DTENSOR
 		template<>
 		float Abs<float>() const
 		{
-			unsigned char data[4]{ 0 };
+			unsigned char Data[4]{ 0 };
 
 			{
 				if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
 
 				unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
 
-				data[0] = data[0] | fpexp >> 1;
+				Data[0] = Data[0] | fpexp >> 1;
 
-				data[1] = 0 | fpexp << 7;
+				Data[1] = 0 | fpexp << 7;
 			}
 
 			{
@@ -358,28 +358,28 @@ export namespace CHV4DTENSOR
 
 				unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
 
-				data[3] = fpmantissa[0];
-				data[2] = fpmantissa[1];
-				data[1] = data[1] | (fpmantissa[2] & 0b01111111);
+				Data[3] = fpmantissa[0];
+				Data[2] = fpmantissa[1];
+				Data[1] = Data[1] | (fpmantissa[2] & 0b01111111);
 			}
 
-			return *reinterpret_cast<float*>(data);
+			return *reinterpret_cast<float*>(Data);
 		}
 		template<>
 		double Abs<double>() const
 		{
-			unsigned char data[8]{ 0 };
+			unsigned char Data[8]{ 0 };
 
 			{
 				if (exponent > 2047ui16) throw std::overflow_error{ "Precision overrun" };
 
 				unsigned char* fpexp = reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
 
-				data[0] = data[0] | fpexp[1] >> 1;
+				Data[0] = Data[0] | fpexp[1] >> 1;
 
-				data[1] = 0 | fpexp[1] << 7;
+				Data[1] = 0 | fpexp[1] << 7;
 
-				data[1] = data[1] | ((fpexp[0] >> 1) & 0b01110000);
+				Data[1] = Data[1] | ((fpexp[0] >> 1) & 0b01110000);
 			}
 
 			{
@@ -387,16 +387,16 @@ export namespace CHV4DTENSOR
 
 				unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
 
-				data[7] = fpmantissa[0];
-				data[6] = fpmantissa[1];
-				data[5] = fpmantissa[2];
-				data[4] = fpmantissa[3];
-				data[3] = fpmantissa[4];
-				data[2] = fpmantissa[5];
-				data[1] = data[1] | (fpmantissa[6] & 0b00001111);
+				Data[7] = fpmantissa[0];
+				Data[6] = fpmantissa[1];
+				Data[5] = fpmantissa[2];
+				Data[4] = fpmantissa[3];
+				Data[3] = fpmantissa[4];
+				Data[2] = fpmantissa[5];
+				Data[1] = Data[1] | (fpmantissa[6] & 0b00001111);
 			}
 
-			return *reinterpret_cast<double*>(data);
+			return *reinterpret_cast<double*>(Data);
 		}
 
 		template<typename T>

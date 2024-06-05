@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClCompile Include="CHV4DALGEBRA.ixx" />
     <ClCompile Include="CHV4DARITHMETIC.ixx" />
-    <ClCompile Include="CHV4DBYTE.ixx" />
+    <ClCompile Include="CHV4DBITSTREAM.ixx" />
+    <ClCompile Include="CHV4DBYTESTREAM.ixx" />
     <ClCompile Include="CHV4DDOUBLE.ixx" />
     <ClCompile Include="CHV4DLDOUBLE.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />
@@ -33,6 +34,7 @@
     <ClCompile Include="CHV4DMATRIX.ixx" />
     <ClCompile Include="CHV4DSINGLE.ixx" />
     <ClCompile Include="CHV4DTRIG.ixx" />
+    <ClCompile Include="CHV4DAVX512.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CHV4DTBASIC\CHV4DTBASIC.vcxproj">
