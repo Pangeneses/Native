@@ -141,14 +141,14 @@ export namespace CHV4DTENSOR
 			switch (bits)
 			{
 
-			case 0: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b10000000 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 1: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b01000000 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 2: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b00100000 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 3: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b00010000 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 4: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b00001000 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 5: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b00000100 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 6: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b00000010 : Data[bytes] = Data[bytes] & 0b00000000; break;
-			case 7: set == BIT::BIT_ONE ? Data[bytes] = Data[bytes] | 0b00000001 : Data[bytes] = Data[bytes] & 0b00000000; break;
+			case 0: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b10000000 : Data[bytes] & 0b00000000; break;
+			case 1: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b01000000 : Data[bytes] & 0b00000000; break;
+			case 2: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b00100000 : Data[bytes] & 0b00000000; break;
+			case 3: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b00010000 : Data[bytes] & 0b00000000; break;
+			case 4: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b00001000 : Data[bytes] & 0b00000000; break;
+			case 5: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b00000100 : Data[bytes] & 0b00000000; break;
+			case 6: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b00000010 : Data[bytes] & 0b00000000; break;
+			case 7: Data[bytes] = (set == BIT::BIT_ONE) ? Data[bytes] | 0b00000001 : Data[bytes] & 0b00000000; break;
 
 			default: throw std::out_of_range{ "BitStream overrun." };
 
@@ -300,7 +300,6 @@ export namespace CHV4DTENSOR
 			if (Sentinel.second == -1) { Sentinel.second = 0; Sentinel.first = std::prev(Sentinel.first, 1); }
 
 			return A;
-
 		}
 
 	private:
@@ -504,14 +503,14 @@ export namespace CHV4DTENSOR
 
 			if (bits < 1 || bits > 8) throw std::invalid_argument{ "Invalid bit insertion in PushBits." };
 
-			(0b10000000 & data) == 0b10000000 ? bitset[0] = BIT_ONE : bitset[0] = BIT_ZERO;
-			(0b01000000 & data) == 0b01000000 ? bitset[1] = BIT_ONE : bitset[1] = BIT_ZERO;
-			(0b00100000 & data) == 0b00100000 ? bitset[2] = BIT_ONE : bitset[2] = BIT_ZERO;
-			(0b00010000 & data) == 0b00010000 ? bitset[3] = BIT_ONE : bitset[3] = BIT_ZERO;
-			(0b00001000 & data) == 0b00001000 ? bitset[4] = BIT_ONE : bitset[4] = BIT_ZERO;
-			(0b00000100 & data) == 0b00000100 ? bitset[5] = BIT_ONE : bitset[5] = BIT_ZERO;
-			(0b00000010 & data) == 0b00000010 ? bitset[6] = BIT_ONE : bitset[6] = BIT_ZERO;
-			(0b00000001 & data) == 0b00000001 ? bitset[7] = BIT_ONE : bitset[7] = BIT_ZERO;
+			bitset[0] = (0b10000000 & data) == 0b10000000 ? BIT_ONE : BIT_ZERO;
+			bitset[1] = (0b01000000 & data) == 0b01000000 ? BIT_ONE : BIT_ZERO;
+			bitset[2] = (0b00100000 & data) == 0b00100000 ? BIT_ONE : BIT_ZERO;
+			bitset[3] = (0b00010000 & data) == 0b00010000 ? BIT_ONE : BIT_ZERO;
+			bitset[4] = (0b00001000 & data) == 0b00001000 ? BIT_ONE : BIT_ZERO;
+			bitset[5] = (0b00000100 & data) == 0b00000100 ? BIT_ONE : BIT_ZERO;
+			bitset[6] = (0b00000010 & data) == 0b00000010 ? BIT_ONE : BIT_ZERO;
+			bitset[7] = (0b00000001 & data) == 0b00000001 ? BIT_ONE : BIT_ZERO;
 
 			if (BitConsume == BIT_CONSUMPTION_LEFT_RIGHT)
 			{
@@ -519,10 +518,12 @@ export namespace CHV4DTENSOR
 				{
 					if (BitPosition == 7) { BitPosition = 0; Data.push_back({}); }
 
-					*this << (bitset[i]);
-
+					this->operator+=(bitset[i]);
 				}
 
+				isValidSentinel = false;
+
+				isValidReverseSentinel = false;
 			}
 			else
 			{
@@ -530,12 +531,13 @@ export namespace CHV4DTENSOR
 				{
 					if (BitPosition == 7) { BitPosition = 0; Data.push_back({}); }
 
-					*this += (bitset[i]);
-
+					this->operator+=(bitset[i]);
 				}
 
-			}
+				isValidSentinel = false;
 
+				isValidReverseSentinel = false;
+			}
 		}
 
 		void PushBits(uint16_t const& Data, size_t const& bits)
@@ -550,17 +552,16 @@ export namespace CHV4DTENSOR
 			{
 				bits < 8 ? PushBits(buffer[0], bits) : PushBits(buffer[0], 8);
 				bits > 8 && bits < 16 ? PushBits(buffer[1], 8 - (16 - bits)) : PushBits(buffer[1], 8);
-
 			}
 			else
 			{
 				bits < 8 ? PushBits(buffer[1], bits) : PushBits(buffer[1], 8);
 				bits > 8 && bits < 16 ? PushBits(buffer[0], 8 - (16 - bits)) : PushBits(buffer[0], 8);
-
 			}
 
-			return;
+			isValidSentinel = false;
 
+			isValidReverseSentinel = false;
 		}
 
 		void PushBits(uint32_t const& Data, size_t const& bits)
@@ -577,7 +578,6 @@ export namespace CHV4DTENSOR
 				bits > 8 && bits < 16 ? PushBits(buffer[1], 8 - (16 - bits)) : PushBits(buffer[1], 8);
 				bits > 16 && bits < 24 ? PushBits(buffer[2], 8 - (24 - bits)) : PushBits(buffer[2], 8);
 				bits > 24 && bits < 32 ? PushBits(buffer[3], 8 - (32 - bits)) : PushBits(buffer[3], 8);
-
 			}
 			else
 			{
@@ -585,11 +585,11 @@ export namespace CHV4DTENSOR
 				bits > 8 && bits < 16 ? PushBits(buffer[2], 8 - (16 - bits)) : PushBits(buffer[2], 8);
 				bits > 16 && bits < 24 ? PushBits(buffer[1], 8 - (24 - bits)) : PushBits(buffer[1], 8);
 				bits > 24 && bits < 32 ? PushBits(buffer[0], 8 - (32 - bits)) : PushBits(buffer[0], 8);
-
 			}
 
-			return;
+			isValidSentinel = false;
 
+			isValidReverseSentinel = false;
 		}
 
 		void PushBits(uint64_t const& Data, size_t const& bits)
@@ -610,7 +610,6 @@ export namespace CHV4DTENSOR
 				bits > 40 && bits < 48 ? PushBits(buffer[5], 8 - (48 - bits)) : PushBits(buffer[5], 8);
 				bits > 48 && bits < 56 ? PushBits(buffer[6], 8 - (56 - bits)) : PushBits(buffer[6], 8);
 				bits > 56 && bits < 64 ? PushBits(buffer[7], 8 - (64 - bits)) : PushBits(buffer[7], 8);
-
 			}
 			else
 			{
@@ -622,11 +621,11 @@ export namespace CHV4DTENSOR
 				bits > 40 && bits < 48 ? PushBits(buffer[2], 8 - (48 - bits)) : PushBits(buffer[2], 8);
 				bits > 48 && bits < 56 ? PushBits(buffer[1], 8 - (56 - bits)) : PushBits(buffer[1], 8);
 				bits > 56 && bits < 64 ? PushBits(buffer[0], 8 - (64 - bits)) : PushBits(buffer[0], 8);
-
 			}
 
-			return;
+			isValidSentinel = false;
 
+			isValidReverseSentinel = false;
 		}
 
 		void PushBytes(uint16_t const& Data)
@@ -639,15 +638,16 @@ export namespace CHV4DTENSOR
 			{
 				PushBits(buffer[0], 8);
 				PushBits(buffer[1], 8);
-
 			}
 			else
 			{
 				PushBits(buffer[1], 8);
 				PushBits(buffer[0], 8);
-
 			}
 
+			isValidSentinel = false;
+
+			isValidReverseSentinel = false;
 		}
 
 		void PushBytes(uint32_t const& Data)
@@ -662,7 +662,6 @@ export namespace CHV4DTENSOR
 				PushBits(buffer[1], 8);
 				PushBits(buffer[2], 8);
 				PushBits(buffer[3], 8);
-
 			}
 			else
 			{
@@ -670,9 +669,11 @@ export namespace CHV4DTENSOR
 				PushBits(buffer[2], 8);
 				PushBits(buffer[1], 8);
 				PushBits(buffer[0], 8);
-
 			}
 
+			isValidSentinel = false;
+
+			isValidReverseSentinel = false;
 		}
 
 		void PushBytes(uint64_t const& Data)
@@ -691,7 +692,6 @@ export namespace CHV4DTENSOR
 				PushBits(buffer[5], 8);
 				PushBits(buffer[6], 8);
 				PushBits(buffer[7], 8);
-
 			}
 			else
 			{
@@ -703,9 +703,11 @@ export namespace CHV4DTENSOR
 				PushBits(buffer[2], 8);
 				PushBits(buffer[1], 8);
 				PushBits(buffer[0], 8);
-
 			}
 
+			isValidSentinel = false;
+
+			isValidReverseSentinel = false;
 		}
 
 		void PopFrontBits(size_t const& num)
@@ -713,25 +715,27 @@ export namespace CHV4DTENSOR
 			if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
 			if (num > this->BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
+			
+			size_t bits = num % 8;
 
-			this->BeginningOfStream();
+			size_t bytes = ((num - bits) / 8);
 
-			CHV4DBITSTREAM Buffer;
+			Data.erase(Data.begin(), std::next(Data.begin(), bytes));
 
-			BitPosition = num % 8;
+			Data[0] = Data[0] << bits;
 
-			if ((num - BitPosition) / 8 > 0) Data.erase(Data.begin(), std::next(Data.begin(), (num - BitPosition) / 8));
+			for (size_t i = 0; i != Data.size(); --i)
+			{
+				Data[i] = Data[i] | Data[i + 1] >> (8 - bits);
 
-			EndOfStream(); this->operator--();
+				Data[i + 1] = Data[i + 1] << bits;
+			}
 
-			while (!(Sentinel.first == Data.end() && Sentinel.second == 7)) Buffer << operator++();
-
-			this->operator=(Buffer);
+			for (size_t i = 0; i < bytes; ++i) Data.push_back(0b00000000);
 
 			isValidSentinel = false;
 
 			isValidReverseSentinel = false;
-
 		}
 
 		void PopFrontBytes(size_t const& num)
@@ -747,7 +751,6 @@ export namespace CHV4DTENSOR
 			isValidSentinel = false;
 
 			isValidReverseSentinel = false;
-
 		}
 
 		void PopBackBits(size_t const& num)
@@ -758,14 +761,19 @@ export namespace CHV4DTENSOR
 
 			if (num > this->BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
-			BitPosition = 8 - (num % 8);
+			size_t bits = num % 8;
 
-			Data.erase(std::prev(Data.end(), (num - (num % 8)) / 8), Data.end());
+			size_t bytes = ((num - bits) / 8);
+
+			Data.erase(std::prev(Data.end(), bytes), Data.end());
+
+			for (size_t i = Data.size(); i != 1; --i) Data[i] = Data[i - 1] << (8 - bits) | Data[i] >> bits;
+
+			Data[0] = Data[0] >> bits;
 
 			isValidSentinel = false;
 
 			isValidReverseSentinel = false;
-
 		}
 
 		void PopBackBytes(size_t const& num)
@@ -781,7 +789,6 @@ export namespace CHV4DTENSOR
 			isValidSentinel = false;
 
 			isValidReverseSentinel = false;
-
 		}
 
 		void BitErase(size_t const& beg, size_t const& end)
@@ -792,34 +799,33 @@ export namespace CHV4DTENSOR
 
 			if (beg >= end) throw std::out_of_range{ "Invalid range." };
 
-			CHV4DBITSTREAM Buffer;
+			size_t bBits{ beg % 8 }, bBytes{ (beg - bBits) / 8 };
 
-			this->BeginningOfStream();
+			size_t eBits = end % 8, eBytes{ (end - eBits) / 8 };
 
-			while ((std::distance(Data.begin(), Sentinel.first) + Sentinel.second) != beg) Buffer << (operator++());
+			size_t szStream = BitStreamSize() - (end - beg);
 
-			Sentinel.first = std::next(Data.begin(), (end - (end % 8)) / 8);
+			std::deque<unsigned char> front{ std::move_iterator(Data.begin()), std::move_iterator(std::next(Data.begin(), bBytes)) };
 
-			Sentinel.second = end % 8;
+			std::deque<unsigned char> back{ std::move_iterator(std::next(Data.begin(), eBytes)), std::move_iterator(Data.end()) };
 
-			this->operator--();
+			Data.insert(Data.begin(), std::move_iterator(back.begin()), std::move_iterator(back.end()));
 
-			while (!(Sentinel.first == std::prev(Data.end(), 1) && Sentinel.second == 7)) Buffer << (operator++());
+			this->operator<<=(8 - eBits); //shift back to front
 
-			this->operator=(Buffer);
+			size_t szFront = front.size();
+
+			Data.insert(Data.begin(), std::move_iterator(front.begin()), std::move_iterator(std::prev(front.end(), 1)));
+
+			Data[szFront] |= front[0];
 
 			isValidSentinel = false;
 
 			isValidReverseSentinel = false;
-
-			return;
-
 		}
 
 		void InsertBits(size_t const& pos, std::deque<unsigned char>& insert, size_t const& nbits)
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
 			if (pos < -1 || pos > BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
 			if (nbits < 0 || nbits > insert.size() * 8) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -828,34 +834,10 @@ export namespace CHV4DTENSOR
 
 			CHV4DBITSTREAM Buffer;
 
-			this->BeginningOfStream();
-
-			while ((std::distance(Data.begin(), Sentinel.first) + Sentinel.second) != pos) Buffer << (operator++());
-
-			BIT_CONSUMPTION HoldBitConsume{ BitConsume };
-
-			BYTE_CONSUMPTION HoldByteConsume{ ByteConsume };
-
-			BitConsume = BIT_CONSUMPTION_LEFT_RIGHT;
-
-			ByteConsume = BYTE_CONSUMPTION_LEFT_RIGHT;
-
-			while (!insert.empty()) { Buffer.PushBits(insert[0], 8); insert.pop_front(); }
-
-			while (Sentinel.first != Data.end() && Sentinel.second != 7) Buffer << (operator++());
-
-			this->operator=(Buffer);
 
 			isValidSentinel = false;
 
 			isValidReverseSentinel = false;
-
-			BitConsume = HoldBitConsume;
-
-			ByteConsume = HoldByteConsume;
-
-			return;
-
 		}
 
 	public:
