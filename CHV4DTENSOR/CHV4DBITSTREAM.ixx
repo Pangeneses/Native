@@ -89,7 +89,7 @@ export namespace CHV4DTENSOR
 
 		void SetByteConsumption(BYTE_CONSUMPTION const& set) { ByteConsume = set; }
 
-		bool InRange(size_t const& n) { return (((n + 8) / 8) - 1) < Data.size() ? true : false; }
+		bool InRange(size_t const& n) const { return (((n + 8) / 8) - 1) < Data.size() ? true : false; }
 
 	public:
 		void operator =(CHV4DBITSTREAM const& in)
@@ -108,7 +108,9 @@ export namespace CHV4DTENSOR
 
 		BIT operator ()()
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			switch (Sentinel.second)
 			{
@@ -130,7 +132,7 @@ export namespace CHV4DTENSOR
 
 		void operator ()(size_t const& i, BIT const& set)
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
 
 			if (!InRange(i)) throw std::runtime_error{ "Out of range." };
 
@@ -155,9 +157,9 @@ export namespace CHV4DTENSOR
 			}
 		}
 
-		BIT operator[](size_t const& i) 
+		BIT operator[](size_t const& i) const
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
 
 			if (!InRange(i)) throw std::runtime_error{ "Out of range." };
 
@@ -185,7 +187,9 @@ export namespace CHV4DTENSOR
 	public:
 		BIT operator ++()
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			if (Sentinel.first == Data.end()) std::out_of_range{ "End of bitstream." };
 
@@ -213,7 +217,9 @@ export namespace CHV4DTENSOR
 
 		BIT operator ++(int)
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			if (Sentinel.first == Data.end()) std::out_of_range{ "End of bitstream." };
 
@@ -245,7 +251,9 @@ export namespace CHV4DTENSOR
 
 		BIT operator --()
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			if (Sentinel.first < Data.begin()) std::out_of_range{ "End of bitstream." };
 
@@ -273,7 +281,9 @@ export namespace CHV4DTENSOR
 
 		BIT operator --()
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			if (Sentinel.first < Data.begin()) std::out_of_range{ "End of bitstream." };
 
@@ -316,6 +326,8 @@ export namespace CHV4DTENSOR
 	public:
 		CHV4DBITSTREAM operator~() const
 		{
+			if (Data.empty()) return CHV4DBITSTREAM{};
+
 			CHV4DBITSTREAM A;
 
 			for (size_t i; i < A.Data.size(); ++i) A.Data[i] = ~A.Data[i];
@@ -324,6 +336,8 @@ export namespace CHV4DTENSOR
 		}
 		CHV4DBITSTREAM operator&(CHV4DBITSTREAM const& x) const
 		{
+			if (Data.empty()) return CHV4DBITSTREAM{};
+
 			CHV4DBITSTREAM A{ *this }, B{ x };
 
 			for (size_t i; i < A.Data.size(); ++i) A.Data[i] = A.Data[i] & B.Data[i];
@@ -332,6 +346,8 @@ export namespace CHV4DTENSOR
 		}
 		CHV4DBITSTREAM operator|(CHV4DBITSTREAM const& x) const
 		{
+			if (Data.empty()) return CHV4DBITSTREAM{};
+
 			CHV4DBITSTREAM A{ *this }, B{ x };
 
 			for (size_t i; i < A.Data.size(); ++i) A.Data[i] = A.Data[i] | B.Data[i];
@@ -340,6 +356,8 @@ export namespace CHV4DTENSOR
 		}
 		CHV4DBITSTREAM operator^(CHV4DBITSTREAM const& x) const
 		{
+			if (Data.empty()) return CHV4DBITSTREAM{};
+
 			CHV4DBITSTREAM A{ *this }, B{ x };
 
 			for (size_t i; i < A.Data.size(); ++i) A.Data[i] = A.Data[i] ^ B.Data[i];
@@ -358,18 +376,24 @@ export namespace CHV4DTENSOR
 	public:
 		bool operator!() const
 		{
+			if (Data.empty()) return true;
+
 			for (size_t i = 0; i < Data.size(); ++i) if (Data[i] != 0) return false;
 
 			return true;
 		}
 		bool operator==(CHV4DBITSTREAM const& x) const
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			for (size_t i = 0; i < Data.size(); ++i) if (Data[i] != Data[i]) return false;
 
 			return true;
 		}
 		bool operator!=(CHV4DBITSTREAM const& x) const
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			CHV4DBITSTREAM A{ x };
 
 			if (this->operator==(A)) return false;
@@ -446,24 +470,32 @@ export namespace CHV4DTENSOR
 	public:
 		void operator&=(CHV4DBITSTREAM const& x)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			CHV4DBITSTREAM A{ x };
 
 			for (size_t i; i < A.Data.size(); ++i) Data[i] = Data[i] & A.Data[i];
 		}
 		void operator|=(CHV4DBITSTREAM const& x)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			CHV4DBITSTREAM A{ x };
 
 			for (size_t i; i < A.Data.size(); ++i) Data[i] = Data[i] | A.Data[i];
 		}
 		void operator^=(CHV4DBITSTREAM const& x)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			CHV4DBITSTREAM A{ x };
 
 			for (size_t i; i < A.Data.size(); ++i) Data[i] = Data[i] ^ A.Data[i];
 		}
 		void operator>>=(size_t const& shift)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			size_t bits = shift % 8;
 
 			size_t bytes = ((shift - bits) / 8);
@@ -478,6 +510,8 @@ export namespace CHV4DTENSOR
 		}
 		void operator<<=(size_t const& shift)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			size_t bits = shift % 8;
 
 			size_t bytes = ((shift - bits) / 8);
@@ -712,10 +746,12 @@ export namespace CHV4DTENSOR
 
 		void PopFrontBits(size_t const& num)
 		{
-			if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
 
 			if (num > this->BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
-			
+
+			if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
+
 			size_t bits = num % 8;
 
 			size_t bytes = ((num - bits) / 8);
@@ -740,6 +776,8 @@ export namespace CHV4DTENSOR
 
 		void PopFrontBytes(size_t const& num)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
 
 			if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -755,6 +793,8 @@ export namespace CHV4DTENSOR
 
 		void PopBackBits(size_t const& num)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
 
 			if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -778,6 +818,8 @@ export namespace CHV4DTENSOR
 
 		void PopBackBytes(size_t const& num)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			if (this->BitStreamSize() == 0) throw std::out_of_range{ "BitStream is empty." };
 
 			if (num < 1) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -793,6 +835,8 @@ export namespace CHV4DTENSOR
 
 		void BitErase(size_t const& beg, size_t const& end)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			if (beg < 0 || beg >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
 			if (end < 0 || end >= BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
@@ -811,7 +855,7 @@ export namespace CHV4DTENSOR
 
 			Data.insert(Data.begin(), std::move_iterator(back.begin()), std::move_iterator(back.end()));
 
-			this->operator<<=(8 - eBits); //shift back to front
+			if(bBits != eBits) bBits > eBits ? this->operator>>=(bBits - eBits) : this->operator<<=(eBits - bBits);
 
 			size_t szFront = front.size();
 
@@ -824,16 +868,47 @@ export namespace CHV4DTENSOR
 			isValidReverseSentinel = false;
 		}
 
-		void InsertBits(size_t const& pos, std::deque<unsigned char>& insert, size_t const& nbits)
+		void InsertBits(size_t const& pos, std::deque<unsigned char>& stream, size_t const& nbits)
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			if (pos < -1 || pos > BitStreamSize()) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
-			if (nbits < 0 || nbits > insert.size() * 8) throw std::out_of_range{ "Invalid number of bits for removal specified." };
+			if (nbits < 0 || nbits > stream.size() * 8) throw std::out_of_range{ "Invalid number of bits for removal specified." };
 
-			if (insert.empty()) throw std::invalid_argument{ "Empty Data." };
+			if (stream.empty()) throw std::invalid_argument{ "Empty Data." };
 
-			CHV4DBITSTREAM Buffer;
+			size_t iBits{ pos % 8 }, iBytes{ (pos - iBits) / 8 };
 
+			std::deque<unsigned char> front{ std::move_iterator(Data.begin()), std::move_iterator(std::next(Data.begin(), iBytes)) };
+
+			std::deque<unsigned char> back{ std::move_iterator(std::next(Data.begin(), iBytes + 1)), std::move_iterator(Data.end()) };
+
+			Data.insert(Data.begin(), stream.begin(), stream.end());
+
+			if (iBits != 0) { Data.push_front({}); this->operator<<=(8 - iBits); }
+
+			size_t szFront = front.size();
+
+			Data.insert(Data.begin(), std::move_iterator(front.begin()), std::move_iterator(std::prev(front.end(), 1)));
+
+			Data[szFront] |= front[0];
+
+			front.clear(); front.insert(front.end(), std::move_iterator(Data.begin()), std::move_iterator(Data.end()));
+
+			Data.insert(Data.begin(), std::move_iterator(back.begin()), std::move_iterator(back.end()));
+
+			if (nbits < (8 - iBits)) { Data.pop_back(); size_t sBits = 8 - ((8 - iBits) - nbits); Data.push_front({}); this->operator<<=(8 - sBits); }
+
+			else if (nbits > (8 - iBits)) { size_t sBits = 8 - (nbits - (8 - iBits)); Data.push_front({}); this->operator<<=(8 - sBits); }
+
+			else if (nbits == (8 - iBits)) { Data.pop_back(); }
+
+			szFront = front.size();
+
+			Data.insert(Data.begin(), std::move_iterator(front.begin()), std::move_iterator(std::prev(front.end(), 1)));
+
+			Data[szFront] |= front[0];
 
 			isValidSentinel = false;
 
@@ -865,7 +940,8 @@ export namespace CHV4DTENSOR
 
 		}
 
-		size_t BitStreamSize()
+	public:
+		size_t BitStreamSize() const
 		{
 			if (Data.empty()) return 0;
 
@@ -875,7 +951,7 @@ export namespace CHV4DTENSOR
 
 		void BeginningOfStream()
 		{
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
 
 			Sentinel.first = Data.begin();
 
@@ -889,136 +965,48 @@ export namespace CHV4DTENSOR
 
 			isValidReverseSentinel = true;
 
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 		}
 
-		bool FindNextOf(std::deque<BIT> const& find)
+		bool FindNextOf(CHV4DBITSTREAM const& find)
 		{
-			if (find.empty()) throw std::invalid_argument{ "No search deque." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
 
-			if (find.size() > this->BitStreamSize()) return false;
+			if (find.BitStreamSize()) throw std::invalid_argument{ "No search deque." };
 
-			this->BeginningOfStream();
+			if (find.BitStreamSize() > this->BitStreamSize()) return false;
 
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
-			std::deque<BIT>::const_iterator citt;
-
-			std::pair<std::deque<unsigned char>::iterator, size_t> poke;
-
-			while (static_cast<size_t>((std::distance(std::next(Sentinel.first, 1), Data.end()) * 8) + (8 - Sentinel.second)) >= find.size())
+			for (size_t i = 0; i < this->BitStreamSize() - find.BitStreamSize(); ++i)
 			{
-				citt = find.begin();
+				size_t j{ 0 };
 
-				poke = Sentinel;
+				for (j = 0; j < find.BitStreamSize(); ++j) if (this->operator[](i + j) != find[j]) continue;
 
-				while (this->operator()((std::distance(Data.begin(), poke.first) * 8) + poke.second) == *citt && citt != find.end())
-				{
-					if (poke.second < 7)
-					{
-						++poke.second;
-
-					}
-					else
-					{
-						poke.first = std::next(poke.first, 1);
-
-						poke.second = 0;
-
-					}
-
-				}
-
-				if (citt == find.end()) return true;
-
-				if (Sentinel.first != std::prev(Data.end(), 1) && Sentinel.second == 7)
-				{
-					Sentinel.first = std::next(Sentinel.first, 1);
-
-					++Sentinel.second;
-
-				}
-				else if (Sentinel.second < 7)
-				{
-					++Sentinel.second;
-
-				}
-				else if (Sentinel.first == std::prev(Data.end(), 1) && Sentinel.second == 7)
-				{
-					return false;
-
-				}
-
-
+				if (j == find.BitStreamSize()) return true;
 			}
 
 			return false;
-
 		}
 
-		bool ReverseFindNextOf(std::deque<BIT> const& find)
+		bool ReverseFindNextOf(CHV4DBITSTREAM const& find)
 		{
-			if (find.empty()) throw std::invalid_argument{ "No search deque." };
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
 
-			if (find.size() > this->BitStreamSize()) return false;
+			if (find.BitStreamSize()) throw std::invalid_argument{ "No search deque." };
 
-			this->BeginningOfStream();
+			if (find.BitStreamSize() > this->BitStreamSize()) return false;
 
-			if (!isValidReverseSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
-			std::deque<BIT>::const_iterator citt;
-
-			std::pair<std::deque<unsigned char>::reverse_iterator, size_t> poke;
-
-			while (static_cast<size_t>((std::distance(std::next(ReverseSentinel.first, 1), Data.rend()) * 8) + (8 - ReverseSentinel.second)) >= find.size())
+			for (size_t i = this->BitStreamSize() - find.BitStreamSize(); i != 0; --i)
 			{
-				citt = find.begin();
+				size_t j{ 0 };
 
-				poke = ReverseSentinel;
+				for (j = 0; j < find.BitStreamSize(); ++j) if (this->operator[](i + j) != find[j]) continue;
 
-				while (this->operator()((std::distance(Data.rbegin(), poke.first) * 8, false) + poke.second) == *citt && citt != find.end())
-				{
-					if (poke.second < 7)
-					{
-						++poke.second;
-
-					}
-					else
-					{
-						poke.first = std::next(poke.first, 1);
-
-						poke.second = 0;
-
-					}
-
-				}
-
-				if (citt == find.end()) return true;
-
-				if (ReverseSentinel.first != std::prev(Data.rend(), 1) && ReverseSentinel.second == 7)
-				{
-					ReverseSentinel.first = std::next(ReverseSentinel.first, 1);
-
-					++ReverseSentinel.second;
-
-				}
-				else if (ReverseSentinel.second < 7)
-				{
-					++ReverseSentinel.second;
-
-				}
-				else if (ReverseSentinel.first == std::prev(Data.rend(), 1) && ReverseSentinel.second == 7)
-				{
-					return false;
-
-				}
-
-
+				if (j == find.BitStreamSize()) return true;
 			}
 
 			return false;
-
 		}
 
 		size_t ForwardSentinelPosition()
@@ -1026,7 +1014,6 @@ export namespace CHV4DTENSOR
 			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			return (std::distance(Data.begin(), Sentinel.first) * 8) + Sentinel.second;
-
 		}
 
 		size_t ReverseSentinelPosition()
@@ -1034,15 +1021,15 @@ export namespace CHV4DTENSOR
 			if (!ValidReverseSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 
 			return (std::distance(Data.rbegin(), ReverseSentinel.first) * 8) + ReverseSentinel.second;
-
 		}
 
 		size_t Remain()
 		{
+			if (Data.empty()) throw std::runtime_error{ "Empty Stream." };
+
 			if (ForwardSentinelPosition() > BitStreamSize()) throw std::runtime_error{ "BitStream overrun." };
 
 			return BitStreamSize() - ForwardSentinelPosition();
-
 		}
 
 		void ByteAlignNext()
@@ -1052,14 +1039,11 @@ export namespace CHV4DTENSOR
 			if (Sentinel.first == Data.end()) Sentinel.second = BitPosition;
 
 			else Sentinel.second = 7;
-
 		}
 
 		std::deque<unsigned char>& GetData()
 		{
-
 			return Data;
-
 		}
 
 		std::deque<unsigned char> GetDataView()
@@ -1069,7 +1053,6 @@ export namespace CHV4DTENSOR
 			isValidReverseSentinel = false;
 
 			return std::deque<unsigned char>{ std::move_iterator(Data.begin()), std::move_iterator(Data.end()) };
-
 		}
 
 		void EndOfStream()
@@ -1088,14 +1071,15 @@ export namespace CHV4DTENSOR
 
 			isValidReverseSentinel = true;
 
-			if (!isValidSentinel) throw std::runtime_error{ "Invalid Sentinel." };
-
+			if (!ValidSentinel()) throw std::runtime_error{ "Invalid Sentinel." };
 		}
 
 	private:
 		bool ValidSentinel()
 		{
-			if (!isValidSentinel) return false;
+			if (Data.empty()) return false;
+
+			if (!ValidSentinel) return false;
 
 			if (Data.empty())
 			{
@@ -1114,12 +1098,13 @@ export namespace CHV4DTENSOR
 			}
 
 			return true;
-
 		}
 
 		bool ValidReverseSentinel()
 		{
-			if (!isValidSentinel) return false;
+			if (Data.empty()) return false;
+
+			if (!ValidReverseSentinel) return false;
 
 			if (Data.empty())
 			{
@@ -1138,7 +1123,6 @@ export namespace CHV4DTENSOR
 			}
 
 			return true;
-
 		}
 
 	private:
