@@ -22,7 +22,7 @@
     <ClCompile Include="CHV4DALGEBRA.ixx" />
     <ClCompile Include="CHV4DARITHMETIC.ixx" />
     <ClCompile Include="CHV4DBITSTREAM.ixx" />
-    <ClCompile Include="CHV4DBYTESTREAM.ixx" />
+    <ClCompile Include="CHV4DFIXEDBYTES.ixx" />
     <ClCompile Include="CHV4DDOUBLE.ixx" />
     <ClCompile Include="CHV4DLDOUBLE.ixx" />
     <ClCompile Include="CHV4DFORWARD.ixx" />

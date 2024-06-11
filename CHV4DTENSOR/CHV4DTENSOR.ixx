@@ -6,7 +6,7 @@ export import :CHV4DFORWARD;
 export import :CHV4DRESOURCE;
 
 export import :CHV4DBITSTREAM;
-export import :CHV4DBYTESTREAM;
+export import :CHV4DFIXEDBYTES;
 export import :CHV4DINTEGER;
 export import :CHV4DSINGLE;
 export import :CHV4DDOUBLE;

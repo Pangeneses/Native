@@ -7,7 +7,7 @@ export module CHV4DTENSOR:CHV4DINTEGER;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DBYTESTREAM;
+import :CHV4DFIXEDBYTES;
 
 export namespace CHV4DTENSOR
 {

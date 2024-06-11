@@ -37,9 +37,6 @@
     <ClCompile Include="CHV4DLDOUBLE.ixx">
       <Filter>iv. CHV4DNUMBER\5. CHV4DLDOUBLE</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DBYTESTREAM.ixx">
-      <Filter>iv. CHV4DNUMBER\1. CHV4DBYTESTREAM</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DSIMD.ixx">
       <Filter>iv. CHV4DNUMBER\6. CHV4DSIMD</Filter>
     </ClCompile>
@@ -48,6 +45,9 @@
     </ClCompile>
     <ClCompile Include="CHV4DAVX512.ixx">
       <Filter>iv. CHV4DNUMBER\7. CHV4DAVX512</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DFIXEDBYTES.ixx">
+      <Filter>iv. CHV4DNUMBER\1. CHV4DFIXEDBYTES</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,7 +102,7 @@
     <Filter Include="iv. CHV4DNUMBER\0. CHV4DBITSTREAM">
       <UniqueIdentifier>{9546628e-6668-447f-b8f0-0b4f40776977}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\1. CHV4DBYTESTREAM">
+    <Filter Include="iv. CHV4DNUMBER\1. CHV4DFIXEDBYTES">
       <UniqueIdentifier>{55064bf9-ae29-4787-a060-02eb746fde38}</UniqueIdentifier>
     </Filter>
     <Filter Include="iv. CHV4DNUMBER\7. CHV4DAVX512">
