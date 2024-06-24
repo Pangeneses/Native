@@ -15,7 +15,7 @@ export namespace CHV4DTENSOR
 	{
 	public:
 		CHV4DINTEGER() { Data = 0; }
-		/*
+		
 		CHV4DINTEGER(CHV4DINTEGER const& x) { Data = x.Data; }
 
 		CHV4DINTEGER(int8_t  const& x) { Data = x; }
@@ -39,19 +39,19 @@ export namespace CHV4DTENSOR
 		{
 			if (Data >= -127i8 && Data <= 127i8) return Data;
 
-			else throw std::overflow_error{ "Integer overrun." };
+			else throw std::overflow_error{ "Integer overflow." };
 		}
 		template<> int16_t operator() < int16_t > () const
 		{
 			if (Data >= -32767i16 && Data <= 32767i16) return Data;
 
-			else throw std::overflow_error{ "Integer overrun." };
+			else throw std::overflow_error{ "Integer overflow." };
 		}
 		template<> int32_t operator() < int32_t > () const
 		{
 			if (Data >= -2147483647i32 && Data <= 2147483647i32) return Data;
 
-			else throw std::overflow_error{ "Integer overrun." };
+			else throw std::overflow_error{ "Integer overflow." };
 		}
 		template<> int64_t operator() < int64_t > () const
 		{
@@ -62,9 +62,16 @@ export namespace CHV4DTENSOR
 			return *this;
 		}
 
+		unsigned char& operator[](size_t const& i)
+		{
+			if (i > 15) throw std::runtime_error{ "Index out of range." };
+
+			return reinterpret_cast<unsigned char*>(Data)[15 - i];
+		}
+
 		CHV4DINTEGER operator++()
 		{
-			if (Data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= 9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			Data = Data + 1;
 
@@ -75,7 +82,7 @@ export namespace CHV4DTENSOR
 		{
 			assert_integer < T > ();
 
-			if (Data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= 9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			A.Data = A.Data + 1;
 
@@ -96,9 +103,9 @@ export namespace CHV4DTENSOR
 
 			return ret;
 		}
-		CHV4DINTEGER operator++()
+		CHV4DINTEGER operator++(int)
 		{
-			if (Data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= 9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			int64_t Q = Data;
 
@@ -111,7 +118,7 @@ export namespace CHV4DTENSOR
 		{
 			assert_integer < T > ();
 
-			if (Data >= 9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= 9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			T ret;
 
@@ -135,7 +142,7 @@ export namespace CHV4DTENSOR
 
 		CHV4DINTEGER operator--()
 		{
-			if (Data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= -9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			Data = Data - 1;
 
@@ -146,7 +153,7 @@ export namespace CHV4DTENSOR
 		{
 			assert_integer < T > ();
 
-			if (Data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= -9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			A.Data = A.Data - 1;
 
@@ -167,9 +174,9 @@ export namespace CHV4DTENSOR
 
 			return ret;
 		}
-		CHV4DINTEGER operator++()
+		CHV4DINTEGER operator--(int)
 		{
-			if (Data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= -9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			int64_t Q = Data;
 
@@ -182,7 +189,7 @@ export namespace CHV4DTENSOR
 		{
 			assert_integer < T > ();
 
-			if (Data >= -9223372036854775808i64) throw std::overflow_error{ "Integer overflow" };
+			if (Data >= -9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
 			T ret;
 
@@ -261,7 +268,14 @@ export namespace CHV4DTENSOR
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			if (A.Data > 9223372036854775808i64 - B.Data) throw std::overflow_error{ "Integer overrun." };
+			if (A.Data < 0 && B.Data < 0)
+			{
+				if (A.Data < -9223372036854775808i64 - B.Data) throw std::overflow_error{ "Integer overflow." };
+			}
+			else if (A.Data >= 0 && B.Data >= 0)
+			{
+				if (A.Data > 9223372036854775808i64 - B.Data) throw std::overflow_error{ "Integer overflow." };
+			}
 
 			A.Data = A.Data + B.Data;
 
@@ -373,17 +387,21 @@ export namespace CHV4DTENSOR
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			float Q = static_cast < float > (A.Data) / static_cast < float > (B.Data);
+			if (B.Data == 0) throw std::runtime_error{ "Dvision by zero." };
 
-			return Q;
+			if (A.Data == 0) return 0.0f;
+
+			return static_cast <float> (A.Data) / static_cast <float> (B.Data);
 		}
 		template<> double operator/ < double > (CHV4DINTEGER const& x) const
 		{
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			float Q = static_cast < double > (A.Data) / static_cast < double > (B.Data);
+			if (B.Data == 0) throw std::runtime_error{ "Dvision by zero." };
 
-			return Q;
+			if (A.Data == 0) return 0.0;
+
+			return static_cast <double> (A.Data) / static_cast <double> (B.Data);
 		}
 		template<typename T, typename I> T operator/(I const& x) const
 		{
@@ -398,17 +416,12 @@ export namespace CHV4DTENSOR
 			{
 				Q = A.operator/(B);
 			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
 			catch (std::runtime_error error)
 			{
 				throw error;
 			}
 
 			return Q;
-
 		}
 
 		CHV4DINTEGER operator*(CHV4DINTEGER const& x) const
@@ -417,14 +430,29 @@ export namespace CHV4DTENSOR
 
 			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
 
-			double reciprocal = MAX_INT.operator/ < double, uint64_t > (B.Data);
+			double reciprocal{ 0 };
 
-			if (A.Data <= reciprocal && A.Data >= reciprocal) throw std::overflow_error{ "Integer overrun." };
+			try
+			{
+				reciprocal = MAX_INT.operator/ < double, uint64_t > (B.Data);
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
 
+			if (reciprocal >= 0)
+			{
+				if (A.Data > reciprocal) throw std::overflow_error{ "Integer overrun." };
+			}
+			else if (reciprocal < 0)
+			{
+				if (A.Data < reciprocal) throw std::overflow_error{ "Integer overrun." };
+			}
+			
 			A.Data = A.Data * B.Data;
 
 			return A;
-
 		}
 		template<typename T, typename I>
 		T operator*(I const& x) const
@@ -434,13 +462,8 @@ export namespace CHV4DTENSOR
 
 			CHV4DINTEGER A{ *this }, B{ x };
 
-			CHV4DINTEGER MAX_INT{ 9223372036854775808i64 };
 
-			double reciprocal = MAX_INT.operator/ < double, uint64_t > (B.Data);
 
-			if (A.Data <= reciprocal && A.Data >= reciprocal) throw std::overflow_error{ "Integer overrun." };
-
-			A.Data = A.Data * B.Data;
 
 			T ret;
 
@@ -1013,7 +1036,7 @@ export namespace CHV4DTENSOR
 			}
 
 		}
-		*/
+		
 	private:
 		int64_t Data{ 0 };
 
