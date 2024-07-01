@@ -1,5 +1,7 @@
 module;
 
+#include <type_traits>
+
 #include <stdexcept>
 
 export module CHV4DTENSOR:CHV4DRESOURCE;
@@ -8,35 +10,43 @@ import :CHV4DFORWARD;
 
 export namespace CHV4DTENSOR
 {
-	template<typename T> void assert_char() { static_assert(false, "Non Float type."); }
+	template<typename T> 
+	void assert_char() 
+	{ 
+		static_assert (
+			std::is_same<T, const char>::value ||
+			std::is_same<T, const unsigned char>::value ||
+			std::is_same<T, const char*>::value ||
+			std::is_same<T, const unsigned char*>::value,
+			"Non Character Type.");
+	}
 
-	template<> void assert_char<const char>() {}
-	template<> void assert_char<const unsigned char>() {}
-	template<> void assert_char<const char*>() {}
-	template<> void assert_char<const unsigned char*>() {}
+	template<typename T> 
+	void assert_array() 
+	{ 
+		static_assert(std::is_same<T, const char* const>::value, "Non Array Type.");
+	}
 
-	template<typename T> void assert_array() { static_assert(false, "Non Float type."); }
+	template<typename T> void assert_precision() 
+	{ 
+		static_assert(
+			std::is_same<T, float>::value || 
+			std::is_same<T, double>::value || 
+			std::is_same<T, long double>::value, 
+			"Non Float type.");
+	}
 
-	template<> void assert_array<const char* const>() {}
-
-	template<typename T> void assert_precision() { static_assert(false, "Non Float type."); }
-
-	template<> void assert_precision<float>() {}
-	template<> void assert_precision<double>() {}
-	template<> void assert_precision<long double>() {}
-
-	template<typename T> void assert_integer() { static_assert(false, "Non Integer type."); }
-
-	template<> void assert_integer <CHV4DINTEGER>() {}
-
-	template<> void assert_integer <std::uint8_t>() {}
-	template<> void assert_integer <std::uint16_t>() {}
-	template<> void assert_integer <std::uint32_t>() {}
-	template<> void assert_integer <std::uint64_t>() {}
-
-	template<> void assert_integer <std::int8_t>() {}
-	template<> void assert_integer <std::int16_t>() {}
-	template<> void assert_integer <std::int32_t>() {}
-	template<> void assert_integer <std::int64_t>() {}
-
+	template<typename T> void assert_integer() 
+	{ 
+		static_assert(
+			std::is_same<T, std::uint8_t>::value ||
+			std::is_same<T, std::uint16_t>::value ||
+			std::is_same<T, std::uint32_t>::value ||
+			std::is_same<T, std::uint64_t>::value ||
+			std::is_same<T, std::int8_t>::value ||
+			std::is_same<T, std::int16_t>::value ||
+			std::is_same<T, std::int32_t>::value ||
+			std::is_same<T, std::int64_t>::value,
+			"Non Integer type.");
+	}	
 }

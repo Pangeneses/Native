@@ -12,7 +12,364 @@ import :CHV4DSINGLE;
 
 export namespace CHV4DTENSOR
 {
+	template<typename T, typename I>
+	T Abs()
+	{
+		static_assert(false, "Non Integer type.");
+	}
+	template<>
+	float Abs<float>() 	
+	{
+		unsigned char Data[4]{ 0 };
+
+		{
+			if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
+
+			unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
+
+			Data[0] = Data[0] | fpexp >> 1;
+
+			Data[1] = 0 | fpexp << 7;
+		}
+
+		{
+			if (mantissa > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
+
+			unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
+
+			Data[3] = fpmantissa[0];
+			Data[2] = fpmantissa[1];
+			Data[1] = Data[1] | (fpmantissa[2] & 0b01111111);
+		}
+
+		return *reinterpret_cast<float*>(Data);
+	}
 	/*
+	template<typename T, typename I> T IntegerPower(I const& base, int64_t pow)
+	{
+		static_assert(false, "Non Integer type.");
+	}
+	template<>
+	CHV4DINTEGER IntegerPower <CHV4DINTEGER, CHV4DINTEGER>(CHV4DINTEGER const& base, int64_t pow)
+	{
+		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
+
+		if (pow == 0)
+		{
+			return CHV4DINTEGER{ 1i64 };
+		}
+		else if (pow != 0 && base() == 0ui64)
+		{
+			return CHV4DINTEGER{ 0i64 };
+		}
+
+		CHV4DINTEGER A{ base() };
+
+		try
+		{
+			A = A.operator^< CHV4DINTEGER >(pow);
+		}
+		catch (std::overflow_error error)
+		{
+			throw error;
+		}
+		catch (std::runtime_error error)
+		{
+			throw error;
+		}
+
+		return A;
+	}
+	template<>
+	int64_t IntegerPower <int64_t, CHV4DINTEGER>(CHV4DINTEGER const& base, int64_t pow)
+	{
+		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
+
+		if (pow == 0)
+		{
+			return 1i64;
+		}
+		else if (pow != 0 && base() == 0ui64)
+		{
+			return 0i64;
+		}
+
+		CHV4DINTEGER A{ base() };
+
+		try
+		{
+			A = A.operator^< CHV4DINTEGER >(pow);
+		}
+		catch (std::overflow_error error)
+		{
+			throw error;
+		}
+		catch (std::runtime_error error)
+		{
+			throw error;
+		}
+
+		return A.operator() < int64_t > ();
+	}
+	template<>
+	int64_t IntegerPower <int64_t, int64_t>(int64_t const& base, int64_t pow)
+	{
+		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
+
+		if (pow == 0)
+		{
+			return 1i64;
+		}
+		else if (pow != 0 && base == 0ui64)
+		{
+			return 0i64;
+		}
+
+		CHV4DINTEGER A{ base };
+
+		try
+		{
+			A = A.operator^< CHV4DINTEGER >(pow);
+		}
+		catch (std::overflow_error error)
+		{
+			throw error;
+		}
+		catch (std::runtime_error error)
+		{
+			throw error;
+		}
+
+		return A.operator() < int64_t > ();
+	}
+
+	uint64_t nWholeRoot(CHV4DINTEGER const& number, size_t n, float eps = 0.0000000001f)
+	{
+		if (number == 0)
+		{
+			return 0ui64;
+		}
+		else if (number < 0)
+		{
+			throw std::runtime_error{ "Imaginary." };
+		}
+
+		if (n == 0)
+		{
+			return 0ui64;
+		}
+
+		int64_t var = number();
+
+		double root{ 0.0 };
+
+		double ret{ 1.0 };
+
+		while (Absolute(IntegerPower < int64_t, int64_t > (ret, n) - var) > eps)
+		{
+			root = ret;
+
+			ret = root - ((iPow{ root, pow }()() - var()) / (pow * iPow{ root, pow - 1 }()()));
+
+		}
+
+		return ret;
+
+	}
+
+	{
+			while (Absolute(CHV4DDOUBLE{ iPow{ ret, pow }()() - var() }) > eps)
+			{
+				root = ret;
+
+				ret = root - ((iPow{ root, pow }()() - var()) / (pow * iPow{ root, pow - 1 }()()));
+
+			}
+
+			return ret;
+
+	};
+
+
+
+
+
+	int64_t Root(int64_t const& number, int64_t n)
+	{
+		if (pow.sign) throw std::runtime_error{ "Unsigned powers." };
+
+		if (pow.Data == 0)
+		{
+			return CHV4DINTEGER{ 1ui64 };
+		}
+		else if (pow.Data != 0 && Data == 0ui64)
+		{
+			return CHV4DINTEGER{ 0ui64 };
+		}
+
+		CHV4DINTEGER z{ *this };
+
+		for (uint64_t i = 0; i < pow.Data; i++)
+		{
+			try
+			{
+				z = z.operator*< CHV4DINTEGER >(*this);
+			}
+			catch (std::overflow_error error)
+			{
+				throw error;
+			}
+			catch (std::runtime_error error)
+			{
+				throw error;
+			}
+		}
+
+		return z;
+
+	}
+
+	void ToFrac(float const& p, CHV4DINTEGER& a, CHV4DINTEGER& b)
+	{
+		float pow{ p };
+
+		if (pow < 0.0f) throw std::out_of_range{ "Invert x to remove negative power." };
+
+		if (pow >= 1.0f)
+		{
+			a = 1;
+
+			b = 1;
+
+		}
+		else if (pow > 1.0f)
+		{
+			size_t mag;
+
+			for (mag = 1; (pow / 2.0f) > 1.0; mag++)
+			{
+				pow = pow / 2.0f;
+
+			}
+
+			float scan;
+
+			for (scan = 0.0f; scan < 2147483648.0f; scan += 80000.0f)
+			{
+				float frac = (2147483648.0f + scan) / (2147483648.0f - scan);
+
+				float floor = fTrunc(frac, 1000000.0f);
+
+				float roof = fTrunc(frac, 1000000.0f) + 0.0001f;
+
+				if (floor < pow && pow < roof) break;
+
+			}
+
+			a = (2147483648 + static_cast<uint64_t>(scan));
+
+			b = 2147483648 - static_cast<uint64_t>(scan);
+
+			for (size_t i = 0; i < mag; i++)
+			{
+				a *= FloatToUint32(fIPow(2, i));
+
+				if (i > 2)
+				{
+					if ((i - 1) % 2 == 0)
+					{
+						b /= DoubleToUint64(cIPow(2, i));
+
+					}
+
+				}
+
+			}
+
+		}
+		else if (pow < 1.0f && pow > 0.0f)
+		{
+		}
+		else if (pow == 0.0f)
+		{
+		}
+		else if (pow < 0.0f)
+		{
+		}
+
+	} // 1.xxxxx shift to integer reduce
+	void ToFrac(double const& p, CHV4DINTEGER& a, CHV4DINTEGER& b)
+	{
+		float pow{ p };
+
+		if (pow < 0.0f) throw std::out_of_range{ "Invert x to remove negative power." };
+
+		if (pow >= 1.0f)
+		{
+			a = 1;
+
+			b = 1;
+
+		}
+		else if (pow > 1.0f)
+		{
+			size_t mag;
+
+			for (mag = 1; (pow / 2.0f) > 1.0; mag++)
+			{
+				pow = pow / 2.0f;
+
+			}
+
+			float scan;
+
+			for (scan = 0.0f; scan < 2147483648.0f; scan += 80000.0f)
+			{
+				float frac = (2147483648.0f + scan) / (2147483648.0f - scan);
+
+				float floor = fTrunc(frac, 1000000.0f);
+
+				float roof = fTrunc(frac, 1000000.0f) + 0.0001f;
+
+				if (floor < pow && pow < roof) break;
+
+			}
+
+			a = (2147483648 + static_cast<uint64_t>(scan));
+
+			b = 2147483648 - static_cast<uint64_t>(scan);
+
+			for (size_t i = 0; i < mag; i++)
+			{
+				a *= FloatToUint32(fIPow(2, i));
+
+				if (i > 2)
+				{
+					if ((i - 1) % 2 == 0)
+					{
+						b /= DoubleToUint64(cIPow(2, i));
+
+					}
+
+				}
+
+			}
+
+		}
+		else if (pow < 1.0f && pow > 0.0f)
+		{
+		}
+		else if (pow == 0.0f)
+		{
+		}
+		else if (pow < 0.0f)
+		{
+		}
+
+	}
+
+	* 
+	* 
 	class fPow;
 	class iPow
 	{

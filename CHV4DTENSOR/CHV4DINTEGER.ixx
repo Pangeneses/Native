@@ -1,5 +1,7 @@
 module;
 
+#include <type_traits>
+
 #include <stdexcept>
 
 export module CHV4DTENSOR:CHV4DINTEGER;
@@ -7,10 +9,9 @@ export module CHV4DTENSOR:CHV4DINTEGER;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DFIXEDBYTES;
-
 export namespace CHV4DTENSOR
 {
+	/*
 	class CHV4DINTEGER
 	{
 	public:
@@ -35,23 +36,28 @@ export namespace CHV4DTENSOR
 
 		template<typename T> T operator()() const
 		{
-			static_assert(false, "Non Integer type.");
+			static_assert(
+				std::is_same<T, int8_t>::value ||
+				std::is_same<T, int16_t>::value ||
+				std::is_same<T, int32_t>::value ||
+				std::is_same<T, int64_t>::value,
+				"Non Integer type.");
 		}
 		template<> int8_t operator() < int8_t > () const
 		{
-			if (Data >= -127i8 && Data <= 127i8) return Data;
+			if (Data >= -127i8 && Data <= 127i8) return static_cast <int8_t> (Data);
 
 			else throw std::overflow_error{ "Integer overflow." };
 		}
 		template<> int16_t operator() < int16_t > () const
 		{
-			if (Data >= -32767i16 && Data <= 32767i16) return Data;
+			if (Data >= -32767i16 && Data <= 32767i16) return static_cast <int16_t> (Data);
 
 			else throw std::overflow_error{ "Integer overflow." };
 		}
 		template<> int32_t operator() < int32_t > () const
 		{
-			if (Data >= -2147483647i32 && Data <= 2147483647i32) return Data;
+			if (Data >= -2147483647i32 && Data <= 2147483647i32) return static_cast < int32_t > (Data);
 
 			else throw std::overflow_error{ "Integer overflow." };
 		}
@@ -86,7 +92,7 @@ export namespace CHV4DTENSOR
 
 			if (Data >= 9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
-			A.Data = A.Data + 1;
+			Data = Data + 1;
 
 			T ret;
 
@@ -137,7 +143,7 @@ export namespace CHV4DTENSOR
 				throw error;
 			}
 
-			A.Data = A.Data + 1;
+			Data = Data + 1;
 
 			return ret;
 		}
@@ -157,7 +163,7 @@ export namespace CHV4DTENSOR
 
 			if (Data >= -9223372036854775807i64) throw std::overflow_error{ "Integer overflow" };
 
-			A.Data = A.Data - 1;
+			Data = Data - 1;
 
 			T ret;
 
@@ -208,7 +214,7 @@ export namespace CHV4DTENSOR
 				throw error;
 			}
 
-			A.Data = A.Data - 1;
+			Data = Data - 1;
 
 			return ret;
 		}
@@ -308,7 +314,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				ret = z.operator() < T > ();
+				ret = A.operator() < T > ();
 			}
 			catch (std::overflow_error error)
 			{
@@ -367,7 +373,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				ret = z.operator() < T > ();
+				ret = A.operator() < T > ();
 			}
 			catch (std::overflow_error error)
 			{
@@ -383,7 +389,10 @@ export namespace CHV4DTENSOR
 
 		template<typename T> T operator/(CHV4DINTEGER const& x) const
 		{
-			static_assert(false, "Non Integer type.");
+			static_assert(
+				
+				
+				"Non Integer type.");
 		}
 		template<> float operator/ < float > (CHV4DINTEGER const& x) const
 		{
@@ -582,7 +591,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				ret = A.operator() < T > ();
+				ret = Data.operator() < T > ();
 			}
 			catch (std::overflow_error error)
 			{
@@ -673,7 +682,6 @@ export namespace CHV4DTENSOR
 
 			return ret;
 		}
-
 
 		CHV4DINTEGER operator^(CHV4DINTEGER const x) const
 		{
@@ -853,7 +861,7 @@ export namespace CHV4DTENSOR
 			*this = A;
 		}
 		template<typename T, typename I>
-		T operator+(I const& x) const
+		T operator+=(I const& x) const
 		{
 			assert_integer < T >();
 			assert_integer < I >();
@@ -862,7 +870,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A = A.operator+ < T > (B);
+				A = A.operator+= < T > (B);
 			}
 			catch (std::overflow_error error)
 			{
@@ -907,7 +915,7 @@ export namespace CHV4DTENSOR
 			*this = A;
 		}
 		template<typename T, typename I>
-		T operator<<(I const& x) const
+		T operator-=(I const& x) const
 		{
 			assert_integer < T >();
 			assert_integer < I >();
@@ -916,7 +924,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A = A.operator- < T > (B);
+				A = A.operator-= < T > (B);
 			}
 			catch (std::overflow_error error)
 			{
@@ -961,7 +969,7 @@ export namespace CHV4DTENSOR
 			*this = A;
 		}
 		template<typename T, typename I>
-		T operator<<(I const& x) const
+		T operator*=(I const& x) const
 		{
 			assert_integer < T >();
 			assert_integer < I >();
@@ -970,7 +978,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A = A.operator<< < T > (B);
+				A = A.operator*= < T > (B);
 			}
 			catch (std::overflow_error error)
 			{
@@ -1104,7 +1112,6 @@ export namespace CHV4DTENSOR
 
 			return ret;
 		}
-
 
 		void operator|=(CHV4DINTEGER const& x)
 		{
@@ -1322,317 +1329,5 @@ export namespace CHV4DTENSOR
 		int64_t Data{ 0 };
 
 	};
-
-	template<typename T, typename I> T Pow(I const& base, int64_t pow)
-	{
-		static_assert(false, "Non Integer type.");
-	}
-	template<>
-	CHV4DINTEGER Pow <CHV4DINTEGER, CHV4DINTEGER>(CHV4DINTEGER const& base, int64_t pow)
-	{
-		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
-
-		if (pow == 0)
-		{
-			return CHV4DINTEGER{ 1i64 };
-		}
-		else if (pow != 0 && base() == 0ui64)
-		{
-			return CHV4DINTEGER{ 0i64 };
-		}
-
-		CHV4DINTEGER A{ base() };
-
-		try
-		{
-			A = A.operator^< CHV4DINTEGER >(pow);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return A;
-	}
-	template<>
-	int64_t Pow <int64_t, CHV4DINTEGER>(CHV4DINTEGER const& base, int64_t pow)
-	{
-		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
-
-		if (pow == 0)
-		{
-			return 1i64;
-		}
-		else if (pow != 0 && base() == 0ui64)
-		{
-			return 0i64;
-		}
-
-		CHV4DINTEGER A{ base() };
-
-		try
-		{
-			A = A.operator^< CHV4DINTEGER >(pow);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return A.operator() < int64_t > ();
-	}
-	template<>
-	int64_t Pow <int64_t, int64_t>(int64_t const& base, int64_t pow)
-	{
-		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
-
-		if (pow == 0)
-		{
-			return 1i64;
-		}
-		else if (pow != 0 && base == 0ui64)
-		{
-			return 0i64;
-		}
-
-		CHV4DINTEGER A{ base };
-
-		try
-		{
-			A = A.operator^< CHV4DINTEGER >(pow);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return A.operator() < int64_t > ();
-	}
-
-	CHV4DINTEGER Root(CHV4DINTEGER pow)
-	{
-		if (pow.sign) throw std::runtime_error{ "Unsigned powers." };
-
-		if (pow.Data == 0)
-		{
-			return CHV4DINTEGER{ 1ui64 };
-		}
-		else if (pow.Data != 0 && Data == 0ui64)
-		{
-			return CHV4DINTEGER{ 0ui64 };
-		}
-
-		CHV4DINTEGER z{ *this };
-
-		for (uint64_t i = 0; i < pow.Data; i++)
-		{
-			try
-			{
-				z = z.operator*< CHV4DINTEGER >(*this);
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-		}
-
-		return z;
-
-	}
-	template<typename T, typename I>
-	T Root(I x)
-	{
-		assert_integer < T >();
-		assert_integer < I >();
-
-		CHV4DINTEGER pow{ x };
-
-		CHV4DINTEGER res;
-
-		try
-		{
-			res = this->Root(pow);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		T ret;
-
-		try
-		{
-			ret = res.operator() < T > ();
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return ret;
-	}
-
-	void ToFrac(float const& p, CHV4DINTEGER& a, CHV4DINTEGER& b)
-	{
-		float pow{ p };
-
-		if (pow < 0.0f) throw std::out_of_range{ "Invert x to remove negative power." };
-
-		if (pow >= 1.0f)
-		{
-			a = 1;
-
-			b = 1;
-
-		}
-		else if (pow > 1.0f)
-		{
-			size_t mag;
-
-			for (mag = 1; (pow / 2.0f) > 1.0; mag++)
-			{
-				pow = pow / 2.0f;
-
-			}
-
-			float scan;
-
-			for (scan = 0.0f; scan < 2147483648.0f; scan += 80000.0f)
-			{
-				float frac = (2147483648.0f + scan) / (2147483648.0f - scan);
-
-				float floor = fTrunc(frac, 1000000.0f);
-
-				float roof = fTrunc(frac, 1000000.0f) + 0.0001f;
-
-				if (floor < pow && pow < roof) break;
-
-			}
-
-			a = (2147483648 + static_cast<uint64_t>(scan));
-
-			b = 2147483648 - static_cast<uint64_t>(scan);
-
-			for (size_t i = 0; i < mag; i++)
-			{
-				a *= FloatToUint32(fIPow(2, i));
-
-				if (i > 2)
-				{
-					if ((i - 1) % 2 == 0)
-					{
-						b /= DoubleToUint64(cIPow(2, i));
-
-					}
-
-				}
-
-			}
-
-		}
-		else if (pow < 1.0f && pow > 0.0f)
-		{
-		}
-		else if (pow == 0.0f)
-		{
-		}
-		else if (pow < 0.0f)
-		{
-		}
-
-	} // 1.xxxxx shift to integer reduce
-	void ToFrac(double const& p, CHV4DINTEGER& a, CHV4DINTEGER& b)
-	{
-		float pow{ p };
-
-		if (pow < 0.0f) throw std::out_of_range{ "Invert x to remove negative power." };
-
-		if (pow >= 1.0f)
-		{
-			a = 1;
-
-			b = 1;
-
-		}
-		else if (pow > 1.0f)
-		{
-			size_t mag;
-
-			for (mag = 1; (pow / 2.0f) > 1.0; mag++)
-			{
-				pow = pow / 2.0f;
-
-			}
-
-			float scan;
-
-			for (scan = 0.0f; scan < 2147483648.0f; scan += 80000.0f)
-			{
-				float frac = (2147483648.0f + scan) / (2147483648.0f - scan);
-
-				float floor = fTrunc(frac, 1000000.0f);
-
-				float roof = fTrunc(frac, 1000000.0f) + 0.0001f;
-
-				if (floor < pow && pow < roof) break;
-
-			}
-
-			a = (2147483648 + static_cast<uint64_t>(scan));
-
-			b = 2147483648 - static_cast<uint64_t>(scan);
-
-			for (size_t i = 0; i < mag; i++)
-			{
-				a *= FloatToUint32(fIPow(2, i));
-
-				if (i > 2)
-				{
-					if ((i - 1) % 2 == 0)
-					{
-						b /= DoubleToUint64(cIPow(2, i));
-
-					}
-
-				}
-
-			}
-
-		}
-		else if (pow < 1.0f && pow > 0.0f)
-		{
-		}
-		else if (pow == 0.0f)
-		{
-		}
-		else if (pow < 0.0f)
-		{
-		}
-
-	}
-
+	*/
 }

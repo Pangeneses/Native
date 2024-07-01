@@ -274,77 +274,44 @@ export namespace CHV4DTENSOR
 		}
 
 	public:
-		bool Sign() const { return sign ? true : false; }
+	bool Sign() const { return sign ? true : false; }
 
-		bool Infinity() const { return (exponent == 65535ui16) && (mantissa != 0ui64) ? true : false; }
+	bool Infinity() const { return (exponent == 65535ui16) && (mantissa != 0ui64) ? true : false; }
 
-		size_t Exponent() const { return exponent; }
+	size_t Exponent() const { return exponent; }
 
-		size_t Mantissa() const { return mantissa; }
+	size_t Mantissa() const { return mantissa; }
 
-		template<typename T>
-		T Value() const
+	template<typename T>
+	T Value() const
+	{
+		static_assert(false, "Non Precision type.");
+	}
+	template<>
+	CHV4DF32 Value<CHV4DF32>() const
+	{
+		return *this;
+	}
+	template<>
+	float Value<float>() const
+	{
+		float fpvalue{ 0 };
+
+		try
 		{
-			static_assert(false, "Non Precision type.");
+			fpvalue = this->operator() < float > ();
 		}
-		template<>
-		CHV4DF32 Value<CHV4DF32>() const
+		catch (std::overflow_error error)
 		{
-			return *this;
+			throw error;
 		}
-		template<>
-		float Value<float>() const
+		catch (std::runtime_error error)
 		{
-			float fpvalue{ 0 };
-
-			try
-			{
-				fpvalue = this->operator() < float > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return fpvalue;
+			throw error;
 		}
 
-		template<typename T>
-		T Abs() const
-		{
-			static_assert(false, "Non Integer type.");
-		}
-		template<>
-		float Abs<float>() const
-		{
-			unsigned char Data[4]{ 0 };
-
-			{
-				if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
-
-				unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
-
-				Data[0] = Data[0] | fpexp >> 1;
-
-				Data[1] = 0 | fpexp << 7;
-			}
-
-			{
-				if (mantissa > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
-
-				unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
-
-				Data[3] = fpmantissa[0];
-				Data[2] = fpmantissa[1];
-				Data[1] = Data[1] | (fpmantissa[2] & 0b01111111);
-			}
-
-			return *reinterpret_cast<float*>(Data);
-		}
+		return fpvalue;
+	}
 
 		template<typename T>
 		T Trunc(size_t sigBits) const
