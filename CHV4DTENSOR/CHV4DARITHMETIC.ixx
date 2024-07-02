@@ -8,19 +8,26 @@ import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 import :CHV4DINTEGER;
-import :CHV4DSINGLE;
 
 export namespace CHV4DTENSOR
 {
-	template<typename T, typename I>
-	T Abs()
+	/*
+
+
+
+	template<typename T>
+	T Abs(T const&)
 	{
-		static_assert(false, "Non Integer type.");
+		assert_precision < T > ();
 	}
 	template<>
-	float Abs<float>() 	
+	float Abs < float > (float const& x)
 	{
-		unsigned char Data[4]{ 0 };
+		float A{ x };
+
+		unsigned char* Data;
+
+		Data = reinterpret_cast<unsigned char*>(&A);
 
 		{
 			if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
@@ -44,7 +51,7 @@ export namespace CHV4DTENSOR
 
 		return *reinterpret_cast<float*>(Data);
 	}
-	/*
+	
 	template<typename T, typename I> T IntegerPower(I const& base, int64_t pow)
 	{
 		static_assert(false, "Non Integer type.");

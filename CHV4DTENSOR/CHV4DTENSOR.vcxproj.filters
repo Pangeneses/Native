@@ -10,8 +10,8 @@
     <ClCompile Include="CHV4DRESOURCE.ixx">
       <Filter>iii. CHV4DRESOURCE</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DSINGLE.ixx">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DSINGLE</Filter>
+    <ClCompile Include="CHV4DPRECISION.ixx">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DPRECISION</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DALGEBRA.ixx">
       <Filter>v. CHV4DALGEBRA\2. CHV4DALGEBRA</Filter>
@@ -31,12 +31,6 @@
     <ClCompile Include="CHV4DARITHMETIC.ixx">
       <Filter>v. CHV4DALGEBRA\0. CHV4DARITMETIC</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DDOUBLE.ixx">
-      <Filter>iv. CHV4DNUMBER\4. CHV4DDOUBLE</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DLDOUBLE.ixx">
-      <Filter>iv. CHV4DNUMBER\5. CHV4DLDOUBLE</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DSIMD.ixx">
       <Filter>iv. CHV4DNUMBER\6. CHV4DSIMD</Filter>
     </ClCompile>
@@ -48,6 +42,9 @@
     </ClCompile>
     <ClCompile Include="CHV4DFIXEDBYTES.ixx">
       <Filter>iv. CHV4DNUMBER\1. CHV4DFIXEDBYTES</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DMANTISSA.ixx">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DMANTISSA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -84,15 +81,6 @@
     <Filter Include="v. CHV4DALGEBRA\2. CHV4DALGEBRA">
       <UniqueIdentifier>{f5e70684-74f7-4063-ba0b-7a0d7d7cf570}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\5. CHV4DLDOUBLE">
-      <UniqueIdentifier>{4ec95740-5945-4dd8-95d2-9737a8123a7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. CHV4DNUMBER\4. CHV4DDOUBLE">
-      <UniqueIdentifier>{221bc5c5-63f4-47ae-96bc-349cdefac32b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. CHV4DNUMBER\3. CHV4DSINGLE">
-      <UniqueIdentifier>{b313d6a4-24af-437b-a113-f906c345f3c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="iv. CHV4DNUMBER\2. CHV4DINTEGER">
       <UniqueIdentifier>{95990428-d43b-4326-b156-d1db0437e5ec}</UniqueIdentifier>
     </Filter>
@@ -107,6 +95,12 @@
     </Filter>
     <Filter Include="iv. CHV4DNUMBER\7. CHV4DAVX512">
       <UniqueIdentifier>{ba45585e-77e9-45dd-b38a-8ba5b8fa0620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\4. CHV4DPRECISION">
+      <UniqueIdentifier>{b313d6a4-24af-437b-a113-f906c345f3c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\3. CHV4DMANTISSA">
+      <UniqueIdentifier>{1b1dabb7-d657-4c48-877f-809cb5ab8a47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

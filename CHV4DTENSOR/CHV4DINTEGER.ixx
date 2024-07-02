@@ -11,7 +11,6 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
-	/*
 	class CHV4DINTEGER
 	{
 	public:
@@ -119,7 +118,7 @@ export namespace CHV4DTENSOR
 
 			Data = Data + 1;
 
-			return Q;
+			return { Q };
 		}
 		template<typename T>
 		T operator++(int)
@@ -190,7 +189,7 @@ export namespace CHV4DTENSOR
 
 			Data = Data - 1;
 
-			return Q;
+			return { Q };
 		}
 		template<typename T>
 		T operator--(int)
@@ -243,11 +242,11 @@ export namespace CHV4DTENSOR
 				throw error;
 			}
 
-			return static_cast <T> (Data);
+			return static_cast < T > (Data);
 		}
 		CHV4DINTEGER operator-()
 		{
-			return CHV4DINTEGER{ -1 } **this;
+			return CHV4DINTEGER{ -1 }.operator*(*this);
 		}
 		template<typename T>
 		T operator-()
@@ -269,7 +268,7 @@ export namespace CHV4DTENSOR
 				throw error;
 			}
 
-			return static_cast <T> (-1 * Data);
+			return static_cast < T > (-1 * Data);
 		}
 
 		CHV4DINTEGER operator+(CHV4DINTEGER const& x) const
@@ -389,50 +388,15 @@ export namespace CHV4DTENSOR
 
 		template<typename T> T operator/(CHV4DINTEGER const& x) const
 		{
-			static_assert(
-				
-				
-				"Non Integer type.");
-		}
-		template<> float operator/ < float > (CHV4DINTEGER const& x) const
-		{
+			assert_precision < T >();
+
 			CHV4DINTEGER A{ *this }, B{ x };
 
 			if (B.Data == 0) throw std::runtime_error{ "Division by zero." };
 
 			if (A.Data == 0) return 0.0f;
 
-			return static_cast <float> (A.Data) / static_cast <float> (B.Data);
-		}
-		template<> double operator/ < double > (CHV4DINTEGER const& x) const
-		{
-			CHV4DINTEGER A{ *this }, B{ x };
-
-			if (B.Data == 0) throw std::runtime_error{ "Division by zero." };
-
-			if (A.Data == 0) return 0.0;
-
-			return static_cast <double> (A.Data) / static_cast <double> (B.Data);
-		}
-		template<typename T, typename I> T operator/(I const& x) const
-		{
-			assert_float < T >();
-			assert_integer < I >();
-
-			CHV4DINTEGER A{ *this }, B{ x };
-
-			T Q;
-
-			try
-			{
-				Q = A.operator/(B);
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return Q;
+			return static_cast < T > (A.Data) / static_cast < T > (B.Data);
 		}
 
 		CHV4DINTEGER operator*(CHV4DINTEGER const& x) const
@@ -445,7 +409,7 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				reciprocal = MAX_INT.operator/ < double, uint64_t > (B.Data);
+				reciprocal = MAX_INT.operator/ < double > (B.Data);
 			}
 			catch (std::runtime_error error)
 			{
@@ -520,7 +484,7 @@ export namespace CHV4DTENSOR
 					Q |= 0x0000000000000001;
 				}
 
-				A.Data << 1;
+				A.Data = A.Data << 1;
 
 				Q = Q << 1;
 			}
@@ -1004,7 +968,7 @@ export namespace CHV4DTENSOR
 		}
 
 	private:
-		void operator/=(CHV4DINTEGER const& x) {}
+		void operator/=(CHV4DINTEGER const&) {}
 
 	public:
 		void operator%=(CHV4DINTEGER const& x)
@@ -1035,29 +999,12 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A.operator%= < T > (B);
+				A.operator%=(B);
 			}
 			catch (std::overflow_error error)
 			{
 				throw error;
 			}
-
-			T ret;
-
-			try
-			{
-				ret = A.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
 		}
 
 		void operator&=(CHV4DINTEGER const& x)
@@ -1088,29 +1035,12 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A.operator&= < T > (B);
+				A.operator&=(B);
 			}
 			catch (std::overflow_error error)
 			{
 				throw error;
 			}
-
-			T ret;
-
-			try
-			{
-				ret = A.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
 		}
 
 		void operator|=(CHV4DINTEGER const& x)
@@ -1141,29 +1071,12 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A.operator|= < T > (B);
+				A.operator|=(B);
 			}
 			catch (std::overflow_error error)
 			{
 				throw error;
 			}
-
-			T ret;
-
-			try
-			{
-				ret = A.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
 		}
 
 		void operator^=(CHV4DINTEGER const& x)
@@ -1194,29 +1107,12 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A.operator^= < T > (B);
+				A.operator^=(B);
 			}
 			catch (std::overflow_error error)
 			{
 				throw error;
 			}
-
-			T ret;
-
-			try
-			{
-				ret = A.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
 		}
 
 		void operator>>=(CHV4DINTEGER const& x)
@@ -1247,29 +1143,12 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A = A.operaton >>= < T > (B);
+				A = A.operator>>=(B);
 			}
 			catch (std::overflow_error error)
 			{
 				throw error;
 			}
-
-			T ret;
-
-			try
-			{
-				ret = A.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
 		}
 
 		void operator<<=(CHV4DINTEGER const& x)
@@ -1300,34 +1179,16 @@ export namespace CHV4DTENSOR
 
 			try
 			{
-				A.operator<<= < T > (B);
+				A.operator<<=(B);
 			}
 			catch (std::overflow_error error)
 			{
 				throw error;
 			}
-
-			T ret;
-
-			try
-			{
-				ret = A.operator() < T > ();
-			}
-			catch (std::overflow_error error)
-			{
-				throw error;
-			}
-			catch (std::runtime_error error)
-			{
-				throw error;
-			}
-
-			return ret;
 		}
 
 	private:
 		int64_t Data{ 0 };
 
 	};
-	*/
 }

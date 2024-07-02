@@ -7,10 +7,6 @@ export module CHV4DTENSOR:CHV4DTRANSFORM;
 import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
-import :CHV4DSINGLE;
-import :CHV4DDOUBLE;
-import :CHV4DLDOUBLE;
-
 import :CHV4DMATRIX;
 
 export namespace CHV4DTENSOR

@@ -838,7 +838,7 @@ export namespace CHV4DTENSOR
 
 			Data[szFront] |= front[0];
 
-			BitPosition = BitPosition - ((end - beg) % 8);
+			BitPosition = szStream;
 
 			isValidSentinel = false;
 

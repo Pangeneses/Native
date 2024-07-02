@@ -20,7 +20,7 @@ export namespace CHV4DTENSOR
 
 		CHV4DSIMD(std::deque<CHV4DFIXEDBYTES<16>> const& A)
 		{
-
+			A;
 		}
 
 	private:
