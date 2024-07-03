@@ -26,7 +26,7 @@
       <Filter>vi. CHV4DMATRIX\0. CHV4DMATRIX</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DINTEGER.ixx">
-      <Filter>iv. CHV4DNUMBER\2. CHV4DINTEGER</Filter>
+      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DARITHMETIC.ixx">
       <Filter>v. CHV4DALGEBRA\0. CHV4DARITMETIC</Filter>
@@ -44,7 +44,7 @@
       <Filter>iv. CHV4DNUMBER\1. CHV4DFIXEDBYTES</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DMANTISSA.ixx">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DMANTISSA</Filter>
+      <Filter>iv. CHV4DNUMBER\2. CHV4DMANTISSA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +81,6 @@
     <Filter Include="v. CHV4DALGEBRA\2. CHV4DALGEBRA">
       <UniqueIdentifier>{f5e70684-74f7-4063-ba0b-7a0d7d7cf570}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\2. CHV4DINTEGER">
-      <UniqueIdentifier>{95990428-d43b-4326-b156-d1db0437e5ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="iv. CHV4DNUMBER\6. CHV4DSIMD">
       <UniqueIdentifier>{1583ac4b-849c-4731-ba49-d91d1427df65}</UniqueIdentifier>
     </Filter>
@@ -99,7 +96,10 @@
     <Filter Include="iv. CHV4DNUMBER\4. CHV4DPRECISION">
       <UniqueIdentifier>{b313d6a4-24af-437b-a113-f906c345f3c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\3. CHV4DMANTISSA">
+    <Filter Include="iv. CHV4DNUMBER\3. CHV4DINTEGER">
+      <UniqueIdentifier>{95990428-d43b-4326-b156-d1db0437e5ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\2. CHV4DMANTISSA">
       <UniqueIdentifier>{1b1dabb7-d657-4c48-877f-809cb5ab8a47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

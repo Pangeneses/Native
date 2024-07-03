@@ -15,43 +15,6 @@ export namespace CHV4DTENSOR
 
 
 
-	template<typename T>
-	T Abs(T const&)
-	{
-		assert_precision < T > ();
-	}
-	template<>
-	float Abs < float > (float const& x)
-	{
-		float A{ x };
-
-		unsigned char* Data;
-
-		Data = reinterpret_cast<unsigned char*>(&A);
-
-		{
-			if (exponent > 255ui16) throw std::overflow_error{ "Precision overrun" };
-
-			unsigned char fpexp = *reinterpret_cast<unsigned char*>(const_cast<uint16_t*>(&exponent));
-
-			Data[0] = Data[0] | fpexp >> 1;
-
-			Data[1] = 0 | fpexp << 7;
-		}
-
-		{
-			if (mantissa > 8388607ui64) throw std::overflow_error{ "Precision overrun" };
-
-			unsigned char* fpmantissa = reinterpret_cast<unsigned char*>(const_cast<uint64_t*>(&mantissa));
-
-			Data[3] = fpmantissa[0];
-			Data[2] = fpmantissa[1];
-			Data[1] = Data[1] | (fpmantissa[2] & 0b01111111);
-		}
-
-		return *reinterpret_cast<float*>(Data);
-	}
-	
 	template<typename T, typename I> T IntegerPower(I const& base, int64_t pow)
 	{
 		static_assert(false, "Non Integer type.");
