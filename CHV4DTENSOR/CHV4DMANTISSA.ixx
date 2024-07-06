@@ -13,323 +13,179 @@ import :CHV4DRESOURCE;
 
 export namespace CHV4DTENSOR
 {
-	template <typename T>
-	class CHV4DMANTISSA
+	template <assert_precision T>
+	class CHV4DMANTISSA	
+	{ 
+	public:
+		CHV4DMANTISSA(T const&) {}
+	
+	};
+
+	template <> class CHV4DMANTISSA < float >
 	{
 	public:
 		CHV4DMANTISSA() = default;
 
+		CHV4DMANTISSA(float const& x);
+
+		CHV4DMANTISSA(bool sign, const uint32_t& mantissa, const uint8_t& exponent);
+
+	public:
+		void operator=(float const& x);
+
+		float operator()() const;
+
+		float Absolute() const;
+
+		float Floor() const;
+
+		bool IsPositive() const;
+
+		bool IsNegative() const;
+
+		bool IsZero() const;
+
+		bool IsNonNegative() const;
+
+		bool IsNonPositive() const;
+
+		bool IsInteger() const;
+
+		bool IsReal() const;
+
+		bool IsInfinite() const;
+
+		bool IsMaximum() const;
+
+		bool IsMinimum() const;
+
+		bool& Sign();
+
+		void Mantissa(uint32_t const& x);
+
+		uint32_t Mantissa();
+
+		void Exponent(uint8_t const& x);
+
+		uint8_t Exponent();
+
+	private:
+		bool SignBit{ false };
+
+		uint32_t Significand;
+
+		uint8_t Shift;
 	};
 
-	template<>
-	class CHV4DMANTISSA < float >
+	template <> class CHV4DMANTISSA < double >
 	{
 	public:
 		CHV4DMANTISSA() = default;
 
-		CHV4DMANTISSA(float const& x)
-		{
-			float A{ x };
+		CHV4DMANTISSA(double const& x);
 
-			unsigned char* Data = reinterpret_cast <unsigned char*>(&A);
-
-			Sign = ((Data[3] & 0b10000000) == 0b10000000) ? true : false;
-
-			Exponent = (Data[3] << 1) | (Data[2] >> 7);
-
-			Mantissa = 0xFFFF8F00 & *reinterpret_cast <uint32_t*>(Data);
-		}
-
-		CHV4DMANTISSA(bool Sign, const uint32_t& Mantissa, const uint8_t& Exponent)
-			: Sign(Sign), Mantissa(Mantissa), Exponent(Exponent) { }
+		CHV4DMANTISSA(bool sign, const uint64_t& mantissa, const uint16_t& exponent);
 
 	public:
-		void operator=(CHV4DMANTISSA const& x) { *this = x; }
+		void operator=(double const& x);
 
-		float operator()() const
-		{
-			float expose{ 0 };
+		double operator()() const;
 
-			unsigned char* data = reinterpret_cast<unsigned char*>(&expose);
+		double Absolute() const;
 
-			*reinterpret_cast<uint32_t*>(data) = Mantissa;
+		double Floor() const;
 
-			data[3] |= Exponent >> 1;
+		bool IsPositive() const;
 
-			data[2] |= Exponent << 7;
+		bool IsNegative() const;
 
-			expose = Sign ? -1 * expose : expose;
+		bool IsZero() const;
 
-			return expose;
-		}
+		bool IsNonNegative() const;
 
-		float Absolute() const { return Sign ? -1 * (this->operator()()) : this->operator()(); }
+		bool IsNonPositive() const;
 
-		float Floor() const
-		{
-			if (IsZero()) return 0.0f;
+		bool IsInteger() const;
 
-			if (Mantissa < 1.0f) return 0.0f;
+		bool IsReal() const;
 
-			uint32_t mantissa = Mantissa;
+		bool IsInfinite() const;
 
-			if (Exponent >= 127)
-			{
-				mantissa <<= 23 - (Exponent - 127);
+		bool IsMaximum() const;
 
-				mantissa <<= 23 - (Exponent - 127);
-			}
+		bool IsMinimum() const;
 
-			//CHV4DMANTISSA < float > ret;
+		bool& Sign();
 
-			//ret = this;
+		void Mantissa(uint64_t const& x);
 
-			return static_cast< float >(mantissa);
-		}
+		uint64_t Mantissa();
 
-		bool IsPositive() const { return !Sign ? true : false; }
+		void Exponent(uint16_t const& x);
 
-		bool IsNegative() const { return Sign ? true : false; }
-
-		bool IsZero() const { return Mantissa == 0 && Exponent == 0 ? true : false; }
-
-		bool IsNonNegative() const { return Mantissa == 0 && Exponent == 0 || !Sign ? true : false; }
-
-		bool IsNonPositive() const { return Mantissa == 0 && Exponent == 0 || Sign ? true : false; }
-
-		bool IsInteger() const
-		{
-			uint32_t mantissa = Mantissa;
-
-			if (IsZero()) return true;
-
-			if (Exponent >= 127)
-			{
-				mantissa <<= 9 + Exponent - 127;
-
-				return mantissa > 0 ? false : true;
-			}
-
-			return false;
-		}
-
-		bool IsReal() const { return IsInteger() ? false : true; }
-
-		bool IsInfinite() const { return Exponent == 0xFF && Mantissa == 0 ? true : false; }
-
-		uint32_t Significand() const { return Mantissa; }
-
-		uint8_t Shift() const { return Exponent; }
+		uint16_t Exponent();
 
 	private:
-		bool Sign{ false };
+		bool SignBit{ false };
 
-		uint32_t Mantissa;
+		uint64_t Significand;
 
-		uint8_t Exponent;
+		uint16_t Shift;
 	};
 
-	template<>
-	class CHV4DMANTISSA < double >
+	template <> class CHV4DMANTISSA < long double >
 	{
 	public:
-		CHV4DMANTISSA(double const& x)
-		{
-			double A{ x };
+		CHV4DMANTISSA() = default;
 
-			unsigned char* Data = reinterpret_cast <unsigned char*>(&A);
+		CHV4DMANTISSA(long double const& x);
 
-			Sign = ((Data[7] & 0b10000000) == 0b10000000) ? true : false;
-
-			Exponent = (Data[7] << 1) | (Data[6] >> 5);
-
-			Mantissa = 0xFFFFFFFFFFFF8F00 & *reinterpret_cast <uint64_t*>(Data);
-		}
-
-		CHV4DMANTISSA(bool Sign, const uint64_t& Mantissa, const uint16_t& Exponent)
-			: Sign(Sign), Mantissa(Mantissa), Exponent(Exponent) { }
+		CHV4DMANTISSA(bool sign, const uint64_t& mantissa, const uint16_t& exponent);
 
 	public:
-		void operator=(CHV4DMANTISSA const& x) { *this = x; }
+		void operator=(long double const& x);
 
-		double operator()() const
-		{
-			double expose{ 0 };
+		long double operator()() const;
 
-			unsigned char* data = reinterpret_cast<unsigned char*>(&expose);
+		long double Absolute() const;
 
-			*reinterpret_cast<uint64_t*>(data) = Mantissa;
+		long double Floor() const;
 
-			data[7] |= Exponent >> 1;
+		bool IsPositive() const;
 
-			data[6] |= Exponent << 5;
+		bool IsNegative() const;
 
-			expose = Sign ? -1 * expose : expose;
+		bool IsZero() const;
 
-			return expose;
-		}
+		bool IsNonNegative() const;
 
-		double Absolute() const { return Sign ? -1 * (this->operator()()) : this->operator()(); }
+		bool IsNonPositive() const;
 
-		double Floor() const
-		{
-			if (IsZero()) return 0.0;
+		bool IsInteger() const;
 
-			if (Mantissa < 1.0) return 0.0;
+		bool IsReal() const;
 
-			uint64_t mantissa = Mantissa;
+		bool IsInfinite() const;
 
-			if (Exponent >= 127)
-			{
-				mantissa <<= 23 - (Exponent - 127);
+		bool IsMaximum() const;
 
-				mantissa <<= 23 - (Exponent - 127);
-			}
+		bool IsMinimum() const;
 
-			return static_cast<double>(mantissa);
-		}
+		bool& Sign();
 
-		bool IsPositive() const { return !Sign ? true : false; }
+		void Mantissa(uint64_t const& x);
 
-		bool IsNegative() const { return Sign ? true : false; }
+		uint64_t Mantissa();
 
-		bool IsZero() const { return Mantissa == 0 && Exponent == 0 ? true : false; }
+		void Exponent(uint16_t const& x);
 
-		bool IsNonNegative() const { return Mantissa == 0 && Exponent == 0 || !Sign ? true : false; }
-
-		bool IsNonPositive() const { return Mantissa == 0 && Exponent == 0 || Sign ? true : false; }
-
-		bool IsInteger() const
-		{
-			uint64_t mantissa = Mantissa;
-
-			if (IsZero()) return true;
-
-			if (Exponent >= 1023)
-			{
-				mantissa <<= 12 + Exponent - 1023;
-
-				return mantissa > 0 ? false : true;
-			}
-
-			return false;
-		}
-
-		bool IsReal() const { return IsInteger() ? false : true; }
-
-		bool IsInfinite() const { return Exponent == 0x08FF && Mantissa == 0 ? true : false; }
-
-		uint64_t Significand() const { return Mantissa; }
-
-		uint16_t Shift() const { return Exponent; }
+		uint16_t Exponent();
 
 	private:
-		bool Sign{ false };
+		bool SignBit{ false };
 
-		uint64_t Mantissa;
+		uint64_t Significand;
 
-		uint16_t Exponent;
-	};
-
-	template<>
-	class CHV4DMANTISSA < long double >
-	{
-	public:
-		CHV4DMANTISSA(long double const& x)
-		{
-			long double A{ x };
-
-			unsigned char* Data = reinterpret_cast <unsigned char*>(&A);
-
-			Sign = ((Data[7] & 0b10000000) == 0b10000000) ? true : false;
-
-			Exponent = (Data[7] << 1) | (Data[6] >> 5);
-
-			Mantissa = 0xFFFFFFFFFFFF8F00 & *reinterpret_cast <uint64_t*>(Data);
-		}
-
-		CHV4DMANTISSA(bool Sign, const uint64_t& Mantissa, const uint16_t& Exponent)
-			: Sign(Sign), Mantissa(Mantissa), Exponent(Exponent) { }
-
-	public:
-		void operator=(CHV4DMANTISSA const& x) { *this = x; }
-
-		long double operator()() const
-		{
-			long double expose{ 0 };
-
-			unsigned char* data = reinterpret_cast<unsigned char*>(&expose);
-
-			*reinterpret_cast<uint64_t*>(data) = Mantissa;
-
-			data[7] |= Exponent >> 1;
-
-			data[6] |= Exponent << 5;
-
-			expose = Sign ? -1 * expose : expose;
-
-			return expose;
-		}
-
-		long double Absolute() const { return Sign ? -1 * (this->operator()()) : this->operator()(); }
-
-		long double Floor() const
-		{
-			if (IsZero()) return 0.0;
-
-			if (Mantissa < 1.0) return 0.0;
-
-			uint64_t mantissa = Mantissa;
-
-			if (Exponent >= 127)
-			{
-				mantissa <<= 23 - (Exponent - 127);
-
-				mantissa <<= 23 - (Exponent - 127);
-			}
-
-			return static_cast<long double>(mantissa);
-		}
-
-		bool IsPositive() const { return !Sign ? true : false; }
-
-		bool IsNegative() const { return Sign ? true : false; }
-
-		bool IsZero() const { return Mantissa == 0 && Exponent == 0 ? true : false; }
-
-		bool IsNonNegative() const { return Mantissa == 0 && Exponent == 0 || !Sign ? true : false; }
-
-		bool IsNonPositive() const { return Mantissa == 0 && Exponent == 0 || Sign ? true : false; }
-
-		bool IsInteger() const
-		{
-			uint64_t mantissa = Mantissa;
-
-			if (IsZero()) return true;
-
-			if (Exponent >= 1023)
-			{
-				mantissa <<= 12 + Exponent - 1023;
-
-				return mantissa > 0 ? false : true;
-			}
-
-			return false;
-		}
-
-		bool IsReal() const { return IsInteger() ? false : true; }
-
-		bool IsInfinite() const { return Exponent == 0x08FF && Mantissa == 0 ? true : false; }
-
-		uint64_t Significand() const { return Mantissa; }
-
-		uint16_t Shift() const { return Exponent; }
-
-	private:
-		bool Sign{ false };
-
-		uint64_t Mantissa;
-
-		uint16_t Exponent;
+		uint16_t Shift;
 	};
 }
