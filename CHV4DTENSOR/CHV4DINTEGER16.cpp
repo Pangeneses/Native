@@ -13,12 +13,12 @@ namespace CHV4DTENSOR
 {
 	CHV4DINTEGER < int16_t > ::CHV4DINTEGER() { Data = 0; }
 
-	CHV4DINTEGER < int16_t > ::CHV4DINTEGER(CHV4DINTEGER const& x) { Data = x(); }
+	CHV4DINTEGER < int16_t > ::CHV4DINTEGER(CHV4DINTEGER < int16_t > const& x) { Data = x(); }
 
 	CHV4DINTEGER < int16_t > ::CHV4DINTEGER(int16_t const& x) { Data = x; }
 
 
-	void CHV4DINTEGER < int16_t > ::operator=(CHV4DINTEGER const& x) { Data = x(); }
+	void CHV4DINTEGER < int16_t > ::operator=(CHV4DINTEGER < int16_t > const& x) { Data = x(); }
 
 	void CHV4DINTEGER < int16_t > ::operator=(int16_t  const& x) { Data = x; }
 
@@ -27,23 +27,24 @@ namespace CHV4DTENSOR
 
 	unsigned char& CHV4DINTEGER < int16_t > ::operator[](size_t const& i)
 	{
-		if (i > 0) throw std::runtime_error{ "Index out of range." };
+		if (i > 1) throw std::overflow_error{ "Index Out of Range." };
 
-		return reinterpret_cast<unsigned char*>(Data)[0];
+		return reinterpret_cast<unsigned char*>(&Data)[1 - i];
 	}
 
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator++()
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator++()
 	{
-		if (Data == 127i64) throw std::overflow_error{ "Integer overflow" };
+		if (Data == 32767i16) throw std::overflow_error{ "Integer Increment Overflow." };
 
 		Data = Data + 1;
 
 		return Data;
 	}
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator++(int)
+
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator++(int)
 	{
-		if (Data == 127i64) throw std::overflow_error{ "Integer overflow" };
+		if (Data == 32767i16) throw std::overflow_error{ "Integer Increment Overflow." };
 
 		int16_t Q = Data;
 
@@ -51,17 +52,19 @@ namespace CHV4DTENSOR
 
 		return Q;
 	}
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator--()
+
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator--()
 	{
-		if (Data == -127i64) throw std::overflow_error{ "Integer overflow" };
+		if (Data == -32767i16) throw std::overflow_error{ "Integer Decrement Overflow." };
 
 		Data = Data - 1;
 
 		return Data;
 	}
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator--(int)
+
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator--(int)
 	{
-		if (Data == -127i64) throw std::overflow_error{ "Integer overflow" };
+		if (Data == -32767i16) throw std::overflow_error{ "Integer Decrement Overflow." };
 
 		int16_t Q = Data;
 
@@ -71,220 +74,224 @@ namespace CHV4DTENSOR
 	}
 
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator+() const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator+() const
 	{
 		return int16_t{ Data };
 	}
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator-() const
+
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator-() const
 	{
 		return int16_t{ -1 * Data };
 	}
 
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator+(CHV4DINTEGER const& x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator+(CHV4DINTEGER < int16_t > const& x) const
 	{
-		int16_t A{ Data }, B{ x() };
+		int32_t A{ Data }, B{ x() };
 
 		A = A + B;
 
-		if (A < -127i16 || A > 127i16) throw std::overflow_error{ "Integer overflow." };
+		if (A < -32767i32 || A > 32767i32) throw std::overflow_error{ "Integer Addition Overflow." };
 
-		return A;
+		return static_cast<int16_t>(A);
 	}
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator-(CHV4DINTEGER const& x) const
+
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator-(CHV4DINTEGER < int16_t > const& x) const
 	{
-		int16_t A{ Data }, B{ x() };
+		int32_t A{ Data }, B{ x() };
 
 		A = A - B;
 
-		if (A < -127i16 || A > 127i16) throw std::overflow_error{ "Integer overflow." };
+		if (A < -32767i32 || A > 32767i32) throw std::overflow_error{ "Integer Subtraction Overflow." };
 
-		return A;
+		return static_cast<int16_t>(A);
 	}
 
-
-	double CHV4DINTEGER< int16_t > ::operator/(double const& x) const
+	CHV4DMANTISSA < double > CHV4DINTEGER < int16_t > ::operator/(CHV4DMANTISSA < double > const& x) const
 	{
-		if (x == 0) throw std::runtime_error{ "Division by zero." };
+		if (x.IsZero()) throw std::runtime_error{ "Division by Zero." };
 
 		if (Data == 0) return 0.0;
 
-		CHV4DMANTISSA < double > A{ Data }, B{ x }, Result{}; uint64_t Q{ 0 };
+		CHV4DMANTISSA < double > A{ static_cast<double>(Data) }, B{ x }, Q{ 0 };
 
-		try { A.Mantissa(A.Mantissa() | ((A.Mantissa() >> 1) | 0x8000000000000000ui64)); }
+		uint64_t dividend{ A.Mantissa() }, divisor{ B.Mantissa() };
 
-		catch (std::runtime_error error) { throw error; }
+		dividend |= 0x0008000000000000ui64;
 
-		try { B.Mantissa(B.Mantissa() | ((B.Mantissa() >> 1) | 0x8000000000000000ui64)); }
+		divisor |= 0x0008000000000000ui64;
 
-		catch (std::runtime_error error) { throw error; }
-
-		for (size_t i = 0; i < 16; ++i)
+		for (size_t i = 0; i < 52; ++i)
 		{
-			if (A.Mantissa() - B.Mantissa() >= 0)
-			{
-				try
-				{
-					A.Mantissa(A.Mantissa() - B.Mantissa());
-				}
-				catch (std::runtime_error error)
-				{
-					throw error;
-				}
+			try { Q.Mantissa(Q.Mantissa() << 1); }
 
-				Q |= 0x0000000000000001ui64;
+			catch (std::overflow_error error) { throw error; }
+
+			if (dividend >= divisor)
+			{
+				dividend -= divisor;
+
+				try { Q.Mantissa(Q.Mantissa() | 0x0000000000000001ui64); }
+
+				catch (std::overflow_error error) { throw error; }
 			}
 
-			A.Mantissa(A.Mantissa() << 1);
-
-			Q = Q << 1;
+			if (dividend < divisor) dividend <<= 1;
 		}
 
-		Result.Sign() = (!A.Sign() != !B.Sign()) ? true : false;
+		try { Q.Mantissa(dividend & 0x00007FFFFFFFFFFFF); }
 
-		int16_t exponent = (A.Exponent() - 127ui8) - (B.Exponent() - 127ui8) + 127ui16;
+		catch (std::overflow_error error) { throw error; }
 
-		while (Q > 16777216i16) { Q >>= 1; ++exponent; }
+		try { Q.Exponent(A.Exponent() - B.Exponent() + 127i8); }
 
-		while (Q < 16777216i16) { Q <<= 1; --exponent; }
+		catch (std::overflow_error error) { throw error; }
 
-		if (exponent > 127i16 || exponent < -127i16) throw std::overflow_error{ "Precision32 Division Overflow." };
+		Q.Sign() = (!A.Sign() != !B.Sign()) ? true : false;
 
-		try
-		{
-			Result.Mantissa(Q |= 0x8000000000000000ui64);
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		try
-		{
-			Result.Exponent(exponent);
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return Result();
+		return Q;
 	}
 
-
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator*(CHV4DINTEGER const& x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator*(CHV4DINTEGER < int16_t > const& x) const
 	{
 		int16_t A{ Data }, B{ x() };
 
 		int16_t Q = A * B;
 
-		if (Q > 127i16 || Q < -127i16) throw std::overflow_error{ "Integer overflow." };
+		if (Q > 127i16 || Q < -127i16) throw std::overflow_error{ "Integer Multiplication Overflow." };
 
 		return static_cast<int16_t>(Q);
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator%(CHV4DINTEGER const& x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator%(CHV4DINTEGER < int16_t > const& x) const
 	{
-		int16_t A{ Data }, B{ x() };
+		if (x == 0) throw std::runtime_error{ "Division by Zero." };
 
-		uint64_t Q{ 0 };
+		if (Data == 0) return 0;
 
-		if (A == 0) return A;
+		bool sign = !(Data < 0) != !(x < 0) ? true : false;
 
-		A = A < 0 ? -1 * A : A;
-		B = B < 0 ? -1 * B : B;
+		uint64_t A{ 0 }, B{ 0 }, Q{ 0 };
 
-		for (size_t i = 0; i < 64; ++i)
+		int64_t temp = Data;
+
+		A = Data < 0 ? static_cast<uint64_t>(-1 * Data) : static_cast<uint64_t>(Data);
+
+		temp = x();
+
+		B = x() < 0 ? static_cast<uint64_t>(-1 * x()) : static_cast<uint64_t>(x());
+
+		size_t bitWidth{ 63 };
+
+		while ((B & 0x3000000000000000ui64) != 0x3000000000000000ui64)
 		{
-			if (A - B >= 0)
-			{
-				A = A - B;
+			B <<= 1;
 
-				Q |= 0x0000000000000001;
-			}
+			--bitWidth;
 
-			A = A << 1;
-
-			Q = Q << 1;
+			if (bitWidth == 0) throw std::runtime_error{ "Division by Zero." };
 		}
 
-		A = A - (Q * B);
+		B <<= 63 - bitWidth;
 
-		return A;
+		for (size_t i = 63; i > bitWidth; --i)
+		{
+			if (A > B) { A -= B; }
+
+			B >>= 1;
+		}
+
+		if (A > 32768) throw std::runtime_error{ "Runtime Out of Range." };
+
+		temp = sign ? static_cast<int16_t>(-1 * A) : static_cast<int16_t>(A);
+
+		return temp;
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator~() const
+
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator~() const
 	{
 		return ~Data;
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator&(CHV4DINTEGER const& x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator&(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data & x();
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator|(CHV4DINTEGER const x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator|(CHV4DINTEGER const x) const
 	{
 		return Data | x();
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator^(CHV4DINTEGER const x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator^(CHV4DINTEGER const x) const
 	{
 		return Data ^ x();
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator>>(CHV4DINTEGER< int16_t > const x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator>>(CHV4DINTEGER < int16_t > const x) const
 	{
 		return Data >> x();
 	}
 
-	CHV4DINTEGER< int16_t > CHV4DINTEGER< int16_t > ::operator<<(CHV4DINTEGER const x) const
+	CHV4DINTEGER < int16_t > CHV4DINTEGER < int16_t > ::operator<<(CHV4DINTEGER const x) const
 	{
 		return Data << x();
 	}
 
-	bool CHV4DINTEGER< int16_t > ::operator!() const
+
+	bool CHV4DINTEGER < int16_t > ::operator!() const
 	{
 		return !Data;
 	}
-	bool CHV4DINTEGER< int16_t > ::operator&&(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator&&(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data && x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator||(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator||(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data || x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator==(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator==(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data == x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator!=(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator!=(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data != x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator<(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator<(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data < x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator>(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator>(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data > x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator<=(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator<=(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data <= x();
 	}
-	bool CHV4DINTEGER< int16_t > ::operator>=(CHV4DINTEGER const& x) const
+
+	bool CHV4DINTEGER < int16_t > ::operator>=(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data >= x();
 	}
-	std::weak_ordering CHV4DINTEGER< int16_t > ::operator<=>(CHV4DINTEGER const& x) const
+
+	std::strong_ordering CHV4DINTEGER < int16_t > ::operator<=>(CHV4DINTEGER < int16_t > const& x) const
 	{
 		return Data <=> x();
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator+=(CHV4DINTEGER const& x)
+
+	void CHV4DINTEGER < int16_t > ::operator+=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -300,7 +307,7 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator-=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator-=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -316,7 +323,7 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator*=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator*=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -332,25 +339,11 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator/=(CHV4DINTEGER const&) {}
+	void CHV4DINTEGER < int16_t > ::operator/=(CHV4DINTEGER < int16_t > const&) {}
 
-	void CHV4DINTEGER< int16_t > ::operator%=(CHV4DINTEGER const& x)
-	{
-		CHV4DINTEGER A{ *this }, B{ x };
+	void CHV4DINTEGER < int16_t > ::operator%=(CHV4DINTEGER < int16_t > const& x) {}
 
-		try
-		{
-			A = A.operator%(B);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-
-		*this = A;
-	}
-
-	void CHV4DINTEGER< int16_t > ::operator&=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator&=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -366,7 +359,7 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator|=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator|=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -382,7 +375,7 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator^=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator^=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -398,7 +391,7 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator>>=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator>>=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 
@@ -414,7 +407,7 @@ namespace CHV4DTENSOR
 		*this = A;
 	}
 
-	void CHV4DINTEGER< int16_t > ::operator<<=(CHV4DINTEGER const& x)
+	void CHV4DINTEGER < int16_t > ::operator<<=(CHV4DINTEGER < int16_t > const& x)
 	{
 		CHV4DINTEGER A{ *this }, B{ x };
 

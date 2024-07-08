@@ -11,16 +11,11 @@ import :CHV4DINTEGER;
 
 export namespace CHV4DTENSOR
 {
-	/*
-
-
-
-	template<typename T, typename I> T IntegerPower(I const& base, int64_t pow)
-	{
-		static_assert(false, "Non Integer type.");
-	}
+	template<ASSERT_CHV4DINTEGER T, ASSERT_CHV4DINTEGER I> 
+	T IntegerPower(I const& base, CHV4DINTEGER< int64_t > const& pow) {}
+	
 	template<>
-	CHV4DINTEGER IntegerPower <CHV4DINTEGER, CHV4DINTEGER>(CHV4DINTEGER const& base, int64_t pow)
+	CHV4DINTEGER< int64_t > IntegerPower <CHV4DINTEGER< int64_t >, CHV4DINTEGER< int64_t >>(CHV4DINTEGER< int64_t > const& base, CHV4DINTEGER< int64_t > const& pow)
 	{
 		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
 
@@ -50,68 +45,7 @@ export namespace CHV4DTENSOR
 
 		return A;
 	}
-	template<>
-	int64_t IntegerPower <int64_t, CHV4DINTEGER>(CHV4DINTEGER const& base, int64_t pow)
-	{
-		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
 
-		if (pow == 0)
-		{
-			return 1i64;
-		}
-		else if (pow != 0 && base() == 0ui64)
-		{
-			return 0i64;
-		}
-
-		CHV4DINTEGER A{ base() };
-
-		try
-		{
-			A = A.operator^< CHV4DINTEGER >(pow);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return A.operator() < int64_t > ();
-	}
-	template<>
-	int64_t IntegerPower <int64_t, int64_t>(int64_t const& base, int64_t pow)
-	{
-		if (pow < 0) throw std::runtime_error{ "Unsigned powers." };
-
-		if (pow == 0)
-		{
-			return 1i64;
-		}
-		else if (pow != 0 && base == 0ui64)
-		{
-			return 0i64;
-		}
-
-		CHV4DINTEGER A{ base };
-
-		try
-		{
-			A = A.operator^< CHV4DINTEGER >(pow);
-		}
-		catch (std::overflow_error error)
-		{
-			throw error;
-		}
-		catch (std::runtime_error error)
-		{
-			throw error;
-		}
-
-		return A.operator() < int64_t > ();
-	}
 
 	uint64_t nWholeRoot(CHV4DINTEGER const& number, size_t n, float eps = 0.0000000001f)
 	{

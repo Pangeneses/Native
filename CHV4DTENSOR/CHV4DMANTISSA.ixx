@@ -39,6 +39,8 @@ export namespace CHV4DTENSOR
 
 		float Floor() const;
 
+		float Fractional() const;
+
 		bool IsPositive() const;
 
 		bool IsNegative() const;
@@ -95,6 +97,8 @@ export namespace CHV4DTENSOR
 
 		double Floor() const;
 
+		double Fractional() const;
+
 		bool IsPositive() const;
 
 		bool IsNegative() const;
@@ -150,6 +154,8 @@ export namespace CHV4DTENSOR
 		long double Absolute() const;
 
 		long double Floor() const;
+
+		long double Fractional() const;
 
 		bool IsPositive() const;
 

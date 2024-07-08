@@ -24,105 +24,108 @@ export namespace CHV4DTENSOR
 	public:
 		CHV4DPRECISION();
 
-		CHV4DPRECISION(CHV4DPRECISION const& x);
+		CHV4DPRECISION(CHV4DPRECISION < float > const& x);
 
 		CHV4DPRECISION(float const& x);
 
 	public:
-		void operator=(CHV4DPRECISION const& x);
+		void operator=(CHV4DPRECISION < float > const& x);
 
 		void operator=(float const& x);
 
-		CHV4DPRECISION operator()() const;
+
+		CHV4DPRECISION < float > operator()() const;
 
 	private:
-		CHV4DPRECISION operator[](int) const {};
+		CHV4DPRECISION < float > operator[](int) const {};
+
 
 	public:
-		CHV4DPRECISION operator++();
+		CHV4DPRECISION < float > operator++();
 
-		CHV4DPRECISION operator++(int);
+		CHV4DPRECISION < float > operator++(int);
 
-		CHV4DPRECISION operator--();
+		CHV4DPRECISION < float > operator--();
 
-		CHV4DPRECISION operator--(int);
-
-
-		CHV4DPRECISION operator+() const;
-
-		CHV4DPRECISION operator-() const;
+		CHV4DPRECISION < float > operator--(int);
 
 
-		CHV4DPRECISION operator+(CHV4DPRECISION const& x) const;
+		CHV4DPRECISION < float > operator+() const;
 
-		CHV4DPRECISION operator-(CHV4DPRECISION const& x) const;
+		CHV4DPRECISION < float > operator-() const;
 
-		CHV4DPRECISION operator/(CHV4DPRECISION const& x) const;
 
-		CHV4DPRECISION operator*(CHV4DPRECISION const& x) const;
+		CHV4DPRECISION < float > operator+(CHV4DPRECISION < float > const& x) const;
 
-		CHV4DPRECISION operator%(CHV4DPRECISION const& x) const;
+		CHV4DPRECISION < float > operator-(CHV4DPRECISION < float > const& x) const;
 
-		CHV4DPRECISION operator~() const;
+		CHV4DPRECISION < float > operator/(CHV4DPRECISION < float > const& x) const;
 
-		CHV4DPRECISION operator&(CHV4DPRECISION const& x) const;
+		CHV4DPRECISION < float > operator*(CHV4DPRECISION < float > const& x) const;
 
-		CHV4DPRECISION operator|(CHV4DPRECISION const x) const;
+		CHV4DPRECISION < float > operator%(CHV4DPRECISION < float > const& x) const;
 
-		CHV4DPRECISION operator^(CHV4DPRECISION const x) const;
 
-		CHV4DPRECISION operator>>(CHV4DPRECISION const x) const;
+		CHV4DPRECISION < float > operator~() const;
 
-		CHV4DPRECISION operator<<(CHV4DPRECISION const x) const;
+		CHV4DPRECISION < float > operator&(CHV4DPRECISION < float > const& x) const;
 
+		CHV4DPRECISION < float > operator|(CHV4DPRECISION < float > const x) const;
+
+		CHV4DPRECISION < float > operator^(CHV4DPRECISION < float > const x) const;
+
+		CHV4DPRECISION < float > operator>>(CHV4DPRECISION < float > const x) const;
+
+		CHV4DPRECISION < float > operator<<(CHV4DPRECISION < float > const x) const;
+
+		
 		bool operator!() const;
 
-		bool operator&&(CHV4DPRECISION const& x) const;
+		bool operator&&(CHV4DPRECISION < float > const& x) const;
 
-		bool operator||(CHV4DPRECISION const& x) const;
+		bool operator||(CHV4DPRECISION < float > const& x) const;
 
-		bool operator==(CHV4DPRECISION const& x) const;
+		bool operator==(CHV4DPRECISION < float > const& x) const;
 
-		bool operator!=(CHV4DPRECISION const& x) const;
+		bool operator!=(CHV4DPRECISION < float > const& x) const;
 
-		bool operator<(CHV4DPRECISION const& x) const;
+		bool operator<(CHV4DPRECISION < float > const& x) const;
 
-		bool operator>(CHV4DPRECISION const& x) const;
+		bool operator>(CHV4DPRECISION < float > const& x) const;
 
-		bool operator<=(CHV4DPRECISION const& x) const;
+		bool operator<=(CHV4DPRECISION < float > const& x) const;
 
-		bool operator>=(CHV4DPRECISION const& x) const;
+		bool operator>=(CHV4DPRECISION < float > const& x) const;
 
-		std::weak_ordering operator<=>(CHV4DPRECISION const& x) const;
+		std::strong_ordering operator<=>(CHV4DPRECISION < float > const& x) const;
 
 
-		void operator+=(CHV4DPRECISION const& x);
+		void operator+=(CHV4DPRECISION < float > const& x);
 
-		void operator-=(CHV4DPRECISION const& x);
+		void operator-=(CHV4DPRECISION < float > const& x);
 
-		void operator*=(CHV4DPRECISION const& x);
+		void operator*=(CHV4DPRECISION < float > const& x);
 
-	private:
-		void operator/=(CHV4DPRECISION const&) {}
-
-	public:
-		void operator%=(CHV4DPRECISION const& x);
-
-		void operator&=(CHV4DPRECISION const& x);
-
-		void operator|=(CHV4DPRECISION const& x);
-
-		void operator^=(CHV4DPRECISION const& x);
-
-		void operator>>=(CHV4DPRECISION const& x);
-
-		void operator<<=(CHV4DPRECISION const& x);
+		void operator/=(CHV4DPRECISION < float > const&) {}
 
 	public:
-		CHV4DMANTISSA< float > const& Radix() const { return Data; }
+		void operator%=(CHV4DPRECISION < float > const& x);
+
+		void operator&=(CHV4DPRECISION < float > const& x);
+
+		void operator|=(CHV4DPRECISION < float > const& x);
+
+		void operator^=(CHV4DPRECISION < float > const& x);
+
+		void operator>>=(CHV4DPRECISION < float > const& x);
+
+		void operator<<=(CHV4DPRECISION < float > const& x);
 
 	public:
-		CHV4DMANTISSA< float > Data;
+		CHV4DMANTISSA < float > const& Radix() const { return Data; }
+
+	public:
+		CHV4DMANTISSA < float > Data;
 
 	};
 }

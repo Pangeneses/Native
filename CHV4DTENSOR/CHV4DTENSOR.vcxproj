@@ -34,6 +34,7 @@
     <ClCompile Include="CHV4DMANTISSA32.cpp" />
     <ClCompile Include="CHV4DMANTISSA64.cpp" />
     <ClCompile Include="CHV4DPRECISION32.cpp" />
+    <ClCompile Include="CHV4DSCALAR.cpp" />
     <ClCompile Include="CHV4DSIMD.ixx" />
     <ClCompile Include="CHV4DRESOURCE.ixx" />
     <ClCompile Include="CHV4DTENSOR.ixx" />

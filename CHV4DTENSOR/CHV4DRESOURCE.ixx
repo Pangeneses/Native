@@ -51,4 +51,16 @@ export namespace CHV4DTENSOR
 		std::is_same<T, std::uint32_t>::value ||
 		std::is_same<T, std::uint64_t>::value;
 
+	template<typename T>
+	concept assert_size_t =
+		std::is_same<T, std::size_t>::value;
+
+	template<typename T>
+	concept assert_opt_signed =
+		std::is_same<T, std::int8_t>::value ||
+		std::is_same<T, std::int16_t>::value ||
+		std::is_same<T, std::int32_t>::value ||
+		std::is_same<T, std::int64_t>::value ||
+		std::is_same<T, std::size_t>::value;
+
 }

@@ -98,6 +98,8 @@ namespace CHV4DTENSOR
 		return static_cast<float>(expose);
 	}
 
+	float CHV4DMANTISSA < float > ::Fractional() const { return this->operator()() - this->Floor(); }
+
 	bool CHV4DMANTISSA < float > ::IsPositive() const { return !SignBit ? true : false; }
 
 	bool CHV4DMANTISSA < float > ::IsNegative() const { return SignBit ? true : false; }
@@ -146,7 +148,7 @@ namespace CHV4DTENSOR
 
 	void CHV4DMANTISSA < float > ::Mantissa(uint32_t const& x)
 	{
-		if (x > 8388608ui32) throw std::runtime_error{ "Mantissa out of range." };
+		if (x > 8388608ui32) throw std::overflow_error{ "Mantissa out of range." };
 	}
 	uint32_t CHV4DMANTISSA < float > ::Mantissa() 
 	{ 
@@ -154,7 +156,7 @@ namespace CHV4DTENSOR
 	}
 	void CHV4DMANTISSA < float > ::Exponent(uint8_t const& x)
 	{
-		if (x > 256ui8) throw std::runtime_error{ "Exponent out of range." };
+		if (x > 256ui8) throw std::overflow_error{ "Exponent out of range." };
 	}
 	uint8_t CHV4DMANTISSA < float > ::Exponent()
 	{
