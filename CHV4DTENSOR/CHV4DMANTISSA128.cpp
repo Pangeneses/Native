@@ -98,7 +98,7 @@ namespace CHV4DTENSOR
 		return static_cast<long double>(expose);
 	}
 
-	long double CHV4DMANTISSA < long double > ::Fractional() const { return this->operator()() - this->Floor(); }
+	long double CHV4DMANTISSA < long double > ::Decimal() const { return this->operator()() - this->Floor(); }
 
 	bool CHV4DMANTISSA < long double > ::IsPositive() const { return !SignBit ? true : false; }
 
@@ -130,13 +130,27 @@ namespace CHV4DTENSOR
 
 	bool CHV4DMANTISSA < long double > ::IsInfinite() const { return Shift == 0x08FF && Significand == 0 ? true : false; }
 
+	bool CHV4DMANTISSA < long double > ::IsMaximum() const
+	{
+		if (!SignBit && Shift == 0x07FE && Significand == 4503599627370495ui64) return true;
+
+		else return false;
+	}
+
+	bool CHV4DMANTISSA < long double > ::IsMinimum() const
+	{
+		if (SignBit && Shift == 0x07FE && Significand == 4503599627370495ui64) return true;
+
+		else return false;
+	}
+
 	bool& CHV4DMANTISSA < long double > ::Sign() { return SignBit; }
 
 	void CHV4DMANTISSA < long double > ::Mantissa(uint64_t const& x)
 	{
 		if (x > 4503599627370496ui64) throw std::overflow_error{ "Mantissa out of range." };
 	}
-	uint64_t CHV4DMANTISSA < long double > ::Mantissa()
+	uint64_t CHV4DMANTISSA < long double > ::Mantissa() const
 	{
 		return Significand;
 	}
@@ -144,7 +158,7 @@ namespace CHV4DTENSOR
 	{
 		if (x > 2048ui16) throw std::overflow_error{ "Exponent out of range." };
 	}
-	uint16_t CHV4DMANTISSA < long double > ::Exponent()
+	uint16_t CHV4DMANTISSA < long double > ::Exponent() const
 	{
 		return Shift;
 	}

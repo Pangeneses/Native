@@ -2,6 +2,8 @@ module;
 
 #include <type_traits>
 
+#include <compare>
+
 #include <stdexcept>
 
 module CHV4DTENSOR:CHV4DINTEGER;
@@ -79,11 +81,10 @@ namespace CHV4DTENSOR
 		return size_t{ Data };
 	}
 
-	CHV4DINTEGER< size_t > CHV4DINTEGER< size_t > ::operator-() const
-	{
-		return size_t{ -1 * Data };
+	CHV4DINTEGER< size_t > CHV4DINTEGER< size_t > ::operator-() const 
+	{ 
+		throw std::runtime_error{ "Reinterpreting size_t as signed." };
 	}
-
 
 	CHV4DINTEGER< size_t > CHV4DINTEGER< size_t > ::operator+(CHV4DINTEGER < size_t > const& x) const
 	{
@@ -115,7 +116,7 @@ namespace CHV4DTENSOR
 
 		CHV4DMANTISSA < double > A{ static_cast<double>(Data) }, B{ x }, Q{ 0 };
 
-		usize_t dividend{ A.Mantissa() }, divisor{ B.Mantissa() };
+		uint64_t dividend{ A.Mantissa() }, divisor{ B.Mantissa() };
 
 		dividend |= 0x0008000000000000ui64;
 
@@ -156,8 +157,6 @@ namespace CHV4DTENSOR
 	{
 		size_t A{ Data }, B{ x() }, Q{ 0 };
 
-		bool sign = !(A < 0) != !(B < 0) ? true : false;
-
 		for (size_t i = 63; i > 0; --i)
 		{
 			if (B & 0x0000000000000001ui64) { Q += A; }
@@ -174,8 +173,6 @@ namespace CHV4DTENSOR
 
 		if (Q > 9223372036854775807) throw std::overflow_error{ "Integer Multiplication Overflow." };
 
-		Q = sign ? (-1 * Q) : Q;
-
 		return Q;
 	}
 
@@ -185,17 +182,7 @@ namespace CHV4DTENSOR
 
 		if (Data == 0) return 0;
 
-		bool sign = !(Data < 0) != !(x < 0) ? true : false;
-
-		size_t A{ 0 }, B{ 0 }, Q{ 0 };
-
-		size_t temp = Data;
-
-		A = Data < 0 ? static_cast<uint64_t>(-1 * Data) : static_cast<uint64_t>(Data);
-
-		temp = x();
-
-		B = x() < 0 ? static_cast<uint64_t>(-1 * x()) : static_cast<uint64_t>(x());
+		size_t A{ Data }, B{ x() };
 
 		size_t bitWidth{ 63 };
 
@@ -217,9 +204,7 @@ namespace CHV4DTENSOR
 			B >>= 1;
 		}
 
-		temp = sign ? static_cast<size_t>(-1 * A) : static_cast<size_t>(A);
-
-		return temp;
+		return A;
 	}
 
 
@@ -352,10 +337,6 @@ namespace CHV4DTENSOR
 
 		*this = A;
 	}
-
-	void CHV4DINTEGER< size_t > ::operator/=(CHV4DINTEGER < size_t > const&) {}
-
-	void CHV4DINTEGER< size_t > ::operator%=(CHV4DINTEGER < size_t > const& x) {}
 
 	void CHV4DINTEGER< size_t > ::operator&=(CHV4DINTEGER < size_t > const& x)
 	{

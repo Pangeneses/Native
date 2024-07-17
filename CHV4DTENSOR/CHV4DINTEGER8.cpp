@@ -2,6 +2,8 @@ module;
 
 #include <type_traits>
 
+#include <compare>
+
 #include <stdexcept>
 
 module CHV4DTENSOR:CHV4DINTEGER;
@@ -173,13 +175,9 @@ namespace CHV4DTENSOR
 
 		bool sign = !(Data < 0) != !(x < 0) ? true : false;
 
-		uint64_t A{ 0 }, B{ 0 }, Q{ 0 };
-
-		int64_t temp = Data;
+		uint64_t A{ 0 }, B{ 0 };
 
 		A = Data < 0 ? static_cast<uint64_t>(-1 * Data) : static_cast<uint64_t>(Data);
-
-		temp = x();
 
 		B = x() < 0 ? static_cast<uint64_t>(-1 * x()) : static_cast<uint64_t>(x());
 
@@ -205,9 +203,7 @@ namespace CHV4DTENSOR
 
 		if (A > 128) throw std::runtime_error{ "Runtime Out of Range." };
 
-		temp = sign ? static_cast<int8_t>(-1 * A) : static_cast<int8_t>(A);
-
-		return temp;
+		return sign ? static_cast<int8_t>(-1 * A) : static_cast<int8_t>(A);
 	}
 
 
@@ -339,11 +335,6 @@ namespace CHV4DTENSOR
 
 		*this = A;
 	}
-
-	void CHV4DINTEGER < int8_t > ::operator/=(CHV4DINTEGER < int8_t > const&) {}
-
-	void CHV4DINTEGER < int8_t > ::operator%=(CHV4DINTEGER < int8_t > const& x) {}
-
 
 	void CHV4DINTEGER < int8_t > ::operator&=(CHV4DINTEGER < int8_t > const& x)
 	{

@@ -2,6 +2,8 @@ module;
 
 #include <type_traits>
 
+#include <compare>
+
 #include <stdexcept>
 
 export module CHV4DTENSOR:CHV4DINTEGER;
@@ -108,7 +110,7 @@ export namespace CHV4DTENSOR
 	private:
 		void operator/=(CHV4DINTEGER < int8_t > const&) {}
 
-		void operator%=(CHV4DINTEGER < int8_t > const& x);
+		void operator%=(CHV4DINTEGER < int8_t > const&) {}
 
 	public:
 		void operator&=(CHV4DINTEGER < int8_t > const& x);
@@ -120,6 +122,9 @@ export namespace CHV4DTENSOR
 		void operator>>=(CHV4DINTEGER < int8_t > const& x);
 
 		void operator<<=(CHV4DINTEGER < int8_t > const& x);
+
+	public:
+		bool Sign() { return (Data & 0x80) == 0x80? true : false; }
 
 	private:
 		int8_t Data{ 0 };
@@ -213,7 +218,7 @@ export namespace CHV4DTENSOR
 	private:
 		void operator/=(CHV4DINTEGER < int16_t > const&) {}
 
-		void operator%=(CHV4DINTEGER < int16_t > const& x);
+		void operator%=(CHV4DINTEGER < int16_t > const&) {}
 
 	public:
 		void operator&=(CHV4DINTEGER < int16_t > const& x);
@@ -225,6 +230,9 @@ export namespace CHV4DTENSOR
 		void operator>>=(CHV4DINTEGER < int16_t > const& x);
 
 		void operator<<=(CHV4DINTEGER < int16_t > const& x);
+
+	public:
+		bool Sign() { return (Data & 0x80) == 0x8000 ? true : false; }
 
 	private:
 		int16_t Data{ 0 };
@@ -318,7 +326,7 @@ export namespace CHV4DTENSOR
 	private:
 		void operator/=(CHV4DINTEGER < int32_t > const&) {}
 
-		void operator%=(CHV4DINTEGER < int32_t > const& x);
+		void operator%=(CHV4DINTEGER < int32_t > const&) {}
 
 	public:
 		void operator&=(CHV4DINTEGER < int32_t > const& x);
@@ -330,6 +338,9 @@ export namespace CHV4DTENSOR
 		void operator>>=(CHV4DINTEGER < int32_t > const& x);
 
 		void operator<<=(CHV4DINTEGER < int32_t > const& x);
+
+	public:
+		bool Sign() { return (Data & 0x80) == 0x80000000 ? true : false; }
 
 	private:
 		int32_t Data{ 0 };
@@ -423,7 +434,7 @@ export namespace CHV4DTENSOR
 	private:
 		void operator/=(CHV4DINTEGER < int64_t > const&) {}
 
-		void operator%=(CHV4DINTEGER < int64_t > const& x);
+		void operator%=(CHV4DINTEGER < int64_t > const&) {}
 
 	public:
 		void operator&=(CHV4DINTEGER < int64_t > const& x);
@@ -435,6 +446,9 @@ export namespace CHV4DTENSOR
 		void operator>>=(CHV4DINTEGER < int64_t > const& x);
 
 		void operator<<=(CHV4DINTEGER < int64_t > const& x);
+
+	public:
+		bool Sign() { return (Data & 0x80) == 0x8000000000000000 ? true : false; }
 
 	private:
 		int64_t Data{ 0 };
@@ -479,9 +493,11 @@ export namespace CHV4DTENSOR
 
 		CHV4DINTEGER < size_t > operator+() const;
 
+	private:
 		CHV4DINTEGER < size_t > operator-() const;
 
 
+	public:
 		CHV4DINTEGER < size_t > operator+(CHV4DINTEGER < size_t > const& x) const;
 
 		CHV4DINTEGER < size_t > operator-(CHV4DINTEGER < size_t > const& x) const;
@@ -535,7 +551,7 @@ export namespace CHV4DTENSOR
 	private:
 		void operator/=(CHV4DINTEGER < size_t > const&) {}
 
-		void operator%=(CHV4DINTEGER < size_t > const& x);
+		void operator%=(CHV4DINTEGER < size_t > const&) {}
 
 	public:
 		void operator&=(CHV4DINTEGER < size_t > const& x);
@@ -548,10 +564,21 @@ export namespace CHV4DTENSOR
 
 		void operator<<=(CHV4DINTEGER < size_t > const& x);
 
+	public:
+		bool Sign() { return false; }
+
 	private:
 		size_t Data{ 0 };
 	};
 
 	typedef CHV4DINTEGER < size_t > CHV4DSCALAR;
+
+	template<typename T>
+	concept ASSERT_CHV4DZINTEGER =
+		std::is_same<T, CHV4DINTEGER < int8_t >>::value ||
+		std::is_same<T, CHV4DINTEGER < int16_t >>::value ||
+		std::is_same<T, CHV4DINTEGER < int32_t >>::value ||
+		std::is_same<T, CHV4DINTEGER < int64_t >>::value ||
+		std::is_same<T, CHV4DINTEGER < size_t >>::value;
 
 }

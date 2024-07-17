@@ -67,6 +67,9 @@
     <ClCompile Include="CHV4DSCALAR.cpp">
       <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
     </ClCompile>
+    <ClCompile Include="CHV4DPRECISION64.cpp">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DPRECISION</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="i. CHV4DTENSOR">

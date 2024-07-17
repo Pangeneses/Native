@@ -39,7 +39,7 @@ export namespace CHV4DTENSOR
 
 		float Floor() const;
 
-		float Fractional() const;
+		float Decimal() const;
 
 		bool IsPositive() const;
 
@@ -65,11 +65,11 @@ export namespace CHV4DTENSOR
 
 		void Mantissa(uint32_t const& x);
 
-		uint32_t Mantissa();
+		uint32_t Mantissa() const;
 
 		void Exponent(uint8_t const& x);
 
-		uint8_t Exponent();
+		uint8_t Exponent() const;
 
 	private:
 		bool SignBit{ false };
@@ -97,7 +97,7 @@ export namespace CHV4DTENSOR
 
 		double Floor() const;
 
-		double Fractional() const;
+		double Decimal() const;
 
 		bool IsPositive() const;
 
@@ -123,11 +123,11 @@ export namespace CHV4DTENSOR
 
 		void Mantissa(uint64_t const& x);
 
-		uint64_t Mantissa();
+		uint64_t Mantissa() const;
 
 		void Exponent(uint16_t const& x);
 
-		uint16_t Exponent();
+		uint16_t Exponent() const;
 
 	private:
 		bool SignBit{ false };
@@ -155,7 +155,7 @@ export namespace CHV4DTENSOR
 
 		long double Floor() const;
 
-		long double Fractional() const;
+		long double Decimal() const;
 
 		bool IsPositive() const;
 
@@ -181,11 +181,11 @@ export namespace CHV4DTENSOR
 
 		void Mantissa(uint64_t const& x);
 
-		uint64_t Mantissa();
+		uint64_t Mantissa() const;
 
 		void Exponent(uint16_t const& x);
 
-		uint16_t Exponent();
+		uint16_t Exponent() const;
 
 	private:
 		bool SignBit{ false };

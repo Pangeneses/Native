@@ -11,23 +11,23 @@ import :CHV4DRESOURCE;
 
 namespace CHV4DTENSOR
 {
-	CHV4DPRECISION < float > ::CHV4DPRECISION() { Data = 0.0f; }
+	CHV4DPRECISION < double > ::CHV4DPRECISION() { Data = 0.0f; }
 
-	CHV4DPRECISION < float > ::CHV4DPRECISION(CHV4DPRECISION < float > const& x) { Data = x.Data; }
+	CHV4DPRECISION < double > ::CHV4DPRECISION(CHV4DPRECISION < double > const& x) { Data = x.Data; }
 
-	CHV4DPRECISION < float > ::CHV4DPRECISION(float const& x) { Data = x; }
+	CHV4DPRECISION < double > ::CHV4DPRECISION(double const& x) { Data = x; }
 
-	void CHV4DPRECISION < float > ::operator=(CHV4DPRECISION < float > const& x) { Data = x.Data; }
+	void CHV4DPRECISION < double > ::operator=(CHV4DPRECISION < double > const& x) { Data = x.Data; }
 
-	void CHV4DPRECISION < float > ::operator=(float const& x) { Data = x; }
+	void CHV4DPRECISION < double > ::operator=(double const& x) { Data = x; }
 
-	float CHV4DPRECISION < float > ::operator()() const { return Data(); }
+	double CHV4DPRECISION < double > ::operator()() const { return Data(); }
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator++()
-	{ 
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator++()
+	{
 		try
 		{
-			Data = this->operator+(CHV4DPRECISION < float >{ 1.0f })();
+			Data = this->operator+(CHV4DPRECISION < double >{ 1.0f })();
 		}
 		catch (std::overflow_error error)
 		{
@@ -37,26 +37,26 @@ namespace CHV4DTENSOR
 		return *this;
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator++(int)
-	{ 
-		CHV4DPRECISION < float > A{ *this };
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator++(int)
+	{
+		CHV4DPRECISION < double > A{ *this };
 
 		try
 		{
-			Data = this->operator+(CHV4DPRECISION < float >{ 1.0f })();
+			Data = this->operator+(CHV4DPRECISION < double >{ 1.0f })();
 		}
 		catch (std::overflow_error error)
 		{
 			throw error;
 		}
-		return A; 
+		return A;
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator--()
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator--()
 	{
 		try
 		{
-			Data = this->operator-(CHV4DPRECISION < float >{ 1.0f })();
+			Data = this->operator-(CHV4DPRECISION < double >{ 1.0f })();
 		}
 		catch (std::overflow_error error)
 		{
@@ -66,13 +66,13 @@ namespace CHV4DTENSOR
 		return *this;
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator--(int)
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator--(int)
 	{
-		CHV4DPRECISION < float > A{ *this };
+		CHV4DPRECISION < double > A{ *this };
 
 		try
 		{
-			Data = this->operator-(CHV4DPRECISION < float >{ 1.0f })();
+			Data = this->operator-(CHV4DPRECISION < double >{ 1.0f })();
 		}
 		catch (std::overflow_error error)
 		{
@@ -82,26 +82,26 @@ namespace CHV4DTENSOR
 	}
 
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator+() const 
-	{ 
-		return { *this }; 
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator+() const
+	{
+		return { *this };
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator-() const 
-	{ 
-		CHV4DPRECISION < float > A{ *this };
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator-() const
+	{
+		CHV4DPRECISION < double > A{ *this };
 
 		A.Data.Sign() = A.Data.Sign() ? false : true;
 
-		return A; 
+		return A;
 	}
 
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator+(CHV4DPRECISION < float > const& x) const 
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator+(CHV4DPRECISION < double > const& x) const
 	{
 		if (Data.IsMaximum()) throw std::overflow_error{ "Precision32 Addition Overflow." };
 
-		CHV4DMANTISSA < float > A{ Data }, B{ x() };
+		CHV4DMANTISSA < double > A{ Data }, B{ x() };
 
 		int32_t delta = A.Exponent() - B.Exponent();
 
@@ -127,8 +127,8 @@ namespace CHV4DTENSOR
 			B.Mantissa(B.Mantissa() >> 1);
 		}
 
-		int32_t mantissa{ 0 };
-		
+		int64_t mantissa{ 0 };
+
 		if (!A.Sign() != !B.Sign())
 		{
 			if (A.Sign())
@@ -142,8 +142,8 @@ namespace CHV4DTENSOR
 				mantissa = A.Mantissa() - B.Mantissa();
 
 				A.Sign() = mantissa < 0 ? true : false;
-			}			
-		}		
+			}
+		}
 		else
 		{
 			mantissa = A.Mantissa() + B.Mantissa();
@@ -162,16 +162,16 @@ namespace CHV4DTENSOR
 			A.Mantissa(mantissa & 0x0007FFFFF);
 
 			A.Exponent(A.Exponent() + 1);
-		}		
+		}
 
 		return A();
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator-(CHV4DPRECISION < float > const& x) const 
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator-(CHV4DPRECISION < double > const& x) const
 	{
 		if (Data.IsMaximum()) throw std::overflow_error{ "Precision32 Addition Overflow." };
 
-		CHV4DMANTISSA < float > A{ Data }, B{ x() };
+		CHV4DMANTISSA < double > A{ Data }, B{ x() };
 
 		B.Sign() = B.Sign() ? false : true;
 
@@ -199,7 +199,7 @@ namespace CHV4DTENSOR
 			B.Mantissa(B.Mantissa() >> 1);
 		}
 
-		int32_t mantissa{ 0 };
+		int64_t mantissa{ 0 };
 
 		if (!A.Sign() != !B.Sign())
 		{
@@ -239,62 +239,62 @@ namespace CHV4DTENSOR
 		return A();
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator/(CHV4DPRECISION < float > const& x) const
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator/(CHV4DPRECISION < double > const& x) const
 	{
 
 
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator*(CHV4DPRECISION < float > const& x) const
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator*(CHV4DPRECISION < double > const& x) const
 	{
 
 
 	}
 
-	CHV4DPRECISION < float > CHV4DPRECISION < float > ::operator%(CHV4DPRECISION < float > const& x) const
+	CHV4DPRECISION < double > CHV4DPRECISION < double > ::operator%(CHV4DPRECISION < double > const& x) const
 	{
 
 
 	}
 
-	bool CHV4DPRECISION < float > ::operator==(CHV4DPRECISION < float > const& x) const
+	bool CHV4DPRECISION < double > ::operator==(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() == x() ? true : false;
 	}
 
-	bool CHV4DPRECISION < float > ::operator!=(CHV4DPRECISION < float > const& x) const
+	bool CHV4DPRECISION < double > ::operator!=(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() != x() ? true : false;
 	}
 
-	bool CHV4DPRECISION < float > ::operator<(CHV4DPRECISION < float > const& x) const
+	bool CHV4DPRECISION < double > ::operator<(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() < x() ? true : false;
 	}
 
-	bool CHV4DPRECISION < float > ::operator>(CHV4DPRECISION < float > const& x) const
+	bool CHV4DPRECISION < double > ::operator>(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() > x() ? true : false;
 	}
 
-	bool CHV4DPRECISION < float > ::operator<=(CHV4DPRECISION < float > const& x) const
+	bool CHV4DPRECISION < double > ::operator<=(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() <= x() ? true : false;
 	}
 
-	bool CHV4DPRECISION < float > ::operator>=(CHV4DPRECISION < float > const& x) const
+	bool CHV4DPRECISION < double > ::operator>=(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() >= x() ? true : false;
 	}
 
-	std::partial_ordering CHV4DPRECISION < float > ::operator<=>(CHV4DPRECISION < float > const& x) const
+	std::partial_ordering CHV4DPRECISION < double > ::operator<=>(CHV4DPRECISION < double > const& x) const
 	{
 		return Data() <=> x();
 	}
 
-	void CHV4DPRECISION < float > ::operator+=(CHV4DPRECISION < float > const& x)
+	void CHV4DPRECISION < double > ::operator+=(CHV4DPRECISION < double > const& x)
 	{
-		CHV4DPRECISION < float > A{ *this }, B{ x };
+		CHV4DPRECISION < double > A{ *this }, B{ x };
 
 		try
 		{
@@ -308,9 +308,9 @@ namespace CHV4DTENSOR
 		this->operator=(A);
 	}
 
-	void CHV4DPRECISION < float > ::operator-=(CHV4DPRECISION < float > const& x)
+	void CHV4DPRECISION < double > ::operator-=(CHV4DPRECISION < double > const& x)
 	{
-		CHV4DPRECISION < float > A{ *this }, B{ x };
+		CHV4DPRECISION < double > A{ *this }, B{ x };
 
 		try
 		{
@@ -324,9 +324,9 @@ namespace CHV4DTENSOR
 		this->operator=(A);
 	}
 
-	void CHV4DPRECISION < float > ::operator*=(CHV4DPRECISION < float > const& x)
+	void CHV4DPRECISION < double > ::operator*=(CHV4DPRECISION < double > const& x)
 	{
-		CHV4DPRECISION < float > A{ *this }, B{ x };
+		CHV4DPRECISION < double > A{ *this }, B{ x };
 
 		try
 		{
@@ -340,9 +340,9 @@ namespace CHV4DTENSOR
 		this->operator=(A);
 	}
 
-	void CHV4DPRECISION < float > ::operator/=(CHV4DPRECISION < float > const& x)
+	void CHV4DPRECISION < double > ::operator/=(CHV4DPRECISION < double > const& x)
 	{
-		CHV4DPRECISION < float > A{ *this }, B{ x };
+		CHV4DPRECISION < double > A{ *this }, B{ x };
 
 		try
 		{
@@ -356,9 +356,9 @@ namespace CHV4DTENSOR
 		this->operator=(A);
 	}
 
-	void CHV4DPRECISION < float > ::operator%=(CHV4DPRECISION < float > const& x)
+	void CHV4DPRECISION < double > ::operator%=(CHV4DPRECISION < double > const& x)
 	{
-		CHV4DPRECISION < float > A{ *this }, B{ x };
+		CHV4DPRECISION < double > A{ *this }, B{ x };
 
 		try
 		{
