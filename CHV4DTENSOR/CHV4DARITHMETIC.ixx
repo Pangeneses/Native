@@ -1,6 +1,10 @@
 module;
 
+#include <vector>
+
 #include <compare>
+
+#include <optional>
 
 #include <stdexcept>
 
@@ -10,35 +14,23 @@ import :CHV4DFORWARD;
 import :CHV4DRESOURCE;
 
 import :CHV4DMANTISSA;
-import :CHV4DINTEGER;
+import :CHV4DZINTEGER;
 import :CHV4DPRECISION;
 
 export namespace CHV4DTENSOR
 { 
-	template<ASSERT_CHV4DZINTEGER T = CHV4DINTEGER<size_t>>
-	T PositivePower(T const& base, T const& pow)
+	template<ASSERT_CHV4DZINTEGER T = CHV4DZINTEGER<size_t>>
+	std::optional<T> ZPositivePower(T const& base, T const& pow)
 	{
-		T A{ base }, B{ pow }, Q{ static_cast<T>(1) };
+		T A{ base }, B{ pow }, Q{ 1 };
 
-		if (B < 0) throw std::runtime_error{ "PositivePower works with positive numbers." };
+		if (B <= 0ui8) return {};
 
-		if (A == static_cast<T>(0) && B == static_cast<T>(0))
-		{
-			throw std::runtime_error{ "Zero division by zero undefined." };
-		}
+		if (A == 0ui8)	return T { 0ui8 };
 
-		if (B == 0)
+		while (B != 0ui8)
 		{
-			return static_cast<T>(1);
-		}
-		else if (B != static_cast<T>(0) && A == static_cast<T>(0))
-		{
-			return static_cast<T>(0);
-		}
-
-		while (B != static_cast<T>(0))
-		{
-			if ((B & static_cast<T>(1)) == static_cast<T>(1))
+			if ((B & 1ui8) == 1ui8)
 			{
 				try
 				{
@@ -50,9 +42,9 @@ export namespace CHV4DTENSOR
 				}
 			}
 
-			B >>= 1;
+			B >>= 1ui8;
 
-			if (B != static_cast<T>(0))
+			if (B != 0ui8)
 			{
 				try
 				{
@@ -67,14 +59,14 @@ export namespace CHV4DTENSOR
 
 		if (pow.Sign())
 		{
-			if (pow & static_cast<T>(1) == static_cast<T>(1)) Q.operator*(static_cast<T>(-1));
+			if ((pow & 1ui8) == 1ui8) Q.operator*(-1ui8);
 		}
 
 		return Q;		
 	}
 
-	template<ASSERT_CHV4DZINTEGER T = CHV4DINTEGER<size_t>>
-	T IsCyclic(T const& z, T const& n)
+	template<ASSERT_CHV4DZINTEGER T = CHV4DZINTEGER<size_t>>
+	T ZCyclic(T const& z, T const& n)
 	{
 		T A{ z }, B{ n }, Q{ 0 };
 
@@ -87,25 +79,25 @@ export namespace CHV4DTENSOR
 			throw error;
 		}
 
-		if (Q == 0) return A / B;
+		if (Q == 0) return CHV4DMANTISSA < double > { A / B }.Integer();
 
-		else return static_cast<T>(0);
+		else return 0ui8;
 	};
-
-	template<ASSERT_CHV4DZINTEGER T = CHV4DINTEGER<size_t>>
+	/*
+	template<ASSERT_CHV4DZINTEGER T = CHV4DZINTEGER<size_t>>
 	void AsFraction(CHV4DPRECISION < double > const& precision, T& a, T& b)
 	{
 		CHV4DMANTISSA < double > P{ precision };
 
-		CHV4DINTEGER<size_t> W = P.Floor();
+		CHV4DZINTEGER<size_t> W = P.Floor();
 
 		CHV4DMANTISSA < double > D = P() - P.Floor();
 
-		CHV4DINTEGER<size_t> A{ D.Mantissa() | 0x0008000000000000 }, B{ 0x000FFFFFFFFFFFFF };
+		CHV4DZINTEGER<size_t> A{ D.Mantissa() | 0x0008000000000000 }, B{ 0x000FFFFFFFFFFFFF };
 
-		while (B != static_cast<CHV4DINTEGER<size_t>>(0)) 
+		while (B != static_cast<CHV4DZINTEGER<size_t>>(0)) 
 		{ 
-			CHV4DINTEGER<size_t> Q;
+			CHV4DZINTEGER<size_t> Q;
 
 			try
 			{
@@ -126,10 +118,58 @@ export namespace CHV4DTENSOR
 		b = 0x000FFFFFFFFFFFFF / A();
 	}
 
-	CHV4DPRECISION < double > PositiveRoot(CHV4DINTEGER<size_t> const& a, CHV4DINTEGER<size_t> const& b)
+	template <ASSERT_CHV4DZINTEGER T = CHV4DZINTEGER<size_t>>
+	T ZPositiveWholeRoot(T const& a, T const& b)
 	{
+		CHV4DZINTEGER<size_t> A{ a }, B{ b }, BitPos{ 2ui64 }, Mask{ 1ui64 }, Mod{ 0ui64 }, N{ 0ui64 };
 
+		CHV4DMANTISSA < double > Q{ 0.0 };
 
+		std::vector<size_t> factors;
+
+		factors.push_back(0ui64);
+
+		for (size_t i = 62ui64; i >= 1ui64; --i)
+		{
+			while (A & Mask == 0 && A & BitPos == 1)
+			{
+				try
+				{
+					Q = A / BitPos;
+				}
+				catch (std::runtime_error error)
+				{
+					throw error;
+				}
+
+				A = Q.
+
+				A -= Mod;
+
+				N = ZCyclic(A, BitPos);
+
+				*std::prev(factors.end(), 1ui64) = N;
+
+				A = Mod;
+			}
+
+			if (A == 0ui64) break;
+
+			BitPos <<= 1ui64;
+
+			Mask <<= 1ui64;
+
+			Mask |= 1ui64;
+
+			factors.push_back(0);
+		}
+
+		for (size_t i = 0; i < factors.size(); ++i)
+		{
+			if (factor[i] % B != 0) return 0;
+
+			else factor[i] /= B;
+		}
 	}
 
 	template<ASSERT_CHV4DPRECISION T = CHV4DPRECISION<double>>
@@ -156,9 +196,9 @@ export namespace CHV4DTENSOR
 
 		for (size_t k = 1; k < iterations; k++)
 		{
-			CHV4DINTEGER<size_t> p2k = PositivePower(CHV4DINTEGER<size_t>{ 2 }, CHV4DINTEGER<size_t>{ k });
+			CHV4DZINTEGER<uint64_t> p2k = PositivePower(CHV4DZINTEGER<size_t>{ 2 }, CHV4DZINTEGER<size_t>{ k });
 
-			CHV4DPRECISION <float> root = static_cast<float>(IsCyclic(CHV4DINTEGER<size_t>{ x() }, CHV4DINTEGER<size_t>{ p2k })());
+			CHV4DPRECISION <float> root = static_cast<float>(IsCyclic(CHV4DZINTEGER<size_t>{ x() }, CHV4DZINTEGER<size_t>{ p2k })());
 
 			inPlace *= (2.0f / (1.0f + root()));
 
@@ -180,9 +220,9 @@ export namespace CHV4DTENSOR
 
 		for (size_t k = 1; k < iterations; k++)
 		{
-			CHV4DINTEGER<size_t> p2k = PositivePower(CHV4DINTEGER<size_t>{ 2 }, CHV4DINTEGER<size_t>{ k });
+			CHV4DZINTEGER<size_t> p2k = PositivePower(CHV4DZINTEGER<size_t>{ 2 }, CHV4DZINTEGER<size_t>{ k });
 
-			CHV4DPRECISION <double> root = static_cast<double>(IsCyclic(CHV4DINTEGER<size_t>{ x() }, CHV4DINTEGER<size_t>{ p2k })());
+			CHV4DPRECISION <double> root = static_cast<double>(IsCyclic(CHV4DZINTEGER<size_t>{ x() }, CHV4DZINTEGER<size_t>{ p2k })());
 
 			inPlace *= (2.0f / (1.0f + root()));
 
@@ -235,4 +275,5 @@ export namespace CHV4DTENSOR
 		return x * static_cast<double>(iterations);
 
 	}
+	*/
 }

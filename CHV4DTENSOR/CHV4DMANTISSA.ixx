@@ -4,6 +4,8 @@ module;
 
 #include <type_traits>
 
+#include <optional>
+
 #include <stdexcept>
 
 export module CHV4DTENSOR:CHV4DMANTISSA;
@@ -36,6 +38,8 @@ export namespace CHV4DTENSOR
 		float operator()() const;
 
 		float Absolute() const;
+
+		std::optional<size_t> Integer() const;
 
 		float Floor() const;
 
@@ -95,6 +99,8 @@ export namespace CHV4DTENSOR
 
 		double Absolute() const;
 
+		std::optional<size_t> Integer() const;
+
 		double Floor() const;
 
 		double Decimal() const;
@@ -152,6 +158,8 @@ export namespace CHV4DTENSOR
 		long double operator()() const;
 
 		long double Absolute() const;
+
+		std::optional<size_t> Integer() const;
 
 		long double Floor() const;
 

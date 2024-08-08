@@ -70,6 +70,13 @@ namespace CHV4DTENSOR
 		return SignBit ? -1 * (this->operator()()) : this->operator()();
 	}
 
+	std::optional<size_t> CHV4DMANTISSA < long double > ::Integer() const
+	{
+		if (this->Decimal() != 0) return {};
+
+		return this->Mantissa() * (this->Exponent() - 127);
+	}
+
 	long double CHV4DMANTISSA < long double > ::Floor() const
 	{
 		if (IsZero()) return 0.0f;

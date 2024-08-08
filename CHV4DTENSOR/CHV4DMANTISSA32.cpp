@@ -4,6 +4,8 @@ module;
 
 #include <type_traits>
 
+#include <optional>
+
 #include <stdexcept>
 
 module CHV4DTENSOR:CHV4DMANTISSA;
@@ -68,6 +70,13 @@ namespace CHV4DTENSOR
 	float CHV4DMANTISSA < float > ::Absolute() const 
 	{ 
 		return SignBit ? -1 * (this->operator()()) : this->operator()(); 
+	}
+
+	std::optional<size_t> CHV4DMANTISSA < float > ::Integer() const
+	{
+		if (this->Decimal() != 0) return {};
+
+		return this->Mantissa() * (this->Exponent() - 127);
 	}
 
 	float CHV4DMANTISSA < float > ::Floor() const

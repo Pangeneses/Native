@@ -11,7 +11,7 @@
       <Filter>iii. CHV4DRESOURCE</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DPRECISION.ixx">
-      <Filter>iv. CHV4DNUMBER\4. CHV4DPRECISION</Filter>
+      <Filter>iv. CHV4DNUMBER\8. CHV4DPRECISION</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DALGEBRA.ixx">
       <Filter>v. CHV4DMATH\1. CHV4DALGEBRA</Filter>
@@ -19,20 +19,14 @@
     <ClCompile Include="CHV4DMATRIX.ixx">
       <Filter>v. CHV4DMATH\2. CHV4DMATRIX</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DINTEGER.ixx">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
+    <ClCompile Include="CHV4DZINTEGER.ixx">
+      <Filter>iv. CHV4DNUMBER\5. CHV4DZINTEGER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DARITHMETIC.ixx">
       <Filter>v. CHV4DMATH\0. CHV4DARITMETIC</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DSIMD.ixx">
-      <Filter>iv. CHV4DNUMBER\5. CHV4DSIMD</Filter>
-    </ClCompile>
     <ClCompile Include="CHV4DBITSTREAM.ixx">
       <Filter>iv. CHV4DNUMBER\0. CHV4DBITSTREAM</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DAVX512.ixx">
-      <Filter>iv. CHV4DNUMBER\6. CHV4DAVX512</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DFIXEDBYTES.ixx">
       <Filter>iv. CHV4DNUMBER\1. CHV4DFIXEDBYTES</Filter>
@@ -49,26 +43,83 @@
     <ClCompile Include="CHV4DMANTISSA128.cpp">
       <Filter>iv. CHV4DNUMBER\2. CHV4DMANTISSA</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DINTEGER8.cpp">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
+    <ClCompile Include="CHV4DZINTEGER8.cpp">
+      <Filter>iv. CHV4DNUMBER\5. CHV4DZINTEGER</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DINTEGER16.cpp">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
+    <ClCompile Include="CHV4DZINTEGER16.cpp">
+      <Filter>iv. CHV4DNUMBER\5. CHV4DZINTEGER</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DINTEGER32.cpp">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
+    <ClCompile Include="CHV4DZINTEGER32.cpp">
+      <Filter>iv. CHV4DNUMBER\5. CHV4DZINTEGER</Filter>
     </ClCompile>
-    <ClCompile Include="CHV4DINTEGER64.cpp">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
+    <ClCompile Include="CHV4DZINTEGER64.cpp">
+      <Filter>iv. CHV4DNUMBER\5. CHV4DZINTEGER</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DPRECISION32.cpp">
-      <Filter>iv. CHV4DNUMBER\4. CHV4DPRECISION</Filter>
-    </ClCompile>
-    <ClCompile Include="CHV4DSCALAR.cpp">
-      <Filter>iv. CHV4DNUMBER\3. CHV4DINTEGER</Filter>
+      <Filter>iv. CHV4DNUMBER\8. CHV4DPRECISION</Filter>
     </ClCompile>
     <ClCompile Include="CHV4DPRECISION64.cpp">
-      <Filter>iv. CHV4DNUMBER\4. CHV4DPRECISION</Filter>
+      <Filter>iv. CHV4DNUMBER\8. CHV4DPRECISION</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZPOSITIVE64.cpp">
+      <Filter>iv. CHV4DNUMBER\7. CHV4DZPOSITIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNEGATIVE.ixx">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DZNEGATIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNEGATIVE8.cpp">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DZNEGATIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNEGATIVE16.cpp">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DZNEGATIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNEGATIVE32.cpp">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DZNEGATIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNEGATIVE64.cpp">
+      <Filter>iv. CHV4DNUMBER\3. CHV4DZNEGATIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONPOS.ixx">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DZNONPOS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONPOS8.cpp">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DZNONPOS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONPOS16.cpp">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DZNONPOS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONPOS32.cpp">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DZNONPOS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONPOS64.cpp">
+      <Filter>iv. CHV4DNUMBER\4. CHV4DZNONPOS</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONNEG.ixx">
+      <Filter>iv. CHV4DNUMBER\6. CHV4DZNONNEG</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONNEG8.cpp">
+      <Filter>iv. CHV4DNUMBER\6. CHV4DZNONNEG</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONNEG16.cpp">
+      <Filter>iv. CHV4DNUMBER\6. CHV4DZNONNEG</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONNEG32.cpp">
+      <Filter>iv. CHV4DNUMBER\6. CHV4DZNONNEG</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZNONNEG64.cpp">
+      <Filter>iv. CHV4DNUMBER\6. CHV4DZNONNEG</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZPOSITIVE.ixx">
+      <Filter>iv. CHV4DNUMBER\7. CHV4DZPOSITIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZPOSITIVE8.cpp">
+      <Filter>iv. CHV4DNUMBER\7. CHV4DZPOSITIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZPOSITIVE16.cpp">
+      <Filter>iv. CHV4DNUMBER\7. CHV4DZPOSITIVE</Filter>
+    </ClCompile>
+    <ClCompile Include="CHV4DZPOSITIVE32.cpp">
+      <Filter>iv. CHV4DNUMBER\7. CHV4DZPOSITIVE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,12 +141,6 @@
     <Filter Include="iv. CHV4DNUMBER\1. CHV4DFIXEDBYTES">
       <UniqueIdentifier>{55064bf9-ae29-4787-a060-02eb746fde38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\4. CHV4DPRECISION">
-      <UniqueIdentifier>{b313d6a4-24af-437b-a113-f906c345f3c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. CHV4DNUMBER\3. CHV4DINTEGER">
-      <UniqueIdentifier>{95990428-d43b-4326-b156-d1db0437e5ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="iv. CHV4DNUMBER\2. CHV4DMANTISSA">
       <UniqueIdentifier>{1b1dabb7-d657-4c48-877f-809cb5ab8a47}</UniqueIdentifier>
     </Filter>
@@ -108,14 +153,26 @@
     <Filter Include="v. CHV4DMATH\1. CHV4DALGEBRA">
       <UniqueIdentifier>{f5e70684-74f7-4063-ba0b-7a0d7d7cf570}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iv. CHV4DNUMBER\5. CHV4DSIMD">
-      <UniqueIdentifier>{1583ac4b-849c-4731-ba49-d91d1427df65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="iv. CHV4DNUMBER\6. CHV4DAVX512">
-      <UniqueIdentifier>{ba45585e-77e9-45dd-b38a-8ba5b8fa0620}</UniqueIdentifier>
-    </Filter>
     <Filter Include="v. CHV4DMATH\2. CHV4DMATRIX">
       <UniqueIdentifier>{46196e2b-aff7-456e-8e91-e15be5c2cadb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\8. CHV4DPRECISION">
+      <UniqueIdentifier>{b313d6a4-24af-437b-a113-f906c345f3c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\3. CHV4DZNEGATIVE">
+      <UniqueIdentifier>{b73cda6d-0c90-4ec1-afa9-6fd26fdab3ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\4. CHV4DZNONPOS">
+      <UniqueIdentifier>{dc099a9f-52cb-437b-b89d-cb2bb46ce90e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\5. CHV4DZINTEGER">
+      <UniqueIdentifier>{95990428-d43b-4326-b156-d1db0437e5ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\6. CHV4DZNONNEG">
+      <UniqueIdentifier>{1bcd0b63-fa57-48b2-b25e-6cab9fa0fd9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iv. CHV4DNUMBER\7. CHV4DZPOSITIVE">
+      <UniqueIdentifier>{4fa9e5d5-7f9e-42cf-8599-e181fcf2c0a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
